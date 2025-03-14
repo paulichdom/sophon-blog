@@ -1,23 +1,21 @@
-import { Anchor, Text, Title } from '@mantine/core';
-import classes from './Welcome.module.css';
+import { AppShell, Group, rem, Text } from '@mantine/core';
+import { useHeadroom } from '@mantine/hooks';
+import { ArticlesCardsGrid } from '../ArticlesCardsGrid/ArticlesCardsGrid';
+import { Footer } from '../Footer/Footer';
+import { Header } from '../Header/Header';
 
 export function Welcome() {
+  const pinned = useHeadroom({ fixedAt: 120 });
+
   return (
-    <>
-      <Title className={classes.title} ta="center" mt={100}>
-        Welcome to{' '}
-        <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
-          Mantine
-        </Text>
-      </Title>
-      <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-        This starter Vite project includes a minimal setup, if you want to learn more on Mantine +
-        Vite integration follow{' '}
-        <Anchor href="https://mantine.dev/guides/vite/" size="lg">
-          this guide
-        </Anchor>
-        . To get started edit pages/Home.page.tsx file.
-      </Text>
-    </>
+    <AppShell header={{ height: 60, collapsed: !pinned, offset: false }} padding="md">
+      <AppShell.Header>
+        <Header />
+      </AppShell.Header>
+      <AppShell.Main pt={`calc(${rem(60)} + var(--mantine-spacing-md))`}>
+        <ArticlesCardsGrid />
+      </AppShell.Main>
+      <Footer />
+    </AppShell>
   );
 }
