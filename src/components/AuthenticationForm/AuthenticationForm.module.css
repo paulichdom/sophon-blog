@@ -1,0 +1,6 @@
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0rem;
+  min-width: calc(26.25rem* var(--mantine-scale));
+}
