@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Burger, Container, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import classes from './Header.module.css';
 
 const links = [
@@ -30,12 +31,13 @@ export function Header() {
   ));
 
   return (
-      <Container size="md" className={classes.inner}>
-        Sophon
-        <Group gap={5} visibleFrom="xs">
-          {items}
-        </Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-      </Container>
+    <Container size="md" className={classes.inner}>
+      Sophon
+      <Group gap={5} visibleFrom="xs">
+        {items}
+        <ColorSchemeToggle />
+      </Group>
+      <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+    </Container>
   );
 }
