@@ -1,16 +1,22 @@
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
-import { Button, Group, Switch, useMantineColorScheme } from '@mantine/core';
-
+import { IconMoon, IconMoonStars, IconSun } from '@tabler/icons-react';
+import { ActionIcon, Button, Group, Switch, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import cx from 'clsx';
+import classes from './ColorSchemeToggle.module.css';
 export function ColorSchemeToggle() {
-  const { toggleColorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
-    <Switch
-      size="md"
-      color="dark.4"
-      onChange={toggleColorScheme}
-      onLabel={<IconSun size={16} stroke={2.5} color="var(--mantine-color-yellow-4)" />}
-      offLabel={<IconMoonStars size={16} stroke={2.5} color="var(--mantine-color-blue-6)" />}
-    />
+    <Group justify="center">
+      <ActionIcon
+        onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+        variant="default"
+        size="xl"
+        aria-label="Toggle color scheme"
+      >
+        <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
+        <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
+      </ActionIcon>
+    </Group>
   );
 }
