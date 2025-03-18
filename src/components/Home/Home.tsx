@@ -42,8 +42,6 @@ export function Home() {
     },
   });
 
-  console.log({ data });
-
   return (
     <MainLayout>
       <ArticlesCardsGrid />
