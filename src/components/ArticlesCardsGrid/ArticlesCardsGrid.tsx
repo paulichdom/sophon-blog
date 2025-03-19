@@ -1,6 +1,5 @@
-import { AspectRatio, Card, Container, Image, SimpleGrid, Text } from '@mantine/core';
+import { Container, SimpleGrid} from '@mantine/core';
 import { ArticleCard } from '../ArticleCard/ArticleCard';
-import classes from './ArticlesCardsGrid.module.css';
 
 const mockdata = [
   {
