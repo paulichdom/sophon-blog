@@ -13,14 +13,13 @@ import classes from './ArticleCard.module.css';
 
 type ArticleCardProps = {
   title: string;
-  image: string;
-  alt: string;
   date: string;
   avatar: string;
 };
 
-export const ArticleCard: FC<ArticleCardProps> = ({ title, date, avatar }) => {
+export const ArticleCard: FC<ArticleCardProps> = ({ title }) => {
   const theme = useMantineTheme();
+  const tmpAvatar = 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png'
   return (
     <Card withBorder padding="lg" radius="md" className={classes.card}>
       <Text fw={700} className={classes.title}>
@@ -32,7 +31,7 @@ export const ArticleCard: FC<ArticleCardProps> = ({ title, date, avatar }) => {
         </Badge>
       </div>
       <Group mt="xs">
-        <Avatar src={avatar} radius="sm" />
+        <Avatar src={tmpAvatar} radius="sm" />
         <div>
           <Text fw={500}>Elsa Gardenowl</Text>
           <Text fz="xs" c="dimmed">

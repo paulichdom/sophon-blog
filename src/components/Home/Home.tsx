@@ -44,7 +44,7 @@ export function Home() {
 
   return (
     <MainLayout>
-      <ArticlesCardsGrid />
+      <ArticlesCardsGrid articles={data} />
     </MainLayout>
   );
 }
