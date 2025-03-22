@@ -3,6 +3,7 @@
 }
 
 .title {
+  height: 100%;
   font-family:
     Greycliff CF,
     var(--mantine-font-family);

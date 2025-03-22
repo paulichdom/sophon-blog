@@ -1,4 +1,4 @@
-import { Container, SimpleGrid} from '@mantine/core';
+import { Container, SimpleGrid } from '@mantine/core';
 import { ArticleCard } from '../ArticleCard/ArticleCard';
 
 const mockdata = [
