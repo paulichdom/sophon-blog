@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Burger, Container, Group } from '@mantine/core';
+import { Burger, Container, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import classes from './Header.module.css';
@@ -32,7 +32,9 @@ export function Header() {
 
   return (
     <Container size="md" className={classes.inner}>
-      Sophon
+      <Text size="xl" fw={900} variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>
+        Sophon
+      </Text>
       <Group gap={5} visibleFrom="xs">
         {items}
         <ColorSchemeToggle />

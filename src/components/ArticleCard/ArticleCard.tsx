@@ -4,36 +4,48 @@ import {
   ActionIcon,
   Avatar,
   Badge,
+  Box,
   Card,
+  Flex,
   Group,
   Text,
   useMantineTheme,
 } from '@mantine/core';
+import { Author } from '../Home/Home';
 import classes from './ArticleCard.module.css';
 
 type ArticleCardProps = {
   title: string;
+  description: string;
   date: string;
   avatar: string;
+  author: Author;
+  tagList: string[];
 };
 
-export const ArticleCard: FC<ArticleCardProps> = ({ title }) => {
+export const ArticleCard: FC<ArticleCardProps> = ({ title, description, tagList, author }) => {
   const theme = useMantineTheme();
-  const tmpAvatar = 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png'
+  const tmpAvatar =
+    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png';
   return (
     <Card withBorder padding="lg" radius="md" className={classes.card}>
       <Text fw={700} className={classes.title}>
         {title}
       </Text>
-      <div>
-        <Badge w="fit-content" variant="light" mt="xs">
-          decorations
-        </Badge>
-      </div>
+      <Box>
+        <Text truncate="end">{description}</Text>
+      </Box>
+      <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
+        {tagList.map((tag, index) => (
+          <Badge key={index} w="fit-content" variant="outline" mt="xs">
+            {tag}
+          </Badge>
+        ))}
+      </Flex>
       <Group mt="xs">
         <Avatar src={tmpAvatar} radius="sm" />
         <div>
-          <Text fw={500}>Elsa Gardenowl</Text>
+          <Text fw={500}>{author.username}</Text>
           <Text fz="xs" c="dimmed">
             posted 34 minutes ago
           </Text>
