@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IconBookmark, IconHeart, IconShare } from '@tabler/icons-react';
+import moment from 'moment';
 import {
   ActionIcon,
   Avatar,
@@ -11,22 +12,19 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { Author } from '../Home/Home';
+import { Article } from '../Home/Home';
 import classes from './ArticleCard.module.css';
 
+const ROBOHASH_URL = 'https://robohash.org/';
+
 type ArticleCardProps = {
-  title: string;
-  description: string;
-  date: string;
-  avatar: string;
-  author: Author;
-  tagList: string[];
+  article: Article;
 };
 
-export const ArticleCard: FC<ArticleCardProps> = ({ title, description, tagList, author }) => {
+export const ArticleCard: FC<ArticleCardProps> = ({ article }) => {
   const theme = useMantineTheme();
-  const tmpAvatar =
-    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png';
+  const { title, description, tagList, author, favoritesCount, createdAt } = article;
+  const avatar = author.image || `${ROBOHASH_URL}/${author.username}`;
   return (
     <Card withBorder padding="lg" radius="md" className={classes.card}>
       <Text fw={700} className={classes.title}>
@@ -36,6 +34,7 @@ export const ArticleCard: FC<ArticleCardProps> = ({ title, description, tagList,
         <Text truncate="end">{description}</Text>
       </Box>
       <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap">
+        {/* TODO: Truncate tags */}
         {tagList.map((tag, index) => (
           <Badge key={index} w="fit-content" variant="outline" mt="xs">
             {tag}
@@ -43,18 +42,18 @@ export const ArticleCard: FC<ArticleCardProps> = ({ title, description, tagList,
         ))}
       </Flex>
       <Group mt="xs">
-        <Avatar src={tmpAvatar} radius="sm" />
+        <Avatar src={avatar} radius="sm" />
         <div>
           <Text fw={500}>{author.username}</Text>
           <Text fz="xs" c="dimmed">
-            posted 34 minutes ago
+            posted {moment(createdAt).fromNow()}
           </Text>
         </div>
       </Group>
       <Card.Section className={classes.footer}>
         <Group justify="space-between">
           <Text fz="xs" c="dimmed">
-            733 people liked this
+            {favoritesCount} people liked this
           </Text>
           <Group gap={0}>
             <ActionIcon variant="subtle" color="gray">
