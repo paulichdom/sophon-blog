@@ -42,9 +42,7 @@ export function Home() {
     },
   });
 
-  return (
-    <MainLayout>
-      <ArticlesCardsGrid articles={data} />
-    </MainLayout>
-  );
+  if(isFetching) return <h1>Loading...</h1>
+
+  return <ArticlesCardsGrid articles={data} />;
 }
