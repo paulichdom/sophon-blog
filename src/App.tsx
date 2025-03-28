@@ -1,25 +1,22 @@
+import { FC, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Outlet } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
+import { MainLayout } from './components/MainLayout/MainLayout';
 import { theme } from './theme';
 
 import '@mantine/core/styles.css';
 
-import { MainLayout } from './components/MainLayout/MainLayout';
-
 const queryClinet = new QueryClient();
 
-const App = () => {
+export const App: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <MantineProvider theme={theme}>
-      <QueryClientProvider client={queryClinet}>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
+    <QueryClientProvider client={queryClinet}>
+      <MantineProvider theme={theme}>
+        <MainLayout>{children}</MainLayout>
         <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </MantineProvider>
+      </MantineProvider>
+    </QueryClientProvider>
   );
 };
 
