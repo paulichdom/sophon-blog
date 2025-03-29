@@ -1,24 +1,38 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { MantineProvider } from '@mantine/core';
-import { MainLayout } from './components/MainLayout/MainLayout';
+import { routeTree } from './routeTree.gen';
 import { theme } from './theme';
 
 import '@mantine/core/styles.css';
 
 const queryClinet = new QueryClient();
 
+// Set up a Router instance
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient: queryClinet,
+  },
+  defaultPreload: 'intent',
+  // Since we're using React Query, we don't want loader calls to ever be stale
+  // This will ensure that the loader is always called when the route is preloaded or visited
+  defaultPreloadStaleTime: 0,
+  scrollRestoration: true,
+})
+
+// Register things for typesafety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 export const App = () => {
   return (
     <QueryClientProvider client={queryClinet}>
       <MantineProvider theme={theme}>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
-        <TanStackRouterDevtools initialIsOpen={false} />
-        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={router} />
       </MantineProvider>
     </QueryClientProvider>
   );
