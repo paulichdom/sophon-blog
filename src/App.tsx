@@ -5,6 +5,7 @@ import { routeTree } from './routeTree.gen';
 import { theme } from './theme';
 
 import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
 
 const queryClinet = new QueryClient();
 
