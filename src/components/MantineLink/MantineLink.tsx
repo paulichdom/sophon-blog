@@ -4,6 +4,7 @@ import { Anchor, AnchorProps } from '@mantine/core'
 
 interface MantineAnchorProps extends Omit<AnchorProps, 'href'> {
   // Add any additional props you want to pass to the anchor
+  usename: string
 }
 
 const MantineLinkComponent = React.forwardRef<

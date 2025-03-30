@@ -1,4 +1,4 @@
-import { ElementType, FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import {
   IconChevronDown,
   IconHeart,
@@ -11,8 +11,9 @@ import {
   IconTrash,
   IconUser,
 } from '@tabler/icons-react';
-import { Avatar, Group, Menu, NavLink, useMantineTheme } from '@mantine/core';
-import { UserButton } from '../UserButton/UserButton';
+import { Link } from '@tanstack/react-router';
+import { Avatar, Group, Menu, useMantineTheme } from '@mantine/core';
+import { Route as profileRoute } from '../../routes/profile/$username';
 import classes from './UserMenu.module.css';
 
 type UserMenuProps = {
@@ -39,12 +40,24 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
               radius={30}
             />
             Nancy Eggshacker
-            <IconChevronDown size={16} stroke={3} className="mantine-rotate-rtl" />
+            <IconChevronDown
+              size={16}
+              stroke={3}
+              className="mantine-rotate-rtl"
+              color={theme.colors.blue[6]}
+            />
           </Group>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item leftSection={<IconUser size={16} stroke={1.5} />}>Profile</Menu.Item>
-
+          <Menu.Item
+            component={Link}
+            to="/profile/$username"
+            /* TODO: handle this type */
+            params={{ username: 'test' } as any}
+            leftSection={<IconUser size={16} stroke={1.5} />}
+          >
+            Profile
+          </Menu.Item>
           <Menu.Divider />
 
           <Menu.Item leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}>
@@ -62,7 +75,11 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
           </Menu.Item>
 
           <Menu.Label>Settings</Menu.Label>
-          <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
+          <Menu.Item
+            component={Link}
+            to="/settings"
+            leftSection={<IconSettings size={16} stroke={1.5} />}
+          >
             Account settings
           </Menu.Item>
           <Menu.Item leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}>
