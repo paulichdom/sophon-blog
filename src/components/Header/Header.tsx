@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 import { Burger, Container, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import classes from './Header.module.css';
+import { UserMenu } from '../UserMenu/UserMenu';
 
 const links = [
-  { link: '/about', label: 'Features' },
-  { link: '/pricing', label: 'Pricing' },
-  { link: '/learn', label: 'Learn' },
-  { link: '/community', label: 'Community' },
+  { link: '/', label: 'Home' },
+  { link: '/login', label: 'Login' },
+  { link: '/register', label: 'Sign up' },
+  { link: '/settings', label: 'Settings' },
 ];
 
 export function Header() {
@@ -16,18 +18,17 @@ export function Header() {
   const [active, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
-    <a
+    <Link
       key={link.label}
-      href={link.link}
+      to={link.link}
       className={classes.link}
       data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(link.link);
       }}
     >
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (
@@ -38,6 +39,7 @@ export function Header() {
       <Group gap={5} visibleFrom="xs">
         {items}
         <ColorSchemeToggle />
+        <UserMenu />
       </Group>
       <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
     </Container>

@@ -1,3 +1,5 @@
+import { FC } from 'react';
+import { Link } from '@tanstack/react-router';
 import {
   Anchor,
   Button,
@@ -5,39 +7,40 @@ import {
   Divider,
   Group,
   Paper,
-  PaperProps,
   PasswordInput,
   Stack,
   Text,
   TextInput,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { upperFirst, useToggle } from '@mantine/hooks';
+import { UseFormReturnType } from '@mantine/form';
 import { GoogleButton } from '../GoogleButton/GoogleButton';
+import { MantineLink } from '../MantineLink/MantineLink';
 import { TwitterButton } from '../TwitterButton/TwitterButton';
-import classes from './AuthenticationForm.module.css';
+import classes from './RegisterForm.module.css';
 
-export function AuthenticationForm(props: PaperProps) {
-  const [type, toggle] = useToggle(['login', 'register']);
-  const form = useForm({
-    initialValues: {
-      email: '',
-      name: '',
-      password: '',
-      terms: true,
+type RegisterFormProps = {
+  form: UseFormReturnType<
+    {
+      name: string;
+      email: string;
+      password: string;
+      terms: boolean;
     },
+    (values: { name: string; email: string; password: string; terms: boolean }) => {
+      name: string;
+      email: string;
+      password: string;
+      terms: boolean;
+    }
+  >;
+};
 
-    validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
-    },
-  });
-
+export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
   return (
     <div className={classes.container}>
-      <Paper radius="md" p="xl" withBorder {...props}>
+      <Paper radius="md" p="xl" withBorder>
         <Text size="lg" fw={500}>
-          Welcome to Mantine, {type} with
+          Welcome to Sophon, register with
         </Text>
 
         <Group grow mb="md" mt="md">
@@ -49,15 +52,13 @@ export function AuthenticationForm(props: PaperProps) {
 
         <form onSubmit={form.onSubmit(() => {})}>
           <Stack>
-            {type === 'register' && (
-              <TextInput
-                label="Name"
-                placeholder="Your name"
-                value={form.values.name}
-                onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
-                radius="md"
-              />
-            )}
+            <TextInput
+              label="Name"
+              placeholder="Your name"
+              value={form.values.name}
+              onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+              radius="md"
+            />
 
             <TextInput
               required
@@ -79,27 +80,23 @@ export function AuthenticationForm(props: PaperProps) {
               radius="md"
             />
 
-            {type === 'register' && (
-              <Checkbox
-                label="I accept terms and conditions"
-                checked={form.values.terms}
-                onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-              />
-            )}
+            <Checkbox
+              label="I accept terms and conditions"
+              checked={form.values.terms}
+              onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+            />
           </Stack>
 
           <Group justify="space-between" mt="xl">
-            <Anchor component="button" type="button" c="dimmed" onClick={() => toggle()} size="xs">
-              {type === 'register'
-                ? 'Already have an account? Login'
-                : "Don't have an account? Register"}
-            </Anchor>
+            <MantineLink to="/login" c="dimmed" size="xs">
+              Already have an account? Login
+            </MantineLink>
             <Button type="submit" radius="xl">
-              {upperFirst(type)}
+              Register
             </Button>
           </Group>
         </form>
       </Paper>
     </div>
   );
-}
+};

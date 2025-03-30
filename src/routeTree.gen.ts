@@ -11,20 +11,69 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as RegisterImport } from './routes/register'
+import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
+import { Route as EditorIndexImport } from './routes/editor/index'
+import { Route as ProfileUsernameImport } from './routes/profile/$username'
+import { Route as EditorSlugImport } from './routes/editor/$slug'
+import { Route as ArticleSlugImport } from './routes/article.$slug'
+import { Route as ProfileUsernameFavoritesImport } from './routes/profile/username.$favorites'
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterRoute = RegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EditorIndexRoute = EditorIndexImport.update({
+  id: '/editor/',
+  path: '/editor/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileUsernameRoute = ProfileUsernameImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EditorSlugRoute = EditorSlugImport.update({
+  id: '/editor/$slug',
+  path: '/editor/$slug',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArticleSlugRoute = ArticleSlugImport.update({
+  id: '/article/$slug',
+  path: '/article/$slug',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileUsernameFavoritesRoute = ProfileUsernameFavoritesImport.update({
+  id: '/profile/username/$favorites',
+  path: '/profile/username/$favorites',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +88,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/article/$slug': {
+      id: '/article/$slug'
+      path: '/article/$slug'
+      fullPath: '/article/$slug'
+      preLoaderRoute: typeof ArticleSlugImport
+      parentRoute: typeof rootRoute
+    }
+    '/editor/$slug': {
+      id: '/editor/$slug'
+      path: '/editor/$slug'
+      fullPath: '/editor/$slug'
+      preLoaderRoute: typeof EditorSlugImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/$username': {
+      id: '/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProfileUsernameImport
+      parentRoute: typeof rootRoute
+    }
+    '/editor/': {
+      id: '/editor/'
+      path: '/editor'
+      fullPath: '/editor'
+      preLoaderRoute: typeof EditorIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile/username/$favorites': {
+      id: '/profile/username/$favorites'
+      path: '/profile/username/$favorites'
+      fullPath: '/profile/username/$favorites'
+      preLoaderRoute: typeof ProfileUsernameFavoritesImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +151,100 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editor/$slug': typeof EditorSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/editor': typeof EditorIndexRoute
+  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editor/$slug': typeof EditorSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/editor': typeof EditorIndexRoute
+  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/article/$slug': typeof ArticleSlugRoute
+  '/editor/$slug': typeof EditorSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
+  '/editor/': typeof EditorIndexRoute
+  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/article/$slug'
+    | '/editor/$slug'
+    | '/profile/$username'
+    | '/editor'
+    | '/profile/username/$favorites'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/article/$slug'
+    | '/editor/$slug'
+    | '/profile/$username'
+    | '/editor'
+    | '/profile/username/$favorites'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/article/$slug'
+    | '/editor/$slug'
+    | '/profile/$username'
+    | '/editor/'
+    | '/profile/username/$favorites'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  SettingsRoute: typeof SettingsRoute
+  ArticleSlugRoute: typeof ArticleSlugRoute
+  EditorSlugRoute: typeof EditorSlugRoute
+  ProfileUsernameRoute: typeof ProfileUsernameRoute
+  EditorIndexRoute: typeof EditorIndexRoute
+  ProfileUsernameFavoritesRoute: typeof ProfileUsernameFavoritesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  SettingsRoute: SettingsRoute,
+  ArticleSlugRoute: ArticleSlugRoute,
+  EditorSlugRoute: EditorSlugRoute,
+  ProfileUsernameRoute: ProfileUsernameRoute,
+  EditorIndexRoute: EditorIndexRoute,
+  ProfileUsernameFavoritesRoute: ProfileUsernameFavoritesRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +258,42 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/login",
+        "/register",
+        "/settings",
+        "/article/$slug",
+        "/editor/$slug",
+        "/profile/$username",
+        "/editor/",
+        "/profile/username/$favorites"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/register": {
+      "filePath": "register.tsx"
+    },
+    "/settings": {
+      "filePath": "settings.tsx"
+    },
+    "/article/$slug": {
+      "filePath": "article.$slug.tsx"
+    },
+    "/editor/$slug": {
+      "filePath": "editor/$slug.tsx"
+    },
+    "/profile/$username": {
+      "filePath": "profile/$username.tsx"
+    },
+    "/editor/": {
+      "filePath": "editor/index.tsx"
+    },
+    "/profile/username/$favorites": {
+      "filePath": "profile/username.$favorites.tsx"
     }
   }
 }
