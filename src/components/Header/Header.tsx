@@ -4,7 +4,9 @@ import {
   IconChevronDown,
   IconCode,
   IconCoin,
+  IconEdit,
   IconFingerprint,
+  IconHome,
   IconNotification,
 } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
@@ -100,10 +102,12 @@ export function Header() {
             </Text>
 
             <Group h="100%" gap={0} visibleFrom="sm">
-              <Link to="/" className={classes.link}>
+              <Link to="/" className={classes.link} >
+              <IconHome />
                 Home
               </Link>
               <Link to="/editor" className={classes.link}>
+              <IconEdit />
                 New Article
               </Link>
 
