@@ -12,7 +12,7 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
-import { Avatar, Group, Menu, useMantineTheme } from '@mantine/core';
+import { Avatar, Group, Menu, useMantineTheme, Text } from '@mantine/core';
 import { Route as profileRoute } from '../../routes/profile/$username';
 import classes from './UserMenu.module.css';
 
@@ -39,7 +39,7 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
               src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png"
               radius={30}
             />
-            Nancy Eggshacker
+            <Text>Nancy Eggshacker</Text>
             <IconChevronDown
               size={16}
               stroke={3}

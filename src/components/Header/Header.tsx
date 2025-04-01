@@ -105,14 +105,12 @@ export function Header() {
             <Group h="100%" gap={0} visibleFrom="sm">
               <Link to="/" className={classes.link}>
                 <Flex gap="xs" align="center">
-                  <IconHome size={16} stroke={1.5} />
                   <Text>Home</Text>
                 </Flex>
               </Link>
 
               <Link to="/editor" className={classes.link}>
                 <Flex gap="xs" align="center">
-                  <IconEdit size={16} stroke={1.5} />
                   <Text>New Article</Text>
                 </Flex>
               </Link>
