@@ -1,6 +1,18 @@
 import { IconHeart, IconStar } from '@tabler/icons-react';
-import { Avatar, Button, Group, Paper, Tabs, Text, useMantineTheme } from '@mantine/core';
+import {
+  Avatar,
+  Button,
+  Group,
+  Paper,
+  SimpleGrid,
+  Tabs,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { theme } from '@/theme';
+import { range } from '@/utils';
+import { ArticleCard } from '../ArticleCard/ArticleCard';
+import { article } from './tmpMockArticle';
 import classes from './UserInfo.module.css';
 
 const stats = [
@@ -63,7 +75,11 @@ export function UserInfo() {
         </Tabs.List>
 
         <Tabs.Panel value="gallery" mt="md">
-          My Articles
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            {range(6).map((_, index) => (
+              <ArticleCard key={index} article={article} />
+            ))}
+          </SimpleGrid>
         </Tabs.Panel>
 
         <Tabs.Panel value="messages" mt="md">
