@@ -19,6 +19,7 @@ import {
   Container,
   Divider,
   Drawer,
+  Flex,
   Group,
   ScrollArea,
   Text,
@@ -27,9 +28,9 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { UserMenu } from '../UserMenu/UserMenu';
 import classes from './Header.module.css';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 
 const mockdata = [
   {
@@ -102,13 +103,18 @@ export function Header() {
             </Text>
 
             <Group h="100%" gap={0} visibleFrom="sm">
-              <Link to="/" className={classes.link} >
-              <IconHome />
-                Home
+              <Link to="/" className={classes.link}>
+                <Flex gap="xs" align="center">
+                  <IconHome size={16} stroke={1.5} />
+                  <Text>Home</Text>
+                </Flex>
               </Link>
+
               <Link to="/editor" className={classes.link}>
-              <IconEdit />
-                New Article
+                <Flex gap="xs" align="center">
+                  <IconEdit size={16} stroke={1.5} />
+                  <Text>New Article</Text>
+                </Flex>
               </Link>
 
               <UserMenu />
@@ -123,7 +129,7 @@ export function Header() {
               </Button>
               <ColorSchemeToggle />
             </Group>
-            
+
             <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
           </Group>
         </header>
