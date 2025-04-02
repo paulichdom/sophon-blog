@@ -9,7 +9,6 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { theme } from '@/theme';
 import { range } from '@/utils';
 import { ArticleCard } from '../ArticleCard/ArticleCard';
 import { article } from './tmpMockArticle';
@@ -34,6 +33,9 @@ export function UserInfo() {
       </Text>
     </div>
   ));
+
+  const MockArticles = () =>
+    range(6).map((_, index) => <ArticleCard key={index} article={article} />);
 
   return (
     <Paper radius="md" p="lg" bg="var(--mantine-color-body)">
@@ -76,18 +78,20 @@ export function UserInfo() {
 
         <Tabs.Panel value="gallery" mt="md">
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            {range(6).map((_, index) => (
-              <ArticleCard key={index} article={article} />
-            ))}
+            <MockArticles />
           </SimpleGrid>
         </Tabs.Panel>
 
         <Tabs.Panel value="messages" mt="md">
-          Favorited Articles
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <MockArticles />
+          </SimpleGrid>
         </Tabs.Panel>
 
         <Tabs.Panel value="settings" mt="md">
-          Saved Articles
+          <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <MockArticles />
+          </SimpleGrid>
         </Tabs.Panel>
       </Tabs>
     </Paper>

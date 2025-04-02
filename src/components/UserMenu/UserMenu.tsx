@@ -12,8 +12,8 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
-import { Avatar, Group, Menu, useMantineTheme, Text } from '@mantine/core';
-import { Route as profileRoute } from '../../routes/profile/$username';
+import { Avatar, Group, Menu, Text, useMantineTheme } from '@mantine/core';
+import { Route as ProfileRoute } from '../../routes/profile/$username';
 import classes from './UserMenu.module.css';
 
 type UserMenuProps = {
@@ -60,7 +60,13 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
           </Menu.Item>
           <Menu.Divider />
 
-          <Menu.Item leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}>
+          <Menu.Item
+            component={Link}
+            to="/profile/$username/favorites"
+            /* TODO: handle this type */
+            params={{ username: 'test' } as any}
+            leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
+          >
             Liked posts
           </Menu.Item>
           <Menu.Item
