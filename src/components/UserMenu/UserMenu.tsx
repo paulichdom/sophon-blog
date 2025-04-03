@@ -22,6 +22,7 @@ type UserMenuProps = {
 
 export const UserMenu: FC<UserMenuProps> = ({ target }) => {
   const theme = useMantineTheme();
+  const username = 'Jane Fingerlicker';
   return (
     <Group justify="center" className={classes.group}>
       <Menu
@@ -53,7 +54,7 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
             component={Link}
             to="/profile/$username"
             /* TODO: handle this type */
-            params={{ username: 'test' } as any}
+            params={{ username } as any}
             leftSection={<IconUser size={16} stroke={1.5} />}
           >
             Profile
@@ -64,7 +65,7 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
             component={Link}
             to="/profile/$username/favorites"
             /* TODO: handle this type */
-            params={{ username: 'test' } as any}
+            params={{ username } as any}
             leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
           >
             Liked posts

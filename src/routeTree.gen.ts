@@ -16,10 +16,11 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as EditorIndexImport } from './routes/editor/index'
-import { Route as ProfileUsernameImport } from './routes/profile/$username'
 import { Route as EditorSlugImport } from './routes/editor/$slug'
 import { Route as ArticleSlugImport } from './routes/article.$slug'
-import { Route as ProfileUsernameFavoritesImport } from './routes/profile/username.$favorites'
+import { Route as ProfileUsernameRouteImport } from './routes/profile/$username/route'
+import { Route as ProfileUsernameIndexImport } from './routes/profile/$username/index'
+import { Route as ProfileUsernameFavoritesImport } from './routes/profile/$username/favorites'
 
 // Create/Update Routes
 
@@ -53,12 +54,6 @@ const EditorIndexRoute = EditorIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfileUsernameRoute = ProfileUsernameImport.update({
-  id: '/profile/$username',
-  path: '/profile/$username',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const EditorSlugRoute = EditorSlugImport.update({
   id: '/editor/$slug',
   path: '/editor/$slug',
@@ -71,10 +66,22 @@ const ArticleSlugRoute = ArticleSlugImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfileUsernameFavoritesRoute = ProfileUsernameFavoritesImport.update({
-  id: '/profile/username/$favorites',
-  path: '/profile/username/$favorites',
+const ProfileUsernameRouteRoute = ProfileUsernameRouteImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileUsernameIndexRoute = ProfileUsernameIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProfileUsernameRouteRoute,
+} as any)
+
+const ProfileUsernameFavoritesRoute = ProfileUsernameFavoritesImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => ProfileUsernameRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsImport
       parentRoute: typeof rootRoute
     }
+    '/profile/$username': {
+      id: '/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProfileUsernameRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/article/$slug': {
       id: '/article/$slug'
       path: '/article/$slug'
@@ -123,13 +137,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorSlugImport
       parentRoute: typeof rootRoute
     }
-    '/profile/$username': {
-      id: '/profile/$username'
-      path: '/profile/$username'
-      fullPath: '/profile/$username'
-      preLoaderRoute: typeof ProfileUsernameImport
-      parentRoute: typeof rootRoute
-    }
     '/editor/': {
       id: '/editor/'
       path: '/editor'
@@ -137,28 +144,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorIndexImport
       parentRoute: typeof rootRoute
     }
-    '/profile/username/$favorites': {
-      id: '/profile/username/$favorites'
-      path: '/profile/username/$favorites'
-      fullPath: '/profile/username/$favorites'
+    '/profile/$username/favorites': {
+      id: '/profile/$username/favorites'
+      path: '/favorites'
+      fullPath: '/profile/$username/favorites'
       preLoaderRoute: typeof ProfileUsernameFavoritesImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProfileUsernameRouteImport
+    }
+    '/profile/$username/': {
+      id: '/profile/$username/'
+      path: '/'
+      fullPath: '/profile/$username/'
+      preLoaderRoute: typeof ProfileUsernameIndexImport
+      parentRoute: typeof ProfileUsernameRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface ProfileUsernameRouteRouteChildren {
+  ProfileUsernameFavoritesRoute: typeof ProfileUsernameFavoritesRoute
+  ProfileUsernameIndexRoute: typeof ProfileUsernameIndexRoute
+}
+
+const ProfileUsernameRouteRouteChildren: ProfileUsernameRouteRouteChildren = {
+  ProfileUsernameFavoritesRoute: ProfileUsernameFavoritesRoute,
+  ProfileUsernameIndexRoute: ProfileUsernameIndexRoute,
+}
+
+const ProfileUsernameRouteRouteWithChildren =
+  ProfileUsernameRouteRoute._addFileChildren(ProfileUsernameRouteRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/settings': typeof SettingsRoute
+  '/profile/$username': typeof ProfileUsernameRouteRouteWithChildren
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
-  '/profile/$username': typeof ProfileUsernameRoute
   '/editor': typeof EditorIndexRoute
-  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username/': typeof ProfileUsernameIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -168,9 +196,9 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
-  '/profile/$username': typeof ProfileUsernameRoute
   '/editor': typeof EditorIndexRoute
-  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username': typeof ProfileUsernameIndexRoute
 }
 
 export interface FileRoutesById {
@@ -179,11 +207,12 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/settings': typeof SettingsRoute
+  '/profile/$username': typeof ProfileUsernameRouteRouteWithChildren
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
-  '/profile/$username': typeof ProfileUsernameRoute
   '/editor/': typeof EditorIndexRoute
-  '/profile/username/$favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
+  '/profile/$username/': typeof ProfileUsernameIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -193,11 +222,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/settings'
+    | '/profile/$username'
     | '/article/$slug'
     | '/editor/$slug'
-    | '/profile/$username'
     | '/editor'
-    | '/profile/username/$favorites'
+    | '/profile/$username/favorites'
+    | '/profile/$username/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -206,20 +236,21 @@ export interface FileRouteTypes {
     | '/settings'
     | '/article/$slug'
     | '/editor/$slug'
-    | '/profile/$username'
     | '/editor'
-    | '/profile/username/$favorites'
+    | '/profile/$username/favorites'
+    | '/profile/$username'
   id:
     | '__root__'
     | '/'
     | '/login'
     | '/register'
     | '/settings'
+    | '/profile/$username'
     | '/article/$slug'
     | '/editor/$slug'
-    | '/profile/$username'
     | '/editor/'
-    | '/profile/username/$favorites'
+    | '/profile/$username/favorites'
+    | '/profile/$username/'
   fileRoutesById: FileRoutesById
 }
 
@@ -228,11 +259,10 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SettingsRoute: typeof SettingsRoute
+  ProfileUsernameRouteRoute: typeof ProfileUsernameRouteRouteWithChildren
   ArticleSlugRoute: typeof ArticleSlugRoute
   EditorSlugRoute: typeof EditorSlugRoute
-  ProfileUsernameRoute: typeof ProfileUsernameRoute
   EditorIndexRoute: typeof EditorIndexRoute
-  ProfileUsernameFavoritesRoute: typeof ProfileUsernameFavoritesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -240,11 +270,10 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SettingsRoute: SettingsRoute,
+  ProfileUsernameRouteRoute: ProfileUsernameRouteRouteWithChildren,
   ArticleSlugRoute: ArticleSlugRoute,
   EditorSlugRoute: EditorSlugRoute,
-  ProfileUsernameRoute: ProfileUsernameRoute,
   EditorIndexRoute: EditorIndexRoute,
-  ProfileUsernameFavoritesRoute: ProfileUsernameFavoritesRoute,
 }
 
 export const routeTree = rootRoute
@@ -261,11 +290,10 @@ export const routeTree = rootRoute
         "/login",
         "/register",
         "/settings",
+        "/profile/$username",
         "/article/$slug",
         "/editor/$slug",
-        "/profile/$username",
-        "/editor/",
-        "/profile/username/$favorites"
+        "/editor/"
       ]
     },
     "/": {
@@ -280,20 +308,29 @@ export const routeTree = rootRoute
     "/settings": {
       "filePath": "settings.tsx"
     },
+    "/profile/$username": {
+      "filePath": "profile/$username/route.tsx",
+      "children": [
+        "/profile/$username/favorites",
+        "/profile/$username/"
+      ]
+    },
     "/article/$slug": {
       "filePath": "article.$slug.tsx"
     },
     "/editor/$slug": {
       "filePath": "editor/$slug.tsx"
     },
-    "/profile/$username": {
-      "filePath": "profile/$username.tsx"
-    },
     "/editor/": {
       "filePath": "editor/index.tsx"
     },
-    "/profile/username/$favorites": {
-      "filePath": "profile/username.$favorites.tsx"
+    "/profile/$username/favorites": {
+      "filePath": "profile/$username/favorites.tsx",
+      "parent": "/profile/$username"
+    },
+    "/profile/$username/": {
+      "filePath": "profile/$username/index.tsx",
+      "parent": "/profile/$username"
     }
   }
 }
