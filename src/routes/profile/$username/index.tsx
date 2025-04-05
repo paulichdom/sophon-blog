@@ -12,7 +12,7 @@ function RouteComponent() {
   const MockArticles = () =>
     range(6).map((_, index) => <ArticleCard key={index} article={article} />);
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2 }}>
+    <SimpleGrid mt='md' cols={{ base: 1, sm: 2 }}>
       <MockArticles />
     </SimpleGrid>
   );

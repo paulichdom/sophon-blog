@@ -71,6 +71,10 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
             Liked posts
           </Menu.Item>
           <Menu.Item
+            component={Link}
+            to="/profile/$username/saved"
+            /* TODO: handle this type */
+            params={{ username } as any}
             leftSection={<IconStar size={16} stroke={1.5} color={theme.colors.yellow[6]} />}
           >
             Saved posts

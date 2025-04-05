@@ -1,9 +1,7 @@
 import { IconHeart, IconStar } from '@tabler/icons-react';
 import {
   createFileRoute,
-  Link,
   Outlet,
-  useMatch,
   useNavigate,
   useRouter,
 } from '@tanstack/react-router';
@@ -38,14 +36,17 @@ const pathMap: Record<TabValue, TabKey> = {
 function RouteComponent() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  const match = useMatch({ from: '/profile/$username' });
+  const router = useRouter()
 
   const username = 'Jane Fingerlicker';
-  const currentPath = match.pathname.split('/').pop() || '';
+  
+  // Extract the path segment after the username
+  const pathSegments = router.state.location.pathname.split('/');
+  const currentPath = pathSegments.length > 3 ? pathSegments[3] : '';
+
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
 
   const handleTabChange = (value: string | null) => {
-    console.log({ value });
     if (!value) return;
 
     const path = pathMap[value as TabValue];
@@ -67,7 +68,7 @@ function RouteComponent() {
     </div>
   ));
 
-  console.log({currentTab, currentPath})
+  console.log({pathSegments, currentPath, currentTab, pathname: router.state.location.pathname})
 
   return (
     <Paper radius="md" p="lg" bg="var(--mantine-color-body)">
@@ -90,7 +91,7 @@ function RouteComponent() {
       <Button radius="md" mt="xl" size="md" variant="default">
         Follow
       </Button>
-      <Tabs value={currentTab} onChange={handleTabChange} classNames={{ tab: classes.tab }} mt="md">
+      <Tabs defaultValue={currentTab} onChange={handleTabChange} classNames={{ tab: classes.tab }} mt="md">
         <Tabs.List>
           <Tabs.Tab value="articles">My Articles</Tabs.Tab>
           <Tabs.Tab
