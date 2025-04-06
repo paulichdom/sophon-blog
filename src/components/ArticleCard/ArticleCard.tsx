@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { Card } from '@mantine/core';
 import { Article } from '@/types/types';
-import { ArticleCardAvatar } from './ArticleCardAvatar';
+import { ArticleUserInfo } from './ArticleUserInfo';
 import { ArticleCardFooter } from './ArticleCardFooter';
 import { ArticleCardHeader } from './ArticleCardHeader';
 import { ArticleCardTagList } from './ArticleCardTagList';
+
 import classes from './ArticleCard.module.css';
 
 type ArticleCardProps = {
@@ -17,7 +18,7 @@ export const ArticleCard: FC<ArticleCardProps> = ({ article }) => {
     <Card withBorder padding="lg" radius="md" className={classes.card}>
       <ArticleCardHeader slug={slug} title={title} description={description} />
       <ArticleCardTagList tags={tagList} />
-      <ArticleCardAvatar author={author} createdAt={createdAt} />
+      <ArticleUserInfo author={author} createdAt={createdAt} />
       <ArticleCardFooter favoritesCount={favoritesCount} />
     </Card>
   );

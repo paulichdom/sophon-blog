@@ -9,6 +9,13 @@
     var(--mantine-font-family);
 }
 
+.userInfoContainer {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+
+}
+
 .footer {
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-lg);
   margin-top: var(--mantine-spacing-md);
