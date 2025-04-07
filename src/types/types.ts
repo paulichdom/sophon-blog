@@ -17,6 +17,10 @@ export type Article = {
   author: Author;
 };
 
+export type ArticleDto = {
+  article: Article
+}
+
 export type Author = {
   id: number;
   username: string;

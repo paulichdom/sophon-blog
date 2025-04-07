@@ -1,21 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const apiVersion = import.meta.env.VITE_API_VERSION;
-  const resourcePath = 'articles';
-  const url = `${apiBaseUrl}/${apiVersion}/${resourcePath}`;
-
-const fetchArticle = async (articleSlug: string) => {
-  const article = await fetch(`${url}/${articleSlug}`)
-
-  return await article.json()
-}
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+import { articleQueryOptions } from '../queries/articles';
 
 export const Route = createFileRoute('/article/$slug')({
+  loader: ({ context: { queryClient }, params: { slug } }) => {
+    return queryClient.ensureQueryData(articleQueryOptions(slug));
+  },
   component: RouteComponent,
-  loader: ({params: {slug}}) => fetchArticle(slug)
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/article/$slug"!</div>
+  const articleSlug = Route.useParams().slug;
+  const { data: article } = useSuspenseQuery(articleQueryOptions(articleSlug));
+  return <h1>{article.title}</h1>;
 }
