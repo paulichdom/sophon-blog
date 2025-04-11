@@ -7,6 +7,7 @@ import { useHeadroom } from '@mantine/hooks';
 import { Footer } from '@/components/Footer/Footer';
 import { Header } from '@/components/Header/Header';
 import { NotFound } from '@/components/NotFound/NotFound';
+import { NavigationProgress } from '@mantine/nprogress';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -18,7 +19,9 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   const pinned = useHeadroom({ fixedAt: 120 });
   return (
-    <AppShell header={{ height: 60, /* collapsed: !pinned, */ offset: false }} padding="md">
+    <AppShell header={{ height: 60, offset: false }} padding="md">
+      {/* TODO: Implement navigation progress */}
+      <NavigationProgress />
       <AppShell.Header>
         <Header />
       </AppShell.Header>

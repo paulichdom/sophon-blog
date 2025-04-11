@@ -1,9 +1,12 @@
+import { IconArrowUp } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { SimpleGrid, Skeleton } from '@mantine/core';
 import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
+import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { Articles } from '@/types/types';
 import { range } from '@/utils';
+import { NavigationProgress } from '@mantine/nprogress';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -30,6 +33,7 @@ function HomePage() {
       {!isFetching &&
         data &&
         data.articles.map((article) => <ArticleCard key={article.id} article={article} />)}
+      <ScrollToTopButton />
     </SimpleGrid>
   );
 }
