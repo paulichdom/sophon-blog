@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
+import { Article } from '@/components/Article/Article';
 import { articleQueryOptions } from '../queries/articles';
 
 export const Route = createFileRoute('/article/$slug')({
@@ -12,5 +13,5 @@ export const Route = createFileRoute('/article/$slug')({
 function RouteComponent() {
   const articleSlug = Route.useParams().slug;
   const { data: article } = useSuspenseQuery(articleQueryOptions(articleSlug));
-  return <h1>{article.title}</h1>;
+  return <Article article={article} />;
 }
