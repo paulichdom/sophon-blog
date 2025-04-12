@@ -1,12 +1,11 @@
-import { IconArrowUp } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { SimpleGrid, Skeleton } from '@mantine/core';
+// import { NavigationProgress } from '@mantine/nprogress';
 import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { Articles } from '@/types/types';
 import { range } from '@/utils';
-import { NavigationProgress } from '@mantine/nprogress';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -18,7 +17,7 @@ function HomePage() {
   const resourcePath = 'articles';
   const url = `${apiBaseUrl}/${apiVersion}/${resourcePath}`;
 
-  const { status, data, error, isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['articles'],
     queryFn: async (): Promise<Articles> => {
       const response = await fetch(url);
