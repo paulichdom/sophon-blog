@@ -1,29 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { SimpleGrid, Skeleton } from '@mantine/core';
 // import { NavigationProgress } from '@mantine/nprogress';
 import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
-import { Articles } from '@/types/types';
+import { allArticlesQueryOptions } from '@/queries/article/article.queries';
 import { range } from '@/utils';
 
 export const Route = createFileRoute('/')({
+  loader: ({ context: { queryClient } }) => {
+    return queryClient.ensureQueryData(allArticlesQueryOptions);
+  },
   component: HomePage,
 });
 
 function HomePage() {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const apiVersion = import.meta.env.VITE_API_VERSION;
-  const resourcePath = 'articles';
-  const url = `${apiBaseUrl}/${apiVersion}/${resourcePath}`;
-
-  const { data, isFetching } = useQuery({
-    queryKey: ['articles'],
-    queryFn: async (): Promise<Articles> => {
-      const response = await fetch(url);
-      return response.json();
-    },
-  });
+  const {data, isFetching} = useSuspenseQuery(allArticlesQueryOptions)
 
   return (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>

@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Article } from '@/components/Article/Article';
-import { articleQueryOptions } from '../queries/articles';
+import { articleQueryOptions } from '@/queries/article/article.queries';
 
 export const Route = createFileRoute('/article/$slug')({
   loader: ({ context: { queryClient }, params: { slug } }) => {

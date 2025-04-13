@@ -11,7 +11,15 @@ export const InfoAlert: FC<InfoAlertProps> = ({ title, children }) => {
   const icon = <IconInfoTriangle />;
 
   return (
-    <Alert title={title} color="yellow" icon={icon} withCloseButton mb="lg">
+    <Alert
+      /* TODO: Move custom styling to css module */
+      style={{ width: '100%' }}
+      title={title}
+      color="yellow"
+      icon={icon}
+      withCloseButton
+      mb="lg"
+    >
       {children}
     </Alert>
   );
