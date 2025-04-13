@@ -9,13 +9,7 @@ type ResponsesDrawerProps = {
 
 export const ResponsesDrawer: FC<ResponsesDrawerProps> = ({ opened, close }) => {
   return (
-    <Drawer
-      opened={opened}
-      onClose={close}
-      title="Responses"
-      position="right"
-      //overlayProps={{ backgroundOpacity: 0, blur: 0 }}
-    >
+    <Drawer opened={opened} onClose={close} title="Responses" position="right" size="sm">
       <Comment />
       <Divider my="md" />
       <Comment />

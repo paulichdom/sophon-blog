@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IconBookmark, IconHeart, IconMessageCircle, IconShare } from '@tabler/icons-react';
+import Markdown from 'react-markdown';
 import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Article as ArticleDetails } from '@/types/types';
@@ -39,8 +40,7 @@ export const Article: FC<ArticleProps> = ({ article }) => {
         </Group>
       </Group>
       <Divider my="md" />
-      {/* TODO: Add support for displaying markdown */}
-      <Text size="md">{article.body}</Text>
+      <Markdown>{article.body}</Markdown>
       <Divider my="md" />
       <Comment />
       <Divider my="md" />
