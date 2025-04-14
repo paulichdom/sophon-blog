@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -8,23 +9,23 @@ import StarterKit from '@tiptap/starter-kit';
 import { Container, TextInput } from '@mantine/core';
 import { Link, RichTextEditor } from '@mantine/tiptap';
 
-const content = `
-  <h2 style="text-align: center;">Start a New Article on Sophon</h2>
-  <p>
-    The <code>Sophon Editor</code> is your creative space for composing engaging and beautifully formatted articles.
-    With its clean, intuitive interface, you can focus on bringing your ideas to life. Explore its powerful features:
-  </p>
-  <ul>
-    <li>Rich text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s></li>
-    <li>Multiple heading levels (H1-H6) to structure your content</li>
-    <li>Subscript and superscript support</li>
-    <li>Ordered and unordered lists</li>
-    <li>Text alignment and layout options</li>
-    <li>Plus many more extensions to enhance your writing experience</li>
-  </ul>
-`;
+type ArticleEditorProps = {
+  title: string;
+  onChangeTitle: (title: string) => void;
+  description: string;
+  onChangeDescription: (description: string) => void;
+  content: string;
+  onChangeContent: (content: string) => void;
+};
 
-export function Editor() {
+export const ArticleEditor: FC<ArticleEditorProps> = ({
+  title,
+  onChangeTitle,
+  description,
+  onChangeDescription,
+  content,
+  onChangeContent,
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -36,17 +37,29 @@ export function Editor() {
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
     content,
+    onUpdate: ({ editor }) => {
+      onChangeContent(editor.getHTML());
+    },
   });
 
   return (
     <Container fluid p={0}>
-      <TextInput size="md" label="Title" placeholder="Enter article title" mb="lg" />
+      <TextInput
+        size="md"
+        label="Title"
+        placeholder="Enter article title"
+        mb="lg"
+        value={title}
+        onChange={(event) => onChangeTitle(event.currentTarget.value)}
+      />
       <TextInput
         size="md"
         label="Description"
         description="Short article description"
         placeholder="Enter description here"
         mb="lg"
+        value={description}
+        onChange={(event) => onChangeDescription(event.currentTarget.value)}
       />
       <RichTextEditor editor={editor}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -98,4 +111,4 @@ export function Editor() {
       </RichTextEditor>
     </Container>
   );
-}
+};
