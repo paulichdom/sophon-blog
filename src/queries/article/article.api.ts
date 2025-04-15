@@ -1,4 +1,4 @@
-import { ArticleDto, Articles } from '@/types/types';
+import { ArticleDto, Articles, CreateArticleDto } from '@/types/types';
 import { API_URL } from '../constants';
 import fetch from '../fetch';
 
@@ -12,4 +12,16 @@ export const fetchArticle = async (articleSlug: string) => {
   const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`);
 
   return data.article;
+};
+
+export const createArticle = async (createArticleDto: CreateArticleDto) => {
+  const response = await fetch(`${API_URL}/articles`, {
+    method: 'POST',
+    body: JSON.stringify({ createArticleDto }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Failed to create article');
+
+  return response;
 };

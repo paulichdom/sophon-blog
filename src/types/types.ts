@@ -1,9 +1,9 @@
 export type Articles = {
-  articles: Article[];
+  articles: ArticleData[];
   articlesCount: number;
 };
 
-export type Article = {
+export type ArticleData = {
   id: number;
   slug: string;
   title: string;
@@ -14,16 +14,27 @@ export type Article = {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
-  author: Author;
+  author: AuthorData;
 };
 
 export type ArticleDto = {
-  article: Article
-}
+  article: ArticleData;
+};
 
-export type Author = {
+export type AuthorData = {
   id: number;
   username: string;
   bio: string;
   image: string;
+};
+
+export type CreateArticleDto = {
+  article: CreateArticleData;
+};
+
+export type CreateArticleData = {
+  title: string;
+  description: string;
+  body: string;
+  tagList: string[];
 };
