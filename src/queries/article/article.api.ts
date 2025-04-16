@@ -1,6 +1,7 @@
+import fetch from '@/shared/client'
+import { API_URL } from '@/shared/api.config';
 import { ArticleDto, Articles, CreateArticleDto } from '@/types/types';
-import { API_URL } from '../constants';
-import fetch from '../fetch';
+
 
 export const fetchAllArticles = async () => {
   const articles: Articles = await fetch(`${API_URL}/articles`);
@@ -19,6 +20,7 @@ export const createArticle = async (createArticleDto: CreateArticleDto) => {
     method: 'POST',
     body: JSON.stringify({ createArticleDto }),
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
   });
 
   if (!response.ok) throw new Error('Failed to create article');

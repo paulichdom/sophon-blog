@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { ArticleDto, CreateArticleDto } from '@/types/types';
+import { ArticleDto } from '@/types/types';
 import { createArticle } from './article.api';
 
 export const createArticleMutationOptions = (
