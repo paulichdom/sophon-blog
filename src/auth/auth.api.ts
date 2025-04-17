@@ -3,7 +3,7 @@ import fetch from '@/shared/client';
 import { LoginUserDto, RegisterUserDto } from './auth.types';
 
 export const registerUser = async (input: RegisterUserDto) => {
-  const response = await fetch('/api/users', {
+  const response = await fetch(`${API_URL}/users/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),

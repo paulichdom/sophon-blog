@@ -16,3 +16,11 @@ export type RegisterUserData = {
 export type RegisterUserDto = {
   user: RegisterUserData;
 };
+
+export type UserData = {
+  email: string;
+  token: string;
+  username: string;
+  bio: null;
+  image: null;
+};
