@@ -1,18 +1,19 @@
 import { FC } from 'react';
-import { Link } from '@tanstack/react-router';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
 import {
-  Anchor,
   Button,
   Divider,
   Group,
   Paper,
   PasswordInput,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { loginMutationOptions } from '@/auth/auth.mutations';
+import { useAuthStore } from '@/auth/use-auth-store';
 import { GoogleButton } from '../GoogleButton/GoogleButton';
 import { MantineLink } from '../MantineLink/MantineLink';
 import { TwitterButton } from '../TwitterButton/TwitterButton';
@@ -32,6 +33,18 @@ type LoginFormProps = {
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ form }) => {
+  const navigate = useNavigate();
+  const { setUser } = useAuthStore();
+  const mutation = useMutation(loginMutationOptions(navigate, setUser));
+  
+  const handleSubmit = () => {
+    const loginUserDto = {
+      user: {
+        ...form.values,
+      },
+    };
+    mutation.mutate(loginUserDto);
+  };
   return (
     <div className={classes.container}>
       <Paper radius="md" p="xl" withBorder>
@@ -46,7 +59,7 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
 
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
-        <form onSubmit={form.onSubmit(() => {})}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             <TextInput
               required
