@@ -3,13 +3,13 @@ import { IconBookmark, IconHeart, IconMessageCircle, IconShare } from '@tabler/i
 import Markdown from 'react-markdown';
 import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Article as ArticleDetails } from '@/types/types';
+import { ArticleData } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
 
 export type ArticleProps = {
-  article: ArticleDetails;
+  article: ArticleData;
 };
 
 export const Article: FC<ArticleProps> = ({ article }) => {
