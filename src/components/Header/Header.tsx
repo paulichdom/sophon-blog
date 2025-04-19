@@ -4,9 +4,7 @@ import {
   IconChevronDown,
   IconCode,
   IconCoin,
-  IconEdit,
   IconFingerprint,
-  IconHome,
   IconNotification,
 } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
@@ -143,10 +141,11 @@ export function Header() {
         >
           <ScrollArea h="calc(100vh - 80px" mx="-md">
             <Divider my="sm" />
-
-            <a href="#" className={classes.link}>
-              Home
-            </a>
+            <Link to="/" className={classes.link}>
+              <Flex gap="xs" align="center">
+                <Text>Home</Text>
+              </Flex>
+            </Link>
             <UnstyledButton className={classes.link} onClick={toggleLinks}>
               <Center inline>
                 <Box component="span" mr={5}>

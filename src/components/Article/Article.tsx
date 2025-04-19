@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { IconBookmark, IconHeart, IconMessageCircle, IconShare } from '@tabler/icons-react';
-import Markdown from 'react-markdown';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ArticleData } from '@/types/types';
@@ -15,6 +16,13 @@ export type ArticleProps = {
 export const Article: FC<ArticleProps> = ({ article }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
+
+  const editor = useEditor({
+    content: article.body,
+    editable: false,
+    extensions: [StarterKit],
+  });
+
   return (
     <Container size="sm">
       <Title order={1}>{article.title}</Title>
@@ -40,7 +48,7 @@ export const Article: FC<ArticleProps> = ({ article }) => {
         </Group>
       </Group>
       <Divider my="md" />
-      <Markdown>{article.body}</Markdown>
+      <EditorContent editor={editor} />
       <Divider my="md" />
       <Comment />
       <Divider my="md" />

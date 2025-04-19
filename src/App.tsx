@@ -7,7 +7,6 @@ import { theme } from './theme';
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/nprogress/styles.css';
-import { NavigationProgress } from '@mantine/nprogress';
 
 const queryClinet = new QueryClient();
 
@@ -35,7 +34,6 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClinet}>
       <MantineProvider theme={theme}>
-        <NavigationProgress />
         <RouterProvider router={router} />
       </MantineProvider>
     </QueryClientProvider>
