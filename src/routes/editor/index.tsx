@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { Button, Container, Flex } from '@mantine/core';
+import { nprogress } from '@mantine/nprogress';
 import { InfoAlert } from '@/components/InfoAlert/InfoAlert';
 import { ArticleEditor } from '@/components/TextEditor/ArticleEditor';
 import { INITIAL_EDITOR_CONTENT } from '@/components/TextEditor/ArticleEditor.constants';
@@ -27,6 +28,8 @@ function RouteComponent() {
   );
 
   const handlePublish = () => {
+    nprogress.start();
+
     const article = {
       title: articleTitle,
       description: articleDescription,
@@ -35,6 +38,8 @@ function RouteComponent() {
     };
     mutate({ article });
   };
+
+  console.log({status, isPending, data})
 
   return (
     <Container fluid>
@@ -48,9 +53,20 @@ function RouteComponent() {
       />
       <Flex direction="column" mt="lg" align="flex-end">
         <InfoAlert title="Content Moderation Notice">{INFO_TEXT}</InfoAlert>
-        <Button fullWidth={false} onClick={handlePublish}>
-          Publish
-        </Button>
+        <Flex gap={12}>
+          <Button fullWidth={false} onClick={() => {}}>
+            Save Draft
+          </Button>
+          <Button
+            fullWidth={false}
+            loading={isPending}
+            disabled={isPending}
+            color="green"
+            onClick={handlePublish}
+          >
+            Publish
+          </Button>
+        </Flex>
       </Flex>
     </Container>
   );
