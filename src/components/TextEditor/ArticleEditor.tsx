@@ -51,6 +51,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         mb="lg"
         value={title}
         onChange={(event) => onChangeTitle(event.currentTarget.value)}
+        required
       />
       <TextInput
         size="md"
@@ -60,6 +61,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         mb="lg"
         value={description}
         onChange={(event) => onChangeDescription(event.currentTarget.value)}
+        required
       />
       <RichTextEditor editor={editor}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>

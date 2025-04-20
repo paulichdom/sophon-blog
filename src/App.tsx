@@ -1,13 +1,15 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { NavigationProgress } from '@mantine/nprogress';
 import { routeTree } from './routeTree.gen';
 import { theme } from './theme';
 
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/nprogress/styles.css';
-import { NavigationProgress } from '@mantine/nprogress';
+import '@mantine/notifications/styles.css';
 
 const queryClinet = new QueryClient();
 
@@ -36,6 +38,7 @@ export const App = () => {
     <QueryClientProvider client={queryClinet}>
       <MantineProvider theme={theme}>
         <NavigationProgress />
+        <Notifications />
         <RouterProvider router={router} />
       </MantineProvider>
     </QueryClientProvider>

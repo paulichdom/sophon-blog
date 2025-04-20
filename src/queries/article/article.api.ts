@@ -22,9 +22,5 @@ export const createArticle = async (createArticleDto: CreateArticleDto) => {
     credentials: 'include',
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to create article');
-  }
-
   return response;
 };

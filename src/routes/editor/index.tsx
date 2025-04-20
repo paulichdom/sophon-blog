@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { IconCheck, IconXboxX } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { Button, Container, Flex } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { nprogress } from '@mantine/nprogress';
 import { InfoAlert } from '@/components/InfoAlert/InfoAlert';
 import { ArticleEditor } from '@/components/TextEditor/ArticleEditor';
 import { INITIAL_EDITOR_CONTENT } from '@/components/TextEditor/ArticleEditor.constants';
 import { createArticleMutationOptions } from '@/queries/article/article.mutations';
+import { ArticleDto } from '@/types/types';
 
 const INFO_TEXT =
   'Your content will be reviewed by an automated AI system to ensure it meets our guidelines before being published.';
@@ -23,12 +26,20 @@ function RouteComponent() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { data, mutate, status, isPending } = useMutation(
-    createArticleMutationOptions(queryClient, navigate)
+  const { mutate, isPending } = useMutation(
+    createArticleMutationOptions()
   );
 
   const handlePublish = () => {
     nprogress.start();
+
+    const publishArticleNotificationId = notifications.show({
+      loading: true,
+      title: 'Publish article',
+      message: 'Publishing your article',
+      autoClose: false,
+      withCloseButton: false,
+    });
 
     const article = {
       title: articleTitle,
@@ -36,10 +47,39 @@ function RouteComponent() {
       body: articleContent,
       tagList: ['mutation', 'api'],
     };
-    mutate({ article });
-  };
 
-  console.log({status, isPending, data})
+    mutate(
+      { article },
+      {
+        onSuccess: (articleDto: ArticleDto) => {
+          queryClient.invalidateQueries({ queryKey: ['articles'] });
+
+          notifications.update({
+            id: publishArticleNotificationId,
+            color: 'teal',
+            title: 'Article published',
+            message: 'Notification will close in 2 seconds, you can close this notification now',
+            icon: <IconCheck size={18} />,
+            loading: false,
+            autoClose: 2000,
+          });
+
+          navigate({ to: `/article/$slug`, params: { slug: articleDto.article.slug } });
+        },
+        onError: () => {
+          notifications.update({
+            id: publishArticleNotificationId,
+            color: 'red',
+            title: 'Publish error',
+            message: 'Error occured while publishing article',
+            icon: <IconXboxX size={18} />,
+            loading: false,
+            autoClose: 2000,
+          });
+        },
+      }
+    );
+  };
 
   return (
     <Container fluid>
