@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { Button, Container, Flex } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { nprogress } from '@mantine/nprogress';
 import { InfoAlert } from '@/components/InfoAlert/InfoAlert';
 import { ArticleEditor } from '@/components/TextEditor/ArticleEditor';
 import { INITIAL_EDITOR_CONTENT } from '@/components/TextEditor/ArticleEditor.constants';
@@ -26,13 +25,9 @@ function RouteComponent() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate, isPending } = useMutation(
-    createArticleMutationOptions()
-  );
+  const { mutate, isPending } = useMutation(createArticleMutationOptions());
 
   const handlePublish = () => {
-    nprogress.start();
-
     const publishArticleNotificationId = notifications.show({
       loading: true,
       title: 'Publish article',
