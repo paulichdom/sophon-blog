@@ -88,7 +88,6 @@ function RouteComponent() {
   );
 
   const handleGenerateArticle = () => {
-    console.log('handleGenerateArticle');
     const generateNotificationId = notifications.show({
       loading: true,
       title: 'Generating Article',
@@ -99,7 +98,6 @@ function RouteComponent() {
 
     generateArticle(generateArticlePrompt, {
       onSuccess: (response) => {
-        console.log({ response });
         if (response && response.article) {
           setArticleTitle(response.article.title);
           setArticleDescription(response.article.description);
