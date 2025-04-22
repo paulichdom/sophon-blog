@@ -38,3 +38,12 @@ export type CreateArticleData = {
   body: string;
   tagList: string[];
 };
+
+export type GeneratedArticle = {
+  article: {
+    title: string;
+    description: string;
+    body: string;
+    tagList: string[];
+  };
+}

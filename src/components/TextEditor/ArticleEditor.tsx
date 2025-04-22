@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { IconRobot, IconTag } from '@tabler/icons-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -6,8 +7,9 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Container, TextInput } from '@mantine/core';
+import { Accordion, Button, Container, TagsInput, Textarea, TextInput } from '@mantine/core';
 import { Link, RichTextEditor } from '@mantine/tiptap';
+import classes from './ArticleEditor.module.css';
 
 type ArticleEditorProps = {
   title: string;
@@ -16,6 +18,13 @@ type ArticleEditorProps = {
   onChangeDescription: (description: string) => void;
   content: string;
   onChangeContent: (content: string) => void;
+  handleGenerateArticle: () => void;
+  generateArticlePending: boolean;
+  createArticlePending: boolean;
+  tags: string[];
+  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  generateArticlePrompt: string;
+  onChangeGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const ArticleEditor: FC<ArticleEditorProps> = ({
@@ -25,7 +34,15 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
   onChangeDescription,
   content,
   onChangeContent,
+  handleGenerateArticle,
+  generateArticlePending,
+  createArticlePending,
+  tags,
+  setTags,
+  generateArticlePrompt,
+  onChangeGenerateArticlePrompt,
 }) => {
+  console.log({ content });
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -42,6 +59,12 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
     },
   });
 
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content, false);
+    }
+  }, [content, editor]);
+
   return (
     <Container fluid p={0}>
       <TextInput
@@ -53,7 +76,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         onChange={(event) => onChangeTitle(event.currentTarget.value)}
         required
       />
-      <TextInput
+      <Textarea
         size="md"
         label="Description"
         description="Short article description"
@@ -62,7 +85,42 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         value={description}
         onChange={(event) => onChangeDescription(event.currentTarget.value)}
         required
+        autosize
+        minRows={2}
+        maxRows={2}
       />
+      <Accordion mb="md" maw={400} defaultValue="Apples" classNames={classes}>
+        <Accordion.Item value={'Scaffold your article with AI'}>
+          <Accordion.Control icon={<IconRobot size={20} />}>
+            {'Scaffold your article with AI assistant'}
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Textarea
+              size="md"
+              label="Article topic"
+              description="Describe article in a few words"
+              placeholder="Article prompt"
+              mb="lg"
+              value={generateArticlePrompt}
+              onChange={(event) => onChangeGenerateArticlePrompt(event.currentTarget.value)}
+              autosize
+              minRows={2}
+              maxRows={2}
+            />
+            <Button
+              fullWidth={false}
+              onClick={handleGenerateArticle}
+              loading={generateArticlePending}
+              loaderProps={{ type: 'dots' }}
+              disabled={generateArticlePending || createArticlePending}
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            >
+              {generateArticlePending ? 'Generating...' : 'Generate Article'}
+            </Button>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
       <RichTextEditor editor={editor}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
@@ -111,6 +169,20 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
 
         <RichTextEditor.Content />
       </RichTextEditor>
+      <TagsInput
+        mt="md"
+        label="Press Enter to submit a tag"
+        description="Add up to 3 tags"
+        placeholder="Enter tag"
+        maxTags={3}
+        defaultValue={['first', 'second']}
+        splitChars={[',', ' ', '|']}
+        clearable
+        acceptValueOnBlur
+        leftSection={<IconTag size={16} />}
+        value={tags}
+        onChange={setTags}
+      />
     </Container>
   );
 };
