@@ -35,3 +35,13 @@ export const generateArticle = async (prompt: string) => {
 
   return generatedArticleObject;
 };
+
+export const favoriteArticle = async (slug: string) => {
+  const favoritedArticle: ArticleDto = await fetch(`${API_URL}/articles/${slug}/favorite`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  return favoritedArticle;
+};
