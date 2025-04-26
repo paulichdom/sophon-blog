@@ -1,4 +1,4 @@
-import { createArticle, favoriteArticle, generateArticle } from './article.api';
+import { createArticle, favoriteArticle, generateArticle, unfavoriteArticle } from './article.api';
 
 export const createArticleMutationOptions = () => ({
   mutationFn: createArticle,
@@ -10,4 +10,8 @@ export const generateArticleMutationOptions = () => ({
 
 export const favoriteArticleMutationOptions = () => ({
   mutationFn: favoriteArticle,
+});
+
+export const unfavoriteArticleMutationOptions = () => ({
+  mutationFn: unfavoriteArticle,
 });

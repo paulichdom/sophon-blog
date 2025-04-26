@@ -1,46 +1,78 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { IconBookmark, IconHeart, IconHeartFilled, IconShare } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { ActionIcon, Card, Group, Text, useMantineTheme } from '@mantine/core';
-import { favoriteArticleMutationOptions } from '@/queries/article/article.mutations';
+import {
+  favoriteArticleMutationOptions,
+  unfavoriteArticleMutationOptions,
+} from '@/queries/article/article.mutations';
+import { ArticleDto } from '@/types/types';
 import classes from './ArticleCard.module.css';
 
-export type ArticleCardFooterProps = {
-  favoritesCount: number;
-  articleSlug: string;
+export type ArticleFavoritedState = {
   favorited: boolean;
+  favoritesCount: number;
+};
+
+export type ArticleCardFooterProps = {
+  articleSlug: string;
+  articleFavoritedState: ArticleFavoritedState;
 };
 
 export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
-  favoritesCount,
   articleSlug,
-  favorited,
+  articleFavoritedState,
 }) => {
   const theme = useMantineTheme();
-  const {
-    mutate: favoriteArticle,
-    data: favoritedArticle,
-    isPending: favoriteArticleIsPending,
-  } = useMutation(favoriteArticleMutationOptions());
+  const [favoritedState, setFavoritedState] = useState<ArticleFavoritedState>(
+    () => articleFavoritedState
+  );
 
-  const handleFavoriteArticle = () => {
-    if (!favorited) {
-      favoriteArticle(articleSlug);
-    }
+  const { mutate: favoriteArticle, isPending: favoriteArticleIsPending } = useMutation(
+    favoriteArticleMutationOptions()
+  );
 
-    // unfavoriteArticle(articleSlug)
+  const { mutate: unfavoriteArticle, isPending: unfavoriteArticleIsPending } = useMutation(
+    unfavoriteArticleMutationOptions()
+  );
+
+  const updateFavoritedState = (data: ArticleDto) => {
+    const favoritedState = {
+      favorited: data.article.favorited,
+      favoritesCount: data.article.favoritesCount,
+    };
+    setFavoritedState(favoritedState);
   };
 
-  const IconFavorited = favorited ? IconHeartFilled : IconHeart;
+  const handleFavoriteArticle = () => {
+    if (!favoritedState.favorited) {
+      favoriteArticle(articleSlug, {
+        onSuccess: updateFavoritedState,
+      });
+    } else {
+      unfavoriteArticle(articleSlug, {
+        onSuccess: updateFavoritedState,
+      });
+    }
+  };
+
+  const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
+  const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
 
   return (
     <Card.Section className={classes.footer}>
       <Group justify="space-between">
         <Text fz="xs" c="dimmed">
-          {favoritesCount} people liked this
+          {favoritedState.favoritesCount} people liked this
         </Text>
         <Group gap={0}>
-          <ActionIcon variant="subtle" color="gray" onClick={handleFavoriteArticle}>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            onClick={handleFavoriteArticle}
+            loading={favoriteActionIsPending}
+            disabled={favoriteActionIsPending}
+          >
             <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
           </ActionIcon>
           <ActionIcon variant="subtle" color="gray">

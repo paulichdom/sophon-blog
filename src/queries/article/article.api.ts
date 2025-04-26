@@ -45,3 +45,13 @@ export const favoriteArticle = async (slug: string) => {
 
   return favoritedArticle;
 };
+
+export const unfavoriteArticle = async (slug: string) => {
+  const favoritedArticle: ArticleDto = await fetch(`${API_URL}/articles/${slug}/favorite`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  return favoritedArticle;
+};
