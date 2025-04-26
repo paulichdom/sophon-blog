@@ -63,7 +63,8 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
     <Card.Section className={classes.footer}>
       <Group justify="space-between">
         <Text fz="xs" c="dimmed">
-          {favoritedState.favoritesCount} people liked this
+          {favoritedState.favoritesCount}{' '}
+          {favoritedState.favoritesCount === 1 ? 'person' : 'people'} liked this
         </Text>
         <Group gap={0}>
           <ActionIcon
