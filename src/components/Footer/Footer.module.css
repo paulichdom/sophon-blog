@@ -20,3 +20,7 @@
     margin-top: var(--mantine-spacing-md);
   }
 }
+
+.logo {
+  text-decoration: none;
+}

@@ -91,6 +91,7 @@ export function Header() {
       <Container size="md">
         <header className={classes.header}>
           <Group justify="space-between" h="100%">
+          <Link to="/" className={classes.logo}>
             <Text
               size="xl"
               fw={900}
@@ -99,6 +100,7 @@ export function Header() {
             >
               Sophon
             </Text>
+            </Link>
 
             <Group h="100%" gap={0} visibleFrom="sm">
               <Link to="/" className={classes.link}>

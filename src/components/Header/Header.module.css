@@ -33,6 +33,10 @@
   }
 }
 
+.logo {
+  text-decoration: none;
+}
+
 .dropdownFooter {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
   margin: calc(var(--mantine-spacing-md) * -1);

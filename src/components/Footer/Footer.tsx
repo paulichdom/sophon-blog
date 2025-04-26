@@ -1,11 +1,13 @@
 import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react';
 import { ActionIcon, Container, Group, Text } from '@mantine/core';
 import classes from './Footer.module.css';
+import { Link } from '@tanstack/react-router';
 
 export function Footer() {
   return (
     <div className={classes.footer}>
       <Container className={classes.inner}>
+      <Link to="/" className={classes.logo}>
         <Text
           size="xl"
           fw={900}
@@ -14,6 +16,7 @@ export function Footer() {
         >
           Sophon
         </Text>
+        </Link>
         <Group gap={0} className={classes.links} justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">
             <IconBrandTwitter size={18} stroke={1.5} />
