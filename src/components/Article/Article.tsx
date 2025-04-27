@@ -8,6 +8,7 @@ import { ArticleData } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
+import { MenuButton } from './MenuButton';
 
 export type ArticleProps = {
   article: ArticleData;
@@ -45,6 +46,7 @@ export const Article: FC<ArticleProps> = ({ article }) => {
           <ActionIcon variant="subtle" color="gray">
             <IconShare size={20} color={theme.colors.blue[6]} stroke={1.5} />
           </ActionIcon>
+          <MenuButton slug={article.slug} />
         </Group>
       </Group>
       <Divider my="md" />

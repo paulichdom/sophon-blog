@@ -111,7 +111,7 @@ export function Header() {
 
               <Link to="/editor" className={classes.link}>
                 <Flex gap="xs" align="center">
-                  <Text>New Article</Text>
+                  <Text>Write</Text>
                 </Flex>
               </Link>
 

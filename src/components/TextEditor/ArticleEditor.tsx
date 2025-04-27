@@ -171,9 +171,9 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
       </RichTextEditor>
       <TagsInput
         mt="md"
-        label="Press Enter to submit a tag"
-        description="Add up to 3 tags"
-        placeholder="Enter tag"
+        label="Press Enter to include a topic"
+        description="Add up to 3 topics"
+        placeholder="Add a topic"
         maxTags={3}
         defaultValue={['first', 'second']}
         splitChars={[',', ' ', '|']}

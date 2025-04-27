@@ -167,7 +167,7 @@ function RouteComponent() {
             color="green"
             onClick={handlePublish}
           >
-            Submit
+            Publish
           </Button>
         </Flex>
       </Flex>
