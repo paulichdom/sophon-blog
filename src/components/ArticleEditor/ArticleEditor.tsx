@@ -7,9 +7,12 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Accordion, Button, Container, TagsInput, Textarea, TextInput } from '@mantine/core';
+import { Accordion, Button, Container, Flex, TagsInput, Textarea, TextInput } from '@mantine/core';
 import { Link, RichTextEditor } from '@mantine/tiptap';
+import { TextEditor } from '../TextEditor/TextEditor';
 import classes from './ArticleEditor.module.css';
+import { InfoAlert } from '../InfoAlert/InfoAlert';
+import { INFO_ALERT_TEXT } from './ArticleEditor.constants';
 
 type ArticleEditorProps = {
   title: string;
@@ -25,6 +28,7 @@ type ArticleEditorProps = {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   generateArticlePrompt: string;
   onChangeGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
+  handlePublish: () => void
 };
 
 export const ArticleEditor: FC<ArticleEditorProps> = ({
@@ -41,6 +45,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
   setTags,
   generateArticlePrompt,
   onChangeGenerateArticlePrompt,
+  handlePublish
 }) => {
   console.log({ content });
   const editor = useEditor({
@@ -121,54 +126,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
-      <RichTextEditor editor={editor}>
-        <RichTextEditor.Toolbar sticky stickyOffset={60}>
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Bold />
-            <RichTextEditor.Italic />
-            <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
-            <RichTextEditor.ClearFormatting />
-            <RichTextEditor.Highlight />
-            <RichTextEditor.Code />
-          </RichTextEditor.ControlsGroup>
-
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.H1 />
-            <RichTextEditor.H2 />
-            <RichTextEditor.H3 />
-            <RichTextEditor.H4 />
-          </RichTextEditor.ControlsGroup>
-
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Blockquote />
-            <RichTextEditor.Hr />
-            <RichTextEditor.BulletList />
-            <RichTextEditor.OrderedList />
-            <RichTextEditor.Subscript />
-            <RichTextEditor.Superscript />
-          </RichTextEditor.ControlsGroup>
-
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Link />
-            <RichTextEditor.Unlink />
-          </RichTextEditor.ControlsGroup>
-
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.AlignLeft />
-            <RichTextEditor.AlignCenter />
-            <RichTextEditor.AlignJustify />
-            <RichTextEditor.AlignRight />
-          </RichTextEditor.ControlsGroup>
-
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Undo />
-            <RichTextEditor.Redo />
-          </RichTextEditor.ControlsGroup>
-        </RichTextEditor.Toolbar>
-
-        <RichTextEditor.Content />
-      </RichTextEditor>
+      <TextEditor editor={editor} />
       <TagsInput
         mt="md"
         label="Press Enter to include a topic"
@@ -183,6 +141,21 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         value={tags}
         onChange={setTags}
       />
+          <Flex direction="column" mt="lg" align="flex-end">
+        <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
+        <Flex gap={12}>
+          <Button>Save Draft</Button>
+          <Button
+            fullWidth={false}
+            loading={createArticlePending}
+            disabled={createArticlePending}
+            color="green"
+            onClick={handlePublish}
+          >
+            Publish
+          </Button>
+        </Flex>
+      </Flex>
     </Container>
   );
 };

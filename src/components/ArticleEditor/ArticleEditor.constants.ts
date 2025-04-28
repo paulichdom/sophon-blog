@@ -13,3 +13,6 @@ export const INITIAL_EDITOR_CONTENT = `
     <li>Plus many more extensions to enhance your writing experience</li>
   </ul>
 `;
+
+export const INFO_ALERT_TEXT =
+  'Your content will be reviewed by an automated AI system to ensure it meets our guidelines.';
