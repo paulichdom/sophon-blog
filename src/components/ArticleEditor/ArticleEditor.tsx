@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { IconRobot, IconTag } from '@tabler/icons-react';
+import { IconTag } from '@tabler/icons-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -7,14 +7,15 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Accordion, Button, Container, Flex, TagsInput, Textarea, TextInput } from '@mantine/core';
-import { Link, RichTextEditor } from '@mantine/tiptap';
-import { TextEditor } from '../TextEditor/TextEditor';
-import classes from './ArticleEditor.module.css';
+import { Button, Container, Flex, TagsInput, Textarea, TextInput } from '@mantine/core';
+import { Link } from '@mantine/tiptap';
 import { InfoAlert } from '../InfoAlert/InfoAlert';
+import { TextEditor } from '../TextEditor/TextEditor';
 import { INFO_ALERT_TEXT } from './ArticleEditor.constants';
+import { ArticleGenerator } from './components/ArticleGenerator';
 
 type ArticleEditorProps = {
+  isEdit?: boolean;
   title: string;
   onChangeTitle: (title: string) => void;
   description: string;
@@ -28,10 +29,11 @@ type ArticleEditorProps = {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   generateArticlePrompt: string;
   onChangeGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
-  handlePublish: () => void
+  handlePublish: () => void;
 };
 
 export const ArticleEditor: FC<ArticleEditorProps> = ({
+  isEdit = false,
   title,
   onChangeTitle,
   description,
@@ -45,9 +47,8 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
   setTags,
   generateArticlePrompt,
   onChangeGenerateArticlePrompt,
-  handlePublish
+  handlePublish,
 }) => {
-  console.log({ content });
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -69,6 +70,9 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
       editor.commands.setContent(content, false);
     }
   }, [content, editor]);
+
+  const isPublishLoading = createArticlePending;
+  const isPublishDisabled = createArticlePending;
 
   return (
     <Container fluid p={0}>
@@ -94,38 +98,15 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         minRows={2}
         maxRows={2}
       />
-      <Accordion mb="md" maw={400} defaultValue="Apples" classNames={classes}>
-        <Accordion.Item value={'Scaffold your article with AI'}>
-          <Accordion.Control icon={<IconRobot size={20} />}>
-            {'Scaffold your article with AI assistant'}
-          </Accordion.Control>
-          <Accordion.Panel>
-            <Textarea
-              size="md"
-              label="Article topic"
-              description="Describe article in a few words"
-              placeholder="Article prompt"
-              mb="lg"
-              value={generateArticlePrompt}
-              onChange={(event) => onChangeGenerateArticlePrompt(event.currentTarget.value)}
-              autosize
-              minRows={2}
-              maxRows={2}
-            />
-            <Button
-              fullWidth={false}
-              onClick={handleGenerateArticle}
-              loading={generateArticlePending}
-              loaderProps={{ type: 'dots' }}
-              disabled={generateArticlePending || createArticlePending}
-              variant="gradient"
-              gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-            >
-              {generateArticlePending ? 'Generating...' : 'Generate Article'}
-            </Button>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
+      {!isEdit && (
+        <ArticleGenerator
+          generateArticlePrompt={generateArticlePrompt}
+          onChangeGenerateArticlePrompt={onChangeGenerateArticlePrompt}
+          handleGenerateArticle={handleGenerateArticle}
+          generateArticlePending={generateArticlePending}
+          createArticlePending={createArticlePending}
+        />
+      )}
       <TextEditor editor={editor} />
       <TagsInput
         mt="md"
@@ -141,14 +122,14 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         value={tags}
         onChange={setTags}
       />
-          <Flex direction="column" mt="lg" align="flex-end">
+      <Flex direction="column" mt="lg" align="flex-end">
         <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
         <Flex gap={12}>
           <Button>Save Draft</Button>
           <Button
             fullWidth={false}
-            loading={createArticlePending}
-            disabled={createArticlePending}
+            loading={isPublishLoading}
+            disabled={isPublishDisabled}
             color="green"
             onClick={handlePublish}
           >
