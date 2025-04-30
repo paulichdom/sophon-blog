@@ -39,6 +39,10 @@ export type CreateArticleData = {
   tagList: string[];
 };
 
+export type UpdateArticleDto = {
+  article: Partial<CreateArticleData>;
+};
+
 export type GeneratedArticle = {
   article: {
     title: string;
@@ -46,4 +50,4 @@ export type GeneratedArticle = {
     body: string;
     tagList: string[];
   };
-}
+};

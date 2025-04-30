@@ -7,10 +7,10 @@ import {
   createArticleMutationOptions,
   generateArticleMutationOptions,
 } from '@/queries/article/article.mutations';
-import { ArticleDto } from '@/types/types';
+import { ArticleData, ArticleDto } from '@/types/types';
 import { INITIAL_EDITOR_CONTENT } from './ArticleEditor.constants';
 
-export const useArticleEditor = () => {
+export const useArticleEditor = (article: ArticleData | null = null) => {
   const [articleTitle, setArticleTitle] = useState<string>('');
   const [articleDescription, setArticleDescription] = useState<string>('');
   const [articleContent, setArticleContent] = useState<string>(INITIAL_EDITOR_CONTENT);
