@@ -17,8 +17,8 @@ function RouteComponent() {
     setArticleContent,
     articleTags,
     setArticleTags,
-    handlePublish,
-    createArticlePending,
+    handlePublishArticle,
+    publishArticlePending,
     generateArticlePrompt,
     setGenerateArticlePrompt,
     handleGenerateArticle,
@@ -36,8 +36,8 @@ function RouteComponent() {
         onChangeContent={setArticleContent}
         tags={articleTags}
         setTags={setArticleTags}
-        handlePublish={handlePublish}
-        createArticlePending={createArticlePending}
+        handlePublishArticle={handlePublishArticle}
+        publishArticlePending={publishArticlePending}
         generateArticlePrompt={generateArticlePrompt}
         onChangeGenerateArticlePrompt={setGenerateArticlePrompt}
         handleGenerateArticle={handleGenerateArticle}

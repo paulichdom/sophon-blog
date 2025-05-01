@@ -22,14 +22,16 @@ type ArticleEditorProps = {
   onChangeDescription: (description: string) => void;
   content: string;
   onChangeContent: (content: string) => void;
-  handleGenerateArticle: () => void;
-  generateArticlePending: boolean;
-  publishArticlePending: boolean;
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  handlePublishArticle: () => void;
+  publishArticlePending: boolean;
   generateArticlePrompt: string;
   onChangeGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
-  handlePublish: () => void;
+  handleGenerateArticle: () => void;
+  generateArticlePending: boolean;
+  handleUpdateArticle?: () => void;
+  updateArticlePending?: boolean;
 };
 
 export const ArticleEditor: FC<ArticleEditorProps> = ({
@@ -40,14 +42,16 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
   onChangeDescription,
   content,
   onChangeContent,
-  handleGenerateArticle,
-  generateArticlePending,
-  publishArticlePending,
   tags,
   setTags,
+  handlePublishArticle,
+  publishArticlePending,
   generateArticlePrompt,
   onChangeGenerateArticlePrompt,
-  handlePublish,
+  handleGenerateArticle,
+  generateArticlePending,
+  handleUpdateArticle,
+  updateArticlePending,
 }) => {
   const editor = useEditor({
     extensions: [
@@ -71,8 +75,8 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
     }
   }, [content, editor]);
 
-  const isPublishLoading = publishArticlePending;
-  const isPublishDisabled = publishArticlePending;
+  const isPublishLoading = publishArticlePending || updateArticlePending;
+  const isPublishDisabled = publishArticlePending || updateArticlePending;
 
   return (
     <Container fluid p={0}>
@@ -108,7 +112,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         />
       )}
       <TextEditor editor={editor} />
-      <TagsInput
+      {!isEdit && <TagsInput
         mt="md"
         label="Press Enter to include a topic"
         description="Add up to 3 topics"
@@ -121,7 +125,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         leftSection={<IconTag size={16} />}
         value={tags}
         onChange={setTags}
-      />
+      />}
       <Flex direction="column" mt="lg" align="flex-end">
         <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
         <Flex gap={12}>
@@ -131,7 +135,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
             loading={isPublishLoading}
             disabled={isPublishDisabled}
             color="green"
-            onClick={handlePublish}
+            onClick={isEdit ? handleUpdateArticle : handlePublishArticle}
           >
             {isEdit ? 'Update Article' : 'Publish'}
           </Button>

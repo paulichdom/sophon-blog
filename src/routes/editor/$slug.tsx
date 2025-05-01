@@ -21,12 +21,14 @@ function RouteComponent() {
     setArticleContent,
     articleTags,
     setArticleTags,
-    handlePublish,
+    handlePublishArticle,
     publishArticlePending,
     generateArticlePrompt,
     setGenerateArticlePrompt,
     handleGenerateArticle,
     generateArticlePending,
+    handleUpdateArticle,
+    updateArticlePending
   } = useArticleEditor(article);
 
   return (
@@ -41,12 +43,14 @@ function RouteComponent() {
         onChangeContent={setArticleContent}
         tags={articleTags}
         setTags={setArticleTags}
-        handlePublish={handlePublish}
+        handlePublishArticle={handlePublishArticle}
         publishArticlePending={publishArticlePending}
         generateArticlePrompt={generateArticlePrompt}
         onChangeGenerateArticlePrompt={setGenerateArticlePrompt}
         handleGenerateArticle={handleGenerateArticle}
         generateArticlePending={generateArticlePending}
+        handleUpdateArticle={handleUpdateArticle}
+        updateArticlePending={updateArticlePending}
       />
     </Container>
   );

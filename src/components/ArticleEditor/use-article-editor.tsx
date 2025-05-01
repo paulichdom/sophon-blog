@@ -20,7 +20,7 @@ type UseArticleEditorValue = {
   setArticleContent: React.Dispatch<React.SetStateAction<string>>;
   articleTags: string[];
   setArticleTags: React.Dispatch<React.SetStateAction<string[]>>;
-  handlePublish: () => void;
+  handlePublishArticle: () => void;
   publishArticlePending: boolean;
   generateArticlePrompt: string;
   setGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
@@ -48,7 +48,7 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
     createArticleMutationOptions()
   );
 
-  const handlePublish = () => {
+  const handlePublishArticle = () => {
     const publishArticleNotificationId = notifications.show({
       loading: true,
       title: 'Publish article',
@@ -160,6 +160,8 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
   );
 
   const handleUpdateArticle = () => {
+    if (!article) return;
+
     const updateArticleNotificationId = notifications.show({
       loading: true,
       title: 'Update article',
@@ -167,6 +169,45 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
       autoClose: false,
       withCloseButton: false,
     });
+
+    const updatedArticle = {
+      title: articleTitle,
+      description: articleDescription,
+      body: articleContent,
+      tagList: articleTags,
+    };
+
+    updateArticle(
+      { articleSlug: article.slug, updateArticleDto: { article: updatedArticle } },
+      {
+        onSuccess: (articleDto: ArticleDto) => {
+          queryClient.invalidateQueries({ queryKey: ['articles'] });
+
+          notifications.update({
+            id: updateArticleNotificationId,
+            color: 'teal',
+            title: 'Article Updated',
+            message: 'Your article has been updated succesfully',
+            icon: <IconCheck size={18} />,
+            loading: false,
+            autoClose: 2000,
+          });
+
+          navigate({ to: `/article/$slug`, params: { slug: articleDto.article.slug } });
+        },
+        onError: () => {
+          notifications.update({
+            id: updateArticleNotificationId,
+            color: 'red',
+            title: 'Updated error',
+            message: 'Error occured while updating article',
+            icon: <IconXboxX size={18} />,
+            loading: false,
+            autoClose: 2000,
+          });
+        },
+      }
+    );
   };
 
   return {
@@ -178,7 +219,7 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
     setArticleContent,
     articleTags,
     setArticleTags,
-    handlePublish,
+    handlePublishArticle,
     publishArticlePending,
     generateArticlePrompt,
     setGenerateArticlePrompt,
