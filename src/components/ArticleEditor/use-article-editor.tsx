@@ -6,6 +6,7 @@ import { notifications } from '@mantine/notifications';
 import {
   createArticleMutationOptions,
   generateArticleMutationOptions,
+  updateArticleMutationOptions,
 } from '@/queries/article/article.mutations';
 import { ArticleData, ArticleDto } from '@/types/types';
 import { INITIAL_EDITOR_CONTENT } from './ArticleEditor.constants';
@@ -117,7 +118,7 @@ export const useArticleEditor = (article: ArticleData | null = null) => {
       },
       onError: (error) => {
         console.error('Error generating article:', error);
-        
+
         notifications.update({
           id: generateNotificationId,
           color: 'red',
@@ -130,6 +131,12 @@ export const useArticleEditor = (article: ArticleData | null = null) => {
       },
     });
   };
+
+  const { mutate: updateArticle, isPending: updateArticlePending } = useMutation(
+    updateArticleMutationOptions()
+  );
+
+  const handleUpdateArticle = () => {};
 
   return {
     articleTitle,

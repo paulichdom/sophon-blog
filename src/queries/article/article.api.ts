@@ -5,7 +5,7 @@ import {
   Articles,
   CreateArticleDto,
   GeneratedArticle,
-  UpdateArticleDto,
+  UpdateArticleMutationFnArgs,
 } from '@/types/types';
 
 export const fetchAllArticles = async () => {
@@ -21,7 +21,7 @@ export const fetchArticle = async (articleSlug: string) => {
 };
 
 export const createArticle = async (createArticleDto: CreateArticleDto) => {
-  const response = await fetch(`${API_URL}/articles`, {
+  const response: ArticleDto = await fetch(`${API_URL}/articles`, {
     method: 'POST',
     body: JSON.stringify(createArticleDto),
     headers: { 'Content-Type': 'application/json' },
@@ -31,8 +31,11 @@ export const createArticle = async (createArticleDto: CreateArticleDto) => {
   return response;
 };
 
-export const updateArticle = async (articleSlug: string, updateArticleDto: UpdateArticleDto) => {
-  const response = await fetch(`${API_URL}/articles/${articleSlug}`, {
+export const updateArticle = async ({
+  articleSlug,
+  updateArticleDto,
+}: UpdateArticleMutationFnArgs) => {
+  const response: ArticleDto = await fetch(`${API_URL}/articles/${articleSlug}`, {
     method: 'PUT',
     body: JSON.stringify(updateArticleDto),
     headers: { 'Content-Type': 'application/json' },
