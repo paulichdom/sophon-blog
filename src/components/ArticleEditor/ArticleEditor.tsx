@@ -24,7 +24,7 @@ type ArticleEditorProps = {
   onChangeContent: (content: string) => void;
   handleGenerateArticle: () => void;
   generateArticlePending: boolean;
-  createArticlePending: boolean;
+  publishArticlePending: boolean;
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   generateArticlePrompt: string;
@@ -42,7 +42,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
   onChangeContent,
   handleGenerateArticle,
   generateArticlePending,
-  createArticlePending,
+  publishArticlePending,
   tags,
   setTags,
   generateArticlePrompt,
@@ -71,8 +71,8 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
     }
   }, [content, editor]);
 
-  const isPublishLoading = createArticlePending;
-  const isPublishDisabled = createArticlePending;
+  const isPublishLoading = publishArticlePending;
+  const isPublishDisabled = publishArticlePending;
 
   return (
     <Container fluid p={0}>
@@ -104,7 +104,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
           onChangeGenerateArticlePrompt={onChangeGenerateArticlePrompt}
           handleGenerateArticle={handleGenerateArticle}
           generateArticlePending={generateArticlePending}
-          createArticlePending={createArticlePending}
+          publishArticlePending={publishArticlePending}
         />
       )}
       <TextEditor editor={editor} />
@@ -133,7 +133,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
             color="green"
             onClick={handlePublish}
           >
-            Publish
+            {isEdit ? 'Update Article' : 'Publish'}
           </Button>
         </Flex>
       </Flex>

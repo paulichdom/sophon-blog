@@ -22,12 +22,12 @@ function RouteComponent() {
     articleTags,
     setArticleTags,
     handlePublish,
-    createArticlePending,
+    publishArticlePending,
     generateArticlePrompt,
     setGenerateArticlePrompt,
     handleGenerateArticle,
     generateArticlePending,
-  } = useArticleEditor();
+  } = useArticleEditor(article);
 
   return (
     <Container fluid>
@@ -42,7 +42,7 @@ function RouteComponent() {
         tags={articleTags}
         setTags={setArticleTags}
         handlePublish={handlePublish}
-        createArticlePending={createArticlePending}
+        publishArticlePending={publishArticlePending}
         generateArticlePrompt={generateArticlePrompt}
         onChangeGenerateArticlePrompt={setGenerateArticlePrompt}
         handleGenerateArticle={handleGenerateArticle}

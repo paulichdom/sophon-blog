@@ -11,17 +11,40 @@ import {
 import { ArticleData, ArticleDto } from '@/types/types';
 import { INITIAL_EDITOR_CONTENT } from './ArticleEditor.constants';
 
-export const useArticleEditor = (article: ArticleData | null = null) => {
-  const [articleTitle, setArticleTitle] = useState<string>('');
-  const [articleDescription, setArticleDescription] = useState<string>('');
-  const [articleContent, setArticleContent] = useState<string>(INITIAL_EDITOR_CONTENT);
-  const [articleTags, setArticleTags] = useState<string[]>([]);
+type UseArticleEditorValue = {
+  articleTitle: string;
+  setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
+  articleDescription: string;
+  setArticleDescription: React.Dispatch<React.SetStateAction<string>>;
+  articleContent: string;
+  setArticleContent: React.Dispatch<React.SetStateAction<string>>;
+  articleTags: string[];
+  setArticleTags: React.Dispatch<React.SetStateAction<string[]>>;
+  handlePublish: () => void;
+  publishArticlePending: boolean;
+  generateArticlePrompt: string;
+  setGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
+  handleGenerateArticle: () => void;
+  generateArticlePending: boolean;
+  handleUpdateArticle: () => void;
+  updateArticlePending: boolean;
+};
+
+export const useArticleEditor = (article: ArticleData | null = null): UseArticleEditorValue => {
+  const [articleTitle, setArticleTitle] = useState<string>(() => (article ? article.title : ''));
+  const [articleDescription, setArticleDescription] = useState<string>(() =>
+    article ? article.description : ''
+  );
+  const [articleContent, setArticleContent] = useState<string>(() =>
+    article ? article.body : INITIAL_EDITOR_CONTENT
+  );
+  const [articleTags, setArticleTags] = useState<string[]>(() => (article ? article.tagList : []));
   const [generateArticlePrompt, setGenerateArticlePrompt] = useState<string>('');
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate: createArticle, isPending: createArticlePending } = useMutation(
+  const { mutate: publishArticle, isPending: publishArticlePending } = useMutation(
     createArticleMutationOptions()
   );
 
@@ -41,7 +64,7 @@ export const useArticleEditor = (article: ArticleData | null = null) => {
       tagList: articleTags,
     };
 
-    createArticle(
+    publishArticle(
       { article },
       {
         onSuccess: (articleDto: ArticleDto) => {
@@ -136,7 +159,15 @@ export const useArticleEditor = (article: ArticleData | null = null) => {
     updateArticleMutationOptions()
   );
 
-  const handleUpdateArticle = () => {};
+  const handleUpdateArticle = () => {
+    const updateArticleNotificationId = notifications.show({
+      loading: true,
+      title: 'Update article',
+      message: 'Updating your article',
+      autoClose: false,
+      withCloseButton: false,
+    });
+  };
 
   return {
     articleTitle,
@@ -148,10 +179,12 @@ export const useArticleEditor = (article: ArticleData | null = null) => {
     articleTags,
     setArticleTags,
     handlePublish,
-    createArticlePending,
+    publishArticlePending,
     generateArticlePrompt,
     setGenerateArticlePrompt,
     handleGenerateArticle,
     generateArticlePending,
+    handleUpdateArticle,
+    updateArticlePending,
   };
 };

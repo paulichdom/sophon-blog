@@ -8,13 +8,13 @@ type ArticleGeneratorProps = {
   onChangeGenerateArticlePrompt: React.Dispatch<React.SetStateAction<string>>;
   handleGenerateArticle: () => void;
   generateArticlePending: boolean;
-  createArticlePending: boolean;
+  publishArticlePending: boolean;
 };
 
 export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
   handleGenerateArticle,
   generateArticlePending,
-  createArticlePending,
+  publishArticlePending,
   generateArticlePrompt,
   onChangeGenerateArticlePrompt,
 }) => {
@@ -42,7 +42,7 @@ export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
             onClick={handleGenerateArticle}
             loading={generateArticlePending}
             loaderProps={{ type: 'dots' }}
-            disabled={generateArticlePending || createArticlePending}
+            disabled={generateArticlePending || publishArticlePending}
             variant="gradient"
             gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
           >
