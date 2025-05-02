@@ -57,3 +57,8 @@ export type UpdateArticleMutationFnArgs = {
   articleSlug: string;
   updateArticleDto: UpdateArticleDto
 }
+
+export type ArticleFavoritedState = {
+  favorited: boolean;
+  favoritesCount: number;
+};

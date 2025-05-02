@@ -1,18 +1,9 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { IconBookmark, IconCheck, IconHeart, IconHeartFilled, IconLink } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 import { ActionIcon, Card, CopyButton, Group, Text, Tooltip, useMantineTheme } from '@mantine/core';
-import {
-  favoriteArticleMutationOptions,
-  unfavoriteArticleMutationOptions,
-} from '@/queries/article/article.mutations';
-import { ArticleDto } from '@/types/types';
+import { useFavoriteArticle } from '@/hooks/use-favorite-article';
+import { ArticleFavoritedState } from '@/types/types';
 import classes from './ArticleCard.module.css';
-
-export type ArticleFavoritedState = {
-  favorited: boolean;
-  favoritesCount: number;
-};
 
 export type ArticleCardFooterProps = {
   articleSlug: string;
@@ -24,37 +15,13 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
   articleFavoritedState,
 }) => {
   const theme = useMantineTheme();
-  const [favoritedState, setFavoritedState] = useState<ArticleFavoritedState>(
-    () => articleFavoritedState
-  );
 
-  const { mutate: favoriteArticle, isPending: favoriteArticleIsPending } = useMutation(
-    favoriteArticleMutationOptions()
-  );
-
-  const { mutate: unfavoriteArticle, isPending: unfavoriteArticleIsPending } = useMutation(
-    unfavoriteArticleMutationOptions()
-  );
-
-  const updateFavoritedState = (data: ArticleDto) => {
-    const favoritedState = {
-      favorited: data.article.favorited,
-      favoritesCount: data.article.favoritesCount,
-    };
-    setFavoritedState(favoritedState);
-  };
-
-  const handleFavoriteArticle = () => {
-    if (!favoritedState.favorited) {
-      favoriteArticle(articleSlug, {
-        onSuccess: updateFavoritedState,
-      });
-    } else {
-      unfavoriteArticle(articleSlug, {
-        onSuccess: updateFavoritedState,
-      });
-    }
-  };
+  const {
+    favoritedState,
+    handleFavoriteArticle,
+    favoriteArticleIsPending,
+    unfavoriteArticleIsPending,
+  } = useFavoriteArticle(articleSlug, articleFavoritedState);
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;

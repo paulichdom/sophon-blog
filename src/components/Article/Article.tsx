@@ -1,9 +1,16 @@
 import { FC } from 'react';
-import { IconBookmark, IconHeart, IconMessageCircle, IconShare } from '@tabler/icons-react';
+import {
+  IconBookmark,
+  IconHeart,
+  IconHeartFilled,
+  IconMessageCircle,
+  IconShare,
+} from '@tabler/icons-react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useFavoriteArticle } from '@/hooks/use-favorite-article';
 import { ArticleData } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
@@ -24,6 +31,23 @@ export const Article: FC<ArticleProps> = ({ article }) => {
     extensions: [StarterKit],
   });
 
+  console.log({article})
+
+  const {
+    favoritedState,
+    handleFavoriteArticle,
+    favoriteArticleIsPending,
+    unfavoriteArticleIsPending,
+  } = useFavoriteArticle(article.slug, {
+    favorited: article.favorited,
+    favoritesCount: article.favoritesCount,
+  });
+
+  console.log({favoritedState})
+
+  const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
+  const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
+
   return (
     <Container size="sm">
       <Title order={1}>{article.title}</Title>
@@ -32,8 +56,14 @@ export const Article: FC<ArticleProps> = ({ article }) => {
       <Divider my="md" />
       <Group justify="space-between" ml={12} mr={12}>
         <Group gap={12}>
-          <ActionIcon variant="subtle" color="gray">
-            <IconHeart size={20} color={theme.colors.red[6]} stroke={1.5} />
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            onClick={handleFavoriteArticle}
+            loading={favoriteActionIsPending}
+            disabled={favoriteActionIsPending}
+          >
+            <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
           </ActionIcon>
           <ActionIcon variant="subtle" color="gray" onClick={open}>
             <IconMessageCircle size={20} color={theme.colors.gray[6]} stroke={1.5} />
