@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, Fragment, useEffect } from 'react';
 import { IconClock, IconTag } from '@tabler/icons-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
@@ -131,12 +131,16 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
       <Flex direction="column" mt="lg" align="flex-end">
         <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
         <Flex gap={12}>
-          <Button variant="subtle" color="cyan" leftSection={<IconClock size={16} />}>
-            Schedule for later
-          </Button>
-          <Button variant="light" color="cyan">
-            Save Draft
-          </Button>
+          {!isEdit && (
+            <Fragment>
+              <Button variant="subtle" color="cyan" leftSection={<IconClock size={16} />}>
+                Schedule for later
+              </Button>
+              <Button variant="light" color="cyan">
+                Save Draft
+              </Button>
+            </Fragment>
+          )}
           <Button
             fullWidth={false}
             loading={isPublishLoading}
