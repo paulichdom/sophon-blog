@@ -15,7 +15,10 @@ export const fetchAllArticles = async () => {
 
 export const fetchArticle = async (articleSlug: string) => {
   const resourcePath = `articles/${articleSlug}`;
-  const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`);
+  const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`,{
+    method: 'GET',
+    credentials: 'include'
+  });
 
   return data.article;
 };

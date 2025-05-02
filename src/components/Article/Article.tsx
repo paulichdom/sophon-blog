@@ -31,8 +31,6 @@ export const Article: FC<ArticleProps> = ({ article }) => {
     extensions: [StarterKit],
   });
 
-  console.log({article})
-
   const {
     favoritedState,
     handleFavoriteArticle,
@@ -42,8 +40,6 @@ export const Article: FC<ArticleProps> = ({ article }) => {
     favorited: article.favorited,
     favoritesCount: article.favoritesCount,
   });
-
-  console.log({favoritedState})
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
