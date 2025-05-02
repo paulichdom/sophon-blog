@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { IconTag } from '@tabler/icons-react';
+import { IconClock, IconTag } from '@tabler/icons-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -112,24 +112,31 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         />
       )}
       <TextEditor editor={editor} />
-      {!isEdit && <TagsInput
-        mt="md"
-        label="Press Enter to include a topic"
-        description="Add up to 3 topics"
-        placeholder="Add a topic"
-        maxTags={3}
-        defaultValue={['first', 'second']}
-        splitChars={[',', ' ', '|']}
-        clearable
-        acceptValueOnBlur
-        leftSection={<IconTag size={16} />}
-        value={tags}
-        onChange={setTags}
-      />}
+      {!isEdit && (
+        <TagsInput
+          mt="md"
+          label="Include a topic"
+          description="Add or change topics (up to 5) so readers know what your story is about"
+          placeholder="Add a topic..."
+          maxTags={5}
+          defaultValue={['first', 'second']}
+          splitChars={[',', ' ', '|']}
+          clearable
+          acceptValueOnBlur
+          leftSection={<IconTag size={16} />}
+          value={tags}
+          onChange={setTags}
+        />
+      )}
       <Flex direction="column" mt="lg" align="flex-end">
         <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
         <Flex gap={12}>
-          <Button>Save Draft</Button>
+          <Button variant="subtle" color="cyan" leftSection={<IconClock size={16} />}>
+            Schedule for later
+          </Button>
+          <Button variant="light" color="cyan">
+            Save Draft
+          </Button>
           <Button
             fullWidth={false}
             loading={isPublishLoading}

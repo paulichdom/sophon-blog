@@ -8,7 +8,7 @@ type MenuButtonProps = {
   slug: string;
 };
 
-export const MenuButton: FC<MenuButtonProps> = ({ slug }) => {
+export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
   return (
     <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
       <Menu.Target>

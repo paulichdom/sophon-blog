@@ -1,11 +1,5 @@
 import { FC } from 'react';
-import {
-  IconBookmark,
-  IconHeart,
-  IconHeartFilled,
-  IconMessageCircle,
-  IconShare,
-} from '@tabler/icons-react';
+import { IconBookmark, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
@@ -15,7 +9,8 @@ import { ArticleData } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
-import { MenuButton } from './MenuButton';
+import { ArticleCopyButton } from './ArticleCopyButton';
+import { ArticleMenuButton } from './ArticleMenuButton';
 
 export type ArticleProps = {
   article: ArticleData;
@@ -69,10 +64,8 @@ export const Article: FC<ArticleProps> = ({ article }) => {
           <ActionIcon variant="subtle" color="gray">
             <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="subtle" color="gray">
-            <IconShare size={20} color={theme.colors.blue[6]} stroke={1.5} />
-          </ActionIcon>
-          <MenuButton slug={article.slug} />
+          <ArticleCopyButton articleSlug={article.slug} />
+          <ArticleMenuButton slug={article.slug} />
         </Group>
       </Group>
       <Divider my="md" />
