@@ -1,5 +1,6 @@
 import {
   createArticle,
+  deleteArticle,
   favoriteArticle,
   generateArticle,
   unfavoriteArticle,
@@ -24,4 +25,8 @@ export const favoriteArticleMutationOptions = () => ({
 
 export const unfavoriteArticleMutationOptions = () => ({
   mutationFn: unfavoriteArticle,
+});
+
+export const deleteArticleMutationOptions = () => ({
+  mutationFn: deleteArticle,
 });

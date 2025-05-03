@@ -1,8 +1,12 @@
 import { FC } from 'react';
-import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react';
-import { Link } from '@tanstack/react-router';
+import { IconCheck, IconDots, IconEdit, IconTrash, IconXboxX } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+import { deleteArticleMutationOptions } from '@/queries/article/article.mutations';
+import { ArticleDto } from '@/types/types';
 import classes from './MenuButton.module.css';
 
 type MenuButtonProps = {
@@ -10,6 +14,50 @@ type MenuButtonProps = {
 };
 
 export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { mutate: deleteArticle } = useMutation(deleteArticleMutationOptions());
+
+  const handleConfirmDeleteArticle = () => {
+    const deleteArticleNotificationId = notifications.show({
+      loading: true,
+      title: 'Delete article',
+      message: 'Deleting your article',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
+    deleteArticle(slug, {
+      onSuccess: (articleDto: ArticleDto) => {
+        queryClient.invalidateQueries({ queryKey: ['articles'] });
+
+        notifications.update({
+          id: deleteArticleNotificationId,
+          color: 'teal',
+          title: 'Article deleted',
+          message: `Article ${articleDto.article.title} removed from your list`,
+          icon: <IconCheck size={18} />,
+          loading: false,
+          autoClose: 2000,
+        });
+
+        navigate({ to: '/' });
+      },
+      onError: () => {
+        notifications.update({
+          id: deleteArticleNotificationId,
+          color: 'red',
+          title: 'Delete error',
+          message: 'Error occured while removing article',
+          icon: <IconXboxX size={18} />,
+          loading: false,
+          autoClose: 2000,
+        });
+      },
+    });
+  };
+
   const handleDeleteArticle = () =>
     modals.openConfirmModal({
       title: 'Delete article',
@@ -20,8 +68,7 @@ export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
       ),
       labels: { confirm: 'Delete', cancel: 'Cancel' },
       confirmProps: { color: 'red' },
-      onCancel: () => console.log('Cancel'),
-      onConfirm: () => console.log('Confirmed'),
+      onConfirm: handleConfirmDeleteArticle,
     });
 
   return (

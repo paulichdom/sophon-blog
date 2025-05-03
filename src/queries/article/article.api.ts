@@ -15,9 +15,9 @@ export const fetchAllArticles = async () => {
 
 export const fetchArticle = async (articleSlug: string) => {
   const resourcePath = `articles/${articleSlug}`;
-  const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`,{
+  const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`, {
     method: 'GET',
-    credentials: 'include'
+    credentials: 'include',
   });
 
   return data.article;
@@ -77,4 +77,14 @@ export const unfavoriteArticle = async (slug: string) => {
   });
 
   return favoritedArticle;
+};
+
+export const deleteArticle = async (slug: string) => {
+  const deletedArticle: ArticleDto = await fetch(`${API_URL}/articles/${slug}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  return deletedArticle;
 };
