@@ -11,12 +11,12 @@ export const ArticleCardTagList: FC<ArticleCardTagListProps> = ({ tags }) => {
   return (
     <Flex gap="xs" justify="flex-start" align="center" direction="row" wrap="wrap" mt="xs">
       {displayedTags.map((tag, index) => (
-        <Badge key={index} w="fit-content" variant="outline">
+        <Badge key={index} w="fit-content" variant="light">
           {tag}
         </Badge>
       ))}
       {hasTruncatedTags && (
-        <Badge w="fit-content" variant="outline">
+        <Badge w="fit-content" variant="light">
           +{tags.length - displayedTags.length}
         </Badge>
       )}

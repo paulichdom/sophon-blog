@@ -133,10 +133,10 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         <Flex gap={12}>
           {!isEdit && (
             <Fragment>
-              <Button variant="subtle" color="cyan" leftSection={<IconClock size={16} />}>
+              <Button variant="subtle" color="cyan" radius="xl" leftSection={<IconClock size={16} />}>
                 Schedule for later
               </Button>
-              <Button variant="light" color="cyan">
+              <Button variant="light" color="cyan" radius="xl">
                 Save Draft
               </Button>
             </Fragment>
@@ -146,6 +146,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
             loading={isPublishLoading}
             disabled={isPublishDisabled}
             color="green"
+            radius="xl"
             onClick={isEdit ? handleUpdateArticle : handlePublishArticle}
           >
             {isEdit ? 'Update Article' : 'Publish'}

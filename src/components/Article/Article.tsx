@@ -2,12 +2,23 @@ import { FC } from 'react';
 import { IconBookmark, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { ActionIcon, Container, Divider, Group, Text, Title, useMantineTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Badge,
+  Container,
+  Divider,
+  Flex,
+  Group,
+  Text,
+  Title,
+  useMantineTheme,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFavoriteArticle } from '@/hooks/use-favorite-article';
 import { ArticleData } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
+import { CommentEditor } from '../CommentEditor/CommentEditor';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
 import { ArticleCopyButton } from './ArticleCopyButton';
 import { ArticleMenuButton } from './ArticleMenuButton';
@@ -46,19 +57,31 @@ export const Article: FC<ArticleProps> = ({ article }) => {
       <ArticleUserInfo author={article.author} createdAt={article.createdAt} />
       <Divider my="md" />
       <Group justify="space-between" ml={12} mr={12}>
-        <Group gap={12}>
-          <ActionIcon
-            variant="subtle"
-            color="gray"
-            onClick={handleFavoriteArticle}
-            loading={favoriteActionIsPending}
-            disabled={favoriteActionIsPending}
-          >
-            <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="subtle" color="gray" onClick={open}>
-            <IconMessageCircle size={20} color={theme.colors.gray[6]} stroke={1.5} />
-          </ActionIcon>
+        <Group gap={20}>
+          <Flex gap={4} align="center" justify="center">
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              onClick={handleFavoriteArticle}
+              loading={favoriteActionIsPending}
+              disabled={favoriteActionIsPending}
+            >
+              <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
+            </ActionIcon>
+            {article.favoritesCount > 0 && (
+              <Text size="sm" c="dimmed">
+                {article.favoritesCount}
+              </Text>
+            )}
+          </Flex>
+          <Flex gap={4} align="center" justify="center">
+            <ActionIcon variant="subtle" color="gray" onClick={open}>
+              <IconMessageCircle size={20} color={theme.colors.gray[6]} stroke={1.5} />
+            </ActionIcon>
+            <Text size="sm" c="dimmed">
+              1
+            </Text>
+          </Flex>
         </Group>
         <Group gap={12}>
           <ActionIcon variant="subtle" color="gray">
@@ -70,7 +93,28 @@ export const Article: FC<ArticleProps> = ({ article }) => {
       </Group>
       <Divider my="md" />
       <EditorContent editor={editor} />
-      <Divider my="md" />
+      <Flex
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+        mt="xl"
+        mb="xl"
+      >
+        {article.tagList.length > 0 &&
+          article.tagList.map((tag) => (
+            <Badge key={tag} w="fit-content" variant="light" size="lg">
+              {tag}
+            </Badge>
+          ))}
+      </Flex>
+      <Divider my="xl" />
+      <Text size="xl" fw={700} mb="xl">
+        Responses (3) or -- No responses yet
+      </Text>
+      <CommentEditor />
+      <Divider mt="xl" mb="md" />
       <Comment />
       <Divider my="md" />
       <Comment />

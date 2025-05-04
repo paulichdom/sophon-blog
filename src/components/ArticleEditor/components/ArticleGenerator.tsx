@@ -26,6 +26,7 @@ export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
         </Accordion.Control>
         <Accordion.Panel>
           <Textarea
+            variant="filled"
             size="md"
             label="Article topic"
             description="Describe article in a few words"
@@ -45,6 +46,7 @@ export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
             disabled={generateArticlePending || publishArticlePending}
             variant="gradient"
             gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            radius="xl"
           >
             {generateArticlePending ? 'Generating...' : 'Generate Article'}
           </Button>

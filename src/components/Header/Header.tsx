@@ -119,10 +119,10 @@ export function Header() {
             </Group>
 
             <Group visibleFrom="sm">
-              <Button component={Link} to="/login" variant="default">
+              <Button component={Link} to="/login" variant="default" radius="xl">
                 Log in
               </Button>
-              <Button component={Link} to="/register">
+              <Button component={Link} to="/register" radius="xl">
                 Sign up
               </Button>
               <ColorSchemeToggle />
