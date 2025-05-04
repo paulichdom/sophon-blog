@@ -68,9 +68,9 @@ export const Article: FC<ArticleProps> = ({ article }) => {
             >
               <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
             </ActionIcon>
-            {article.favoritesCount > 0 && (
+            {favoritedState.favoritesCount > 0 && (
               <Text size="sm" c="dimmed">
-                {article.favoritesCount}
+                {favoritedState.favoritesCount}
               </Text>
             )}
           </Flex>

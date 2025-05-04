@@ -75,12 +75,15 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
     }
   }, [content, editor]);
 
+  const hasValidArticleInput = title.length > 3 && description.length > 3;
+
   const isPublishLoading = publishArticlePending || updateArticlePending;
-  const isPublishDisabled = publishArticlePending || updateArticlePending;
+  const isPublishDisabled = !hasValidArticleInput || publishArticlePending || updateArticlePending;
 
   return (
     <Container fluid p={0}>
       <TextInput
+        variant="filled"
         size="md"
         label="Title"
         placeholder="Enter article title"
@@ -90,6 +93,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         required
       />
       <Textarea
+        variant="filled"
         size="md"
         label="Description"
         description="Short article description"
@@ -114,6 +118,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
       <TextEditor editor={editor} />
       {!isEdit && (
         <TagsInput
+          variant="filled"
           mt="md"
           label="Include a topic"
           description="Add or change topics (up to 5) so readers know what your story is about"
@@ -133,10 +138,16 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         <Flex gap={12}>
           {!isEdit && (
             <Fragment>
-              <Button variant="subtle" color="cyan" radius="xl" leftSection={<IconClock size={16} />}>
+              <Button
+                variant="subtle"
+                color="cyan"
+                radius="xl"
+                leftSection={<IconClock size={16} />}
+                disabled={isPublishDisabled}
+              >
                 Schedule for later
               </Button>
-              <Button variant="light" color="cyan" radius="xl">
+              <Button variant="light" color="cyan" radius="xl" disabled={isPublishDisabled}>
                 Save Draft
               </Button>
             </Fragment>

@@ -39,7 +39,6 @@ export type CreateArticleData = {
   tagList: string[];
 };
 
-
 export type GeneratedArticle = {
   article: {
     title: string;
@@ -55,10 +54,28 @@ export type UpdateArticleDto = {
 
 export type UpdateArticleMutationFnArgs = {
   articleSlug: string;
-  updateArticleDto: UpdateArticleDto
-}
+  updateArticleDto: UpdateArticleDto;
+};
 
 export type ArticleFavoritedState = {
   favorited: boolean;
   favoritesCount: number;
+};
+
+export type CreateCommentDto = {
+  comment: {
+    body: string;
+  };
+};
+
+export type CommentData = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  body: string;
+  author: AuthorData;
+};
+
+export type CommentDto = {
+  comment: CommentData;
 };

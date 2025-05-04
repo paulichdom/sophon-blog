@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { IconRobot } from '@tabler/icons-react';
-import { Accordion, Button, Textarea } from '@mantine/core';
+import { Accordion, Button, Flex, Textarea } from '@mantine/core';
 import classes from './ArticleGenerator.module.css';
 
 type ArticleGeneratorProps = {
@@ -18,6 +18,7 @@ export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
   generateArticlePrompt,
   onChangeGenerateArticlePrompt,
 }) => {
+  const hasValidPrompt = generateArticlePrompt.length > 3;
   return (
     <Accordion mb="md" maw={400} classNames={classes}>
       <Accordion.Item value={'Scaffold your article with AI'}>
@@ -39,11 +40,10 @@ export const ArticleGenerator: FC<ArticleGeneratorProps> = ({
             maxRows={2}
           />
           <Button
-            fullWidth={false}
             onClick={handleGenerateArticle}
             loading={generateArticlePending}
             loaderProps={{ type: 'dots' }}
-            disabled={generateArticlePending || publishArticlePending}
+            disabled={!hasValidPrompt || generateArticlePending || publishArticlePending}
             variant="gradient"
             gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
             radius="xl"
