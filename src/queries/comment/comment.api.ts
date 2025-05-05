@@ -1,8 +1,11 @@
 import { API_URL } from '@/shared/api.config';
 import fetch from '@/shared/client';
-import { CommentDto, CreateCommentDto } from '@/types/types';
+import { CommentDto, CreateCommentMutationFnArgs } from '@/types/types';
 
-export const createComment = async (articleSlug: string, createCommentDto: CreateCommentDto) => {
+export const createComment = async ({
+  articleSlug,
+  createCommentDto,
+}: CreateCommentMutationFnArgs) => {
   const resourcePath = `articles/${articleSlug}/comments`;
   const comment: CommentDto = await fetch(`${API_URL}/${resourcePath}`, {
     method: 'POST',

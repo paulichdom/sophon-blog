@@ -113,7 +113,7 @@ export const Article: FC<ArticleProps> = ({ article }) => {
       <Text size="xl" fw={700} mb="xl">
         Responses (3) or -- No responses yet
       </Text>
-      <CommentEditor />
+      <CommentEditor articleSlug={article.slug} />
       <Divider mt="xl" mb="md" />
       <Comment />
       <Divider my="md" />
