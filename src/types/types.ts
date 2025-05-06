@@ -82,5 +82,9 @@ export type CommentDto = {
 
 export type CreateCommentMutationFnArgs = {
   articleSlug: string;
-  createCommentDto: CreateCommentDto
-}
+  createCommentDto: CreateCommentDto;
+};
+
+export type Comments = {
+  comments: CommentData[];
+};
