@@ -19,6 +19,7 @@ export const createComment = async ({
   const resourcePath = `articles/${articleSlug}/comments`;
   const comment: CommentDto = await fetch(`${API_URL}/${resourcePath}`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(createCommentDto),
     credentials: 'include',
   });
