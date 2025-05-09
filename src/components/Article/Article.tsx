@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useFavoriteArticle } from '@/hooks/use-favorite-article';
-import { ArticleData } from '@/types/types';
+import { ArticleData, Comments } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
 import { Comment } from '../Comment/Comment';
 import { CommentEditor } from '../CommentEditor/CommentEditor';
@@ -25,9 +25,10 @@ import { ArticleMenuButton } from './ArticleMenuButton';
 
 export type ArticleProps = {
   article: ArticleData;
+  comments: Comments
 };
 
-export const Article: FC<ArticleProps> = ({ article }) => {
+export const Article: FC<ArticleProps> = ({ article, comments }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
 
