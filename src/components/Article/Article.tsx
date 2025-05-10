@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { IconBookmark, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -25,10 +25,10 @@ import { ArticleMenuButton } from './ArticleMenuButton';
 
 export type ArticleProps = {
   article: ArticleData;
-  comments: Comments
+  commentsData: Comments;
 };
 
-export const Article: FC<ArticleProps> = ({ article, comments }) => {
+export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
 
@@ -50,6 +50,8 @@ export const Article: FC<ArticleProps> = ({ article, comments }) => {
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
+  const { comments } = commentsData;
+  const hasComments = comments.length > 0;
 
   return (
     <Container size="sm">
@@ -112,21 +114,17 @@ export const Article: FC<ArticleProps> = ({ article, comments }) => {
       </Flex>
       <Divider my="xl" />
       <Text size="xl" fw={700} mb="xl">
-        Responses (3) or -- No responses yet
+        {hasComments ? `Responses (${comments.length})` : ' No responses yet'}
       </Text>
       <CommentEditor articleSlug={article.slug} />
-      <Divider mt="xl" mb="md" />
-      <Comment />
-      <Divider my="md" />
-      <Comment />
-      <Divider my="md" />
-      <Comment />
-      <Divider my="md" />
-      <Comment />
-      <Divider my="md" />
-      <Comment />
-      <Divider my="md" />
-      <Comment />
+      {hasComments && <Divider mt="xl" mb="xl" />}
+      {hasComments &&
+        comments.map((comment, index, commentsList) => (
+          <Fragment>
+            <Comment key={comment.id} comment={comment} />
+            {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
+          </Fragment>
+        ))}
       <ResponsesDrawer opened={opened} close={close} />
     </Container>
   );

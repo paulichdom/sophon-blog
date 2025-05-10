@@ -1,13 +1,12 @@
 import { FC } from 'react';
 import moment from 'moment';
 import { Avatar, Group, Text } from '@mantine/core';
-import { Author } from '@/types/types';
+import { AuthorData } from '@/types/types';
 import classes from './ArticleCard.module.css';
-
-const ROBOHASH_URL = 'https://robohash.org/';
+import { ROBOHASH_URL } from '@/shared/constants';
 
 export type ArticleCardAvatarProps = {
-  author: Author;
+  author: AuthorData;
   createdAt: string;
 };
 

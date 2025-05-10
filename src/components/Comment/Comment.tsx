@@ -1,25 +1,29 @@
+import { FC } from 'react';
+import moment from 'moment';
 import { Avatar, Group, Text } from '@mantine/core';
+import { ROBOHASH_URL } from '@/shared/constants';
+import { CommentData } from '@/types/types';
 
-export const Comment = () => {
+type CommentProps = {
+  comment: CommentData;
+};
+
+export const Comment: FC<CommentProps> = ({ comment }) => {
+  const { createdAt, author, body } = comment;
+  const avatar = author.image || `${ROBOHASH_URL}/${author.username}`;
   return (
     <div>
       <Group>
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-          alt="Jacob Warnhalter"
-          radius="xl"
-        />
+        <Avatar src={avatar} alt={author.username} radius="xl" />
         <div>
-          <Text size="sm">Jacob Warnhalter</Text>
+          <Text size="sm">{author.username}</Text>
           <Text size="xs" c="dimmed">
-            10 minutes ago
+            {moment(createdAt).fromNow()}
           </Text>
         </div>
       </Group>
       <Text pl={54} pt="sm" size="sm">
-        This Pokémon likes to lick its palms that are sweetened by being soaked in honey. Teddiursa
-        concocts its own honey by blending fruits and pollen collected by Beedrill. Blastoise has
-        water spouts that protrude from its shell. The water spouts are very accurate.
+        {body}
       </Text>
     </div>
   );

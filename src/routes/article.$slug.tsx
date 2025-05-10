@@ -17,9 +17,9 @@ export const Route = createFileRoute('/article/$slug')({
 function RouteComponent() {
   const articleSlug = Route.useParams().slug;
   const { data: article } = useSuspenseQuery(articleQueryOptions(articleSlug));
-  const { data: allArticleComments } = useSuspenseQuery(
+  const { data: commentsData } = useSuspenseQuery(
     allArticleCommentsQueryOptions(articleSlug)
   );
 
-  return <Article article={article} comments={allArticleComments} />;
+  return <Article article={article} commentsData={commentsData} />;
 }
