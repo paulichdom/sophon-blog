@@ -125,7 +125,12 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
           </Fragment>
         ))}
-      <ResponsesDrawer opened={opened} close={close} />
+      <ResponsesDrawer
+        opened={opened}
+        close={close}
+        articleSlug={article.slug}
+        comments={comments}
+      />
     </Container>
   );
 };
