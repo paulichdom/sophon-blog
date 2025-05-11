@@ -1,11 +1,55 @@
 import { IconHeart, IconStar } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
-import { Avatar, Button, Grid, Group, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Fragment } from 'react/jsx-runtime';
+import { Avatar, Button, Grid, Group, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
   component: RouteComponent,
 });
+
+const data = [
+  {
+    avatar:
+      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
+    name: 'Robert Wolfkisser',
+    job: 'Engineer',
+    email: 'rob_wolf@gmail.com',
+    phone: '+44 (452) 886 09 12',
+  },
+  {
+    avatar:
+      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
+    name: 'Jill Jailbreaker',
+    job: 'Engineer',
+    email: 'jj@breaker.com',
+    phone: '+44 (934) 777 12 76',
+  },
+  {
+    avatar:
+      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
+    name: 'Henry Silkeater',
+    job: 'Designer',
+    email: 'henry@silkeater.io',
+    phone: '+44 (901) 384 88 34',
+  },
+  {
+    avatar:
+      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png',
+    name: 'Bill Horsefighter',
+    job: 'Designer',
+    email: 'bhorsefighter@gmail.com',
+    phone: '+44 (667) 341 45 22',
+  },
+  {
+    avatar:
+      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
+    name: 'Jeremy Footviewer',
+    job: 'Manager',
+    email: 'jeremy@foot.dev',
+    phone: '+44 (881) 245 65 65',
+  },
+];
 
 const stats = [
   { value: '34K', label: 'Followers' },
@@ -104,22 +148,42 @@ function RouteComponent() {
       <Grid.Col span={4} pl="xl">
         <Avatar
           src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
-          size={120}
+          size={100}
           radius={120}
         />
         <Text fz="lg" fw={500} mt="md">
           Jane Fingerlicker
         </Text>
         <Text c="dimmed" fz="sm">
-          jfingerlicker@me.io • Art director
+          2 followers
         </Text>
-        <Group mt="md" justify="center" gap={30}>
-          {items}
-        </Group>
-
-        <Button radius="md" mt="xl" size="md" variant="default">
-          Follow
+        <Button variant="transparent" pl={0} mt="md">
+          Edit profile
         </Button>
+        {data.length > 0 && (
+          <Fragment>
+            <Text fz="md" fw={500} mt="xl">
+              Following
+            </Text>
+            <Stack
+              h={300}
+              bg="var(--mantine-color-body)"
+              align="flex-start"
+              justify="flex-start"
+              gap="md"
+              mt="md"
+            >
+              {data.map((person) => (
+                <Group gap="sm">
+                  <Avatar size={30} src={person.avatar} radius={30} />
+                  <Text fz="sm" fw={500}>
+                    {person.name}
+                  </Text>
+                </Group>
+              ))}
+            </Stack>
+          </Fragment>
+        )}
       </Grid.Col>
     </Grid>
   );
