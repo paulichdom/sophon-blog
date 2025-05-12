@@ -117,7 +117,7 @@ function RouteComponent() {
           classNames={{ tab: classes.tab }}
           mt="md"
         >
-          <Tabs.List>
+          <Tabs.List mb="xl">
             <Tabs.Tab value="articles">My Articles</Tabs.Tab>
             <Tabs.Tab
               value="favorites"
