@@ -28,3 +28,8 @@
 .body {
   /* padding: var(--mantine-spacing-md); */
 }
+
+.bodyText {
+  color: var(--mantine-color-dark-2);
+  margin-left: 7px;
+}
