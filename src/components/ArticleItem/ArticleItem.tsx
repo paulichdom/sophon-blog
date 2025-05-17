@@ -1,24 +1,7 @@
 import { useState } from 'react';
-import {
-  IconBookmark,
-  IconEye,
-  IconHeart,
-  IconHeartFilled,
-  IconMessageCircle,
-} from '@tabler/icons-react';
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Card,
-  Center,
-  Divider,
-  Group,
-  Image,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
-import { ArticleCopyButton } from '../Article/ArticleCopyButton';
+import { IconBookmark, IconEye, IconHeart, IconHeartFilled } from '@tabler/icons-react';
+import { ActionIcon, Avatar, Center, Divider, Group, Text, useMantineTheme } from '@mantine/core';
+import { ArticleItemMenu } from './ArticleItemMenu';
 import classes from './ArticleItem.module.css';
 
 const description =
@@ -41,35 +24,30 @@ export const ArticleItem = () => {
           <Text size="xs">Elsa Typechecker</Text>
         </Group>
       </Group>
-      <Text lineClamp={2} truncate="end" className={classes.title} mt="md" mb="md">
+      <Text lineClamp={2} className={classes.title} mt="md" mb="md">
         The best laptop for Frontend engineers in 2022
       </Text>
-      <Text lineClamp={2} c="dimmed" truncate="end" mb="lg">
+      <Text lineClamp={2} c="dimmed" mb="lg">
         {description}
       </Text>
-      <Group gap={'lg'}>
-        <Text size="xs" c="dimmed">
-          Feb 6th
-        </Text>
-        <Center>
-          <IconMessageCircle size={16} stroke={1.5} color={theme.colors.dark[2]} />
-          <Text size="sm" className={classes.bodyText}>
-            5
+      <Group justify="space-between">
+        <Group gap={12}>
+          <Text size="xs" c="dimmed">
+            Feb 6th
           </Text>
-        </Center>
-        <Center>
-          <IconEye size={16} stroke={1.5} color={theme.colors.dark[2]} />
-          <Text size="sm" className={classes.bodyText}>
-            7847
-          </Text>
-        </Center>
-        {/*         <ActionIcon variant="subtle" color="gray">
-          <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
-        </ActionIcon>
-        <ActionIcon variant="subtle" color="gray">
-          <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
-        </ActionIcon>
-        <ArticleCopyButton articleSlug={'placeholder'} /> */}
+          <Center>
+            <IconHeartFilled size={16} stroke={1.5} color={theme.colors.dark[2]} />
+            <Text size="sm" className={classes.bodyText}>
+              5
+            </Text>
+          </Center>
+        </Group>
+        <Group gap={12}>
+          <ActionIcon variant="subtle" color="gray">
+            <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
+          </ActionIcon>
+          <ArticleItemMenu />
+        </Group>
       </Group>
       <Divider mt="md" mb="lg" />
     </div>
