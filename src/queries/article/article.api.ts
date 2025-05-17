@@ -9,7 +9,16 @@ import {
 } from '@/types/types';
 
 export const fetchAllArticles = async () => {
-  const articles: Articles = await fetch(`${API_URL}/articles`);
+  const url = new URL(`${API_URL}/articles`);
+  const articles: Articles = await fetch(url);
+  return articles;
+};
+
+export const fetchArticlesByAuthor = async (username: string) => {
+  const url = new URL(`${API_URL}/articles`);
+  url.searchParams.append('author', username);
+
+  const articles: Articles = await fetch(url.toString());
   return articles;
 };
 

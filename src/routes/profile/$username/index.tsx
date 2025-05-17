@@ -1,20 +1,26 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { SimpleGrid, Stack } from '@mantine/core';
-import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
-import { article } from '@/components/UserInfo/tmpMockArticle';
-import { range } from '@/utils';
+import { Stack } from '@mantine/core';
 import { ArticleItem } from '@/components/ArticleItem/ArticleItem';
+import { ArticleItemPendingComponent } from '@/components/ArticleItem/ArticleItemPendingComponent';
+import { articlesByAuthorQueryOptions } from '@/queries/article/article.queries';
 
 export const Route = createFileRoute('/profile/$username/')({
+  loader: ({ context: { queryClient } }) => {
+    return queryClient.ensureQueryData(articlesByAuthorQueryOptions('JakeMiller'));
+  },
   component: RouteComponent,
+  pendingComponent: ArticleItemPendingComponent,
 });
 
 function RouteComponent() {
-  const MockArticles = () =>
-    range(8).map((_, index) => <ArticleItem />);
+  const { data: articlesByAuthor } = useSuspenseQuery(articlesByAuthorQueryOptions('JakeMiller'));
+
   return (
     <Stack>
-      <MockArticles />
+      {articlesByAuthor.articles.map((article) => (
+        <ArticleItem key={article.id} article={article} />
+      ))}
     </Stack>
   );
 }

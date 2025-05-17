@@ -96,16 +96,12 @@ function RouteComponent() {
     }
   };
 
-  const items = stats.map((stat) => (
-    <div key={stat.label}>
-      <Text ta="center" fz="lg" fw={500}>
-        {stat.value}
-      </Text>
-      <Text ta="center" fz="sm" c="dimmed" lh={1}>
-        {stat.label}
-      </Text>
-    </div>
-  ));
+  console.log('profile -> route', {
+    router,
+    pathSegments,
+    currentPath,
+    currentTab
+  })
 
   return (
     <Grid gutter={32}>

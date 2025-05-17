@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { SimpleGrid } from '@mantine/core';
 import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { favoritedArticle } from '@/components/UserInfo/tmpMockArticle';
