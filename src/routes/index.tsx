@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { SimpleGrid, Skeleton } from '@mantine/core';
 import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
-import { allArticlesQueryOptions } from '@/queries/article/article.queries';
+import { allArticlesQueryOptions } from '@/api/article/article.queries';
 import { range } from '@/utils';
 import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleton';
 

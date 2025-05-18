@@ -7,7 +7,7 @@ import {
   createArticleMutationOptions,
   generateArticleMutationOptions,
   updateArticleMutationOptions,
-} from '@/queries/article/article.mutations';
+} from '@/api/article/article.mutations';
 import { ArticleData, ArticleDto } from '@/types/types';
 import { INITIAL_EDITOR_CONTENT } from './ArticleEditor.constants';
 

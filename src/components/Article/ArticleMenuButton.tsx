@@ -5,7 +5,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import { deleteArticleMutationOptions } from '@/queries/article/article.mutations';
+import { deleteArticleMutationOptions } from '@/api/article/article.mutations';
 import { ArticleDto } from '@/types/types';
 import classes from './MenuButton.module.css';
 

@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import {
   favoriteArticleMutationOptions,
   unfavoriteArticleMutationOptions,
-} from '@/queries/article/article.mutations';
+} from '@/api/article/article.mutations';
 import { ArticleDto, ArticleFavoritedState } from '@/types/types';
 
 type UseFavoriteArticleValue = {

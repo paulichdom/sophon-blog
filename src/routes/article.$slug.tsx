@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Article } from '@/components/Article/Article';
-import { articleQueryOptions } from '@/queries/article/article.queries';
-import { allArticleCommentsQueryOptions } from '@/queries/comment/comment.queries';
+import { articleQueryOptions } from '@/api/article/article.queries';
+import { allArticleCommentsQueryOptions } from '@/api/comment/comment.queries';
 
 export const Route = createFileRoute('/article/$slug')({
   loader: async ({ context: { queryClient }, params: { slug } }) => {

@@ -3,7 +3,7 @@ import { IconCheck, IconXboxX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { Avatar, Button, Flex, Group, Text, Textarea } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { createCommentMutationOptions } from '@/queries/comment/comment.mutations';
+import { createCommentMutationOptions } from '@/api/comment/comment.mutations';
 import { queryClient } from '@/queryClient';
 import { CommentDto } from '@/types/types';
 import classes from './CommentEditor.module.css';

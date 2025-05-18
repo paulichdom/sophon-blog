@@ -1,6 +1,6 @@
 import { ArticleEditor } from '@/components/ArticleEditor/ArticleEditor';
 import { useArticleEditor } from '@/components/ArticleEditor/use-article-editor';
-import { fetchArticle } from '@/queries/article/article.api';
+import { fetchArticle } from '@/api/article/article.api';
 import { Container } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router'
 
