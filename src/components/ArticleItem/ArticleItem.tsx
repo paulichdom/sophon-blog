@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IconBookmark, IconHeartFilled } from '@tabler/icons-react';
+import { Link } from '@tanstack/react-router';
 import { ActionIcon, Avatar, Center, Divider, Group, Text, useMantineTheme } from '@mantine/core';
 import { ArticleData } from '@/types/types';
 import { formatDateShort } from '@/utils';
@@ -32,9 +33,16 @@ export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
           </Group>
         </Group>
       )}
-      <Text lineClamp={2} className={classes.title} mb="md">
-        {article.title}
-      </Text>
+      <Link
+        to="/article/$slug"
+        params={{
+          slug: article.slug,
+        }}
+      >
+        <Text lineClamp={2} className={classes.title} mb="md">
+          {article.title}
+        </Text>
+      </Link>
       <Text lineClamp={2} c="dimmed" mb="lg">
         {article.description}
       </Text>

@@ -51,12 +51,6 @@ const data = [
   },
 ];
 
-const stats = [
-  { value: '34K', label: 'Followers' },
-  { value: '187', label: 'Follows' },
-  { value: '1.6K', label: 'Posts' },
-];
-
 type TabKey = '' | 'favorites' | 'saved';
 type TabValue = 'articles' | 'favorites' | 'saved';
 
@@ -77,7 +71,7 @@ function RouteComponent() {
   const navigate = useNavigate();
   const router = useRouter();
 
-  const username = 'Jane Fingerlicker';
+  const username = 'JakeMiller';
 
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
@@ -95,13 +89,6 @@ function RouteComponent() {
       navigate({ to: `/profile/$username/${path}`, params: { username } });
     }
   };
-
-  console.log('profile -> route', {
-    router,
-    pathSegments,
-    currentPath,
-    currentTab
-  })
 
   return (
     <Grid gutter={32}>

@@ -22,6 +22,14 @@ export const fetchArticlesByAuthor = async (username: string) => {
   return articles;
 };
 
+export const fetchArticlesFavoritedByUser = async (username: string) => {
+  const url = new URL(`${API_URL}/articles`);
+  url.searchParams.append('favorited', username);
+
+  const articles: Articles = await fetch(url.toString());
+  return articles;
+};
+
 export const fetchArticle = async (articleSlug: string) => {
   const resourcePath = `articles/${articleSlug}`;
   const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`, {
