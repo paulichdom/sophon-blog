@@ -28,5 +28,34 @@ export const loginUser = async (input: LoginUserDto) => {
 
   const data = await response.json();
 
+  console.log({ data, response });
+
+  return data.user;
+};
+
+export const currentUser = async () => {
+  const response = await fetch(`${API_URL}/users/whoami`, {
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Auth error');
+
+  const data = await response.json();
+
+  return data.user;
+};
+
+export const logoutUser = async () => {
+  const response = await fetch(`${API_URL}/users/logout`, {
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) throw new Error('Auth error');
+
+  const data = await response.json();
+  console.log({ data, response });
+
   return data.user;
 };

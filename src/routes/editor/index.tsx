@@ -1,9 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Container } from '@mantine/core';
+import { currentUserQueryOptions } from '@/auth/auth.queries';
 import { ArticleEditor } from '@/components/ArticleEditor/ArticleEditor';
 import { useArticleEditor } from '@/components/ArticleEditor/use-article-editor';
+import { queryClient } from '@/queryClient';
 
 export const Route = createFileRoute('/editor/')({
+  beforeLoad: async () => {
+    try {
+      const { user } = await queryClient.ensureQueryData(currentUserQueryOptions);
+      if (!user) throw redirect({ to: '/login' });
+    } catch {
+      throw redirect({ to: '/login' });
+    }
+  },
   component: RouteComponent,
 });
 

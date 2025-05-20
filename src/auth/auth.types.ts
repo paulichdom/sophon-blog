@@ -17,10 +17,14 @@ export type RegisterUserDto = {
   user: RegisterUserData;
 };
 
+export type UserDto = {
+  user: UserData;
+};
+
 export type UserData = {
+  username: string;
   email: string;
   token: string;
-  username: string;
-  bio: null;
-  image: null;
+  bio?: null;
+  image?: null;
 };

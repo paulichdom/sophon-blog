@@ -1,57 +1,58 @@
-import * as React from 'react';
+import { createContext, ReactNode, useContext } from 'react';
+import { queryClient } from '@/queryClient';
+import { loginUser, logoutUser, registerUser } from './auth.api';
+import { LoginUserDto, RegisterUserDto } from './auth.types';
+import { useCurrentUser } from './use-current-user';
 
-export type AuthContextType = {
+interface AuthContextType {
+  user: any;
   isAuthenticated: boolean;
-  login: (username: string) => Promise<void>;
+  isLoading: boolean;
+  login: (credentials: LoginUserDto) => Promise<void>;
   logout: () => Promise<void>;
-  user: string | null;
-};
-
-const AuthContext = React.createContext<AuthContextType | null>(null);
-
-const key = 'auth.user';
-
-function getStoredUser() {
-  return localStorage.getItem(key);
+  register: (input: RegisterUserDto) => Promise<void>;
 }
 
-function setStoredUser(user: string | null) {
-  if (user) {
-    localStorage.setItem(key, user);
-  } else {
-    localStorage.removeItem(key);
-  }
-}
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<string | null>(getStoredUser());
-  const isAuthenticated = !!user;
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const { data, isLoading } = useCurrentUser();
 
-  const logout = React.useCallback(async () => {
-    setStoredUser(null);
-    setUser(null);
-  }, []);
+  const login = async (credentials: LoginUserDto) => {
+    await loginUser(credentials);
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
+  };
 
-  const login = React.useCallback(async (username: string) => {
-    setStoredUser(username);
-    setUser(username);
-  }, []);
+  const logout = async () => {
+    await logoutUser();
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
+  };
 
-  React.useEffect(() => {
-    setUser(getStoredUser());
-  }, []);
+  const register = async (input: RegisterUserDto) => {
+    await registerUser(input);
+
+    // Optionally: wait for user to be available
+    await queryClient.invalidateQueries({ queryKey: ['me'] });
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user: data?.user ?? null,
+        isAuthenticated: !!data?.user,
+        isLoading,
+        login,
+        logout,
+        register,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
-  const context = React.useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+export const useAuthContext = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuthContext must be used within AuthProvider');
+  return ctx;
+};
