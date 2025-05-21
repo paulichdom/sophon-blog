@@ -24,13 +24,7 @@ export const loginUser = async (input: LoginUserDto) => {
     body: JSON.stringify(input),
   });
 
-  if (!response.ok) throw new Error('Invalid credentials');
-
-  const data = await response.json();
-
-  console.log({ data, response });
-
-  return data.user;
+  return response.user;
 };
 
 export const currentUser = async () => {
@@ -48,6 +42,7 @@ export const currentUser = async () => {
 
 export const logoutUser = async () => {
   const response = await fetch(`${API_URL}/users/logout`, {
+    method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
   });
