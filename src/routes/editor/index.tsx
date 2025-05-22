@@ -8,10 +8,9 @@ import { queryClient } from '@/queryClient';
 export const Route = createFileRoute('/editor/')({
   beforeLoad: async () => {
     try {
-      const { user } = await queryClient.ensureQueryData(currentUserQueryOptions);
-      console.log({ user });
-      if (!user) throw redirect({ to: '/login' });
-    } catch {
+      const currentUser = await queryClient.ensureQueryData(currentUserQueryOptions);
+      if (!currentUser) throw redirect({ to: '/login' });
+    } catch (error) {
       throw redirect({ to: '/login' });
     }
   },

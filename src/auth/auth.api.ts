@@ -33,11 +33,7 @@ export const currentUser = async () => {
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Auth error');
-
-  const data = await response.json();
-
-  return data.user;
+  return response.user;
 };
 
 export const logoutUser = async () => {
