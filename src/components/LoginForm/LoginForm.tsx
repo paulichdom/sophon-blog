@@ -1,21 +1,23 @@
-import { FC } from 'react';
-import { IconXboxX } from '@tabler/icons-react';
+import { FC, useState } from 'react';
+import { IconExclamationCircleFilled, IconXboxX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import {
   Button,
+  Center,
   Divider,
+  Flex,
   Group,
   Paper,
   PasswordInput,
   Stack,
   Text,
   TextInput,
+  useMantineTheme,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { loginMutationOptions } from '@/auth/auth.mutations';
-import { queryClient } from '@/queryClient';
 import { GoogleButton } from '../GoogleButton/GoogleButton';
 import { MantineLink } from '../MantineLink/MantineLink';
 import { TwitterButton } from '../TwitterButton/TwitterButton';
@@ -35,7 +37,9 @@ type LoginFormProps = {
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ form }) => {
+  const theme = useMantineTheme();
   const navigate = useNavigate();
+  const [loginError, setLoginError] = useState<string | null>(null);
   const { mutate: loginUser, isPending: loginUserPending } = useMutation(loginMutationOptions());
 
   const handleSubmit = () => {
@@ -69,13 +73,14 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
         navigate({ to: '/' });
       },
       onError: (error) => {
-        console.log(error);
+        setLoginError(error.message);
+        form.setErrors({ email: '', password: '' });
 
         notifications.update({
           id: loginUserNotificationId,
           color: 'red',
           title: 'Login error',
-          message: 'Error occured while logging you in',
+          message: error.message,
           icon: <IconXboxX size={18} />,
           loading: false,
           autoClose: 2000,
@@ -105,8 +110,11 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
               label="Email"
               placeholder="hello@mantine.dev"
               value={form.values.email}
-              onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-              error={form.errors.email && 'Invalid email'}
+              onChange={(event) => {
+                setLoginError(null);
+                form.setFieldValue('email', event.currentTarget.value);
+              }}
+              error={form.errors.email || !!loginError}
               radius="md"
             />
 
@@ -115,10 +123,21 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
               label="Password"
               placeholder="Your password"
               value={form.values.password}
-              onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-              error={form.errors.password && 'Password should include at least 6 characters'}
+              onChange={(event) => {
+                setLoginError(null);
+                form.setFieldValue('password', event.currentTarget.value);
+              }}
+              error={form.errors.password || !!loginError}
               radius="md"
             />
+            {loginError && (
+              <Flex gap={4} align="center">
+                <IconExclamationCircleFilled size={14} stroke={1.5} color={theme.colors.red[9]} />
+                <Text size="xs" c={theme.colors.red[9]}>
+                  {loginError}
+                </Text>
+              </Flex>
+            )}
           </Stack>
 
           <Group justify="space-between" mt="xl">

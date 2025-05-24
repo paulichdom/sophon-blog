@@ -9,8 +9,6 @@ export const registerUser = async (input: RegisterUserDto) => {
     body: JSON.stringify(input),
   });
 
-  if (!response.ok) throw new Error('Registration failed');
-
   const data = await response.json();
 
   return data.user;
@@ -23,6 +21,9 @@ export const loginUser = async (input: LoginUserDto) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   });
+
+  if (response.statusCode === 404 || response.statusCode === 400)
+    throw new Error('Invalid credentials');
 
   return response.user;
 };
@@ -43,10 +44,7 @@ export const logoutUser = async () => {
     headers: { 'Content-Type': 'application/json' },
   });
 
-  if (!response.ok) throw new Error('Auth error');
-
   const data = await response.json();
-  console.log({ data, response });
 
   return data.user;
 };
