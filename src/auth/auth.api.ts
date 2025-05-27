@@ -9,7 +9,15 @@ export const registerUser = async (input: RegisterUserDto) => {
     body: JSON.stringify(input),
   });
 
-  const data = await response.json();
+  if (response.statusCode === 400) {
+    if (response.message === 'Email in use') {
+      throw new Error('Email already in use');
+    }
+
+    throw new Error('Registration failed, please try again');
+  }
+
+  const data = await response;
 
   return data.user;
 };

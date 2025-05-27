@@ -4,8 +4,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import {
   Button,
-  Center,
-  Divider,
   Flex,
   Group,
   Paper,
@@ -18,9 +16,7 @@ import {
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { loginMutationOptions } from '@/auth/auth.mutations';
-import { GoogleButton } from '../GoogleButton/GoogleButton';
 import { MantineLink } from '../MantineLink/MantineLink';
-import { TwitterButton } from '../TwitterButton/TwitterButton';
 import classes from './LoginForm.module.css';
 
 type LoginFormProps = {
@@ -96,12 +92,12 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
           Welcome to Sophon, login with
         </Text>
 
-        <Group grow mb="md" mt="md">
+        {/* TODO: Add Google login */}
+        {/* <Group grow mb="md" mt="md">
           <GoogleButton radius="xl">Google</GoogleButton>
-          <TwitterButton radius="xl">Twitter</TwitterButton>
         </Group>
 
-        <Divider label="Or continue with email" labelPosition="center" my="lg" />
+        <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>

@@ -10,10 +10,9 @@ export const Route = createFileRoute('/register')({
 function RegisterPage() {
   const form = useForm({
     initialValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
-      terms: true,
     },
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),

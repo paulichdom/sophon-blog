@@ -1,41 +1,77 @@
 import { FC } from 'react';
-import { Link } from '@tanstack/react-router';
-import {
-  Anchor,
-  Button,
-  Checkbox,
-  Divider,
-  Group,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
+import { Button, Group, Paper, Stack, Text, TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { GoogleButton } from '../GoogleButton/GoogleButton';
+import { notifications } from '@mantine/notifications';
+import { registerMutationOptions } from '@/auth/auth.mutations';
 import { MantineLink } from '../MantineLink/MantineLink';
-import { TwitterButton } from '../TwitterButton/TwitterButton';
+import { PasswordStrength } from '../PasswordStrength/PasswordStrength';
 import classes from './RegisterForm.module.css';
 
 type RegisterFormProps = {
   form: UseFormReturnType<
     {
-      name: string;
+      username: string;
       email: string;
       password: string;
-      terms: boolean;
     },
-    (values: { name: string; email: string; password: string; terms: boolean }) => {
-      name: string;
+    (values: { username: string; email: string; password: string }) => {
+      username: string;
       email: string;
       password: string;
-      terms: boolean;
     }
   >;
 };
 
 export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
+  const { mutate: registerUser, isPending: registerUserPending } =
+    useMutation(registerMutationOptions());
+  const navigate = useNavigate();
+
+  console.log(form)
+
+  const handleSubmit = () => {
+    const registerUserNotificationId = notifications.show({
+      loading: true,
+      title: 'Registering your account',
+      message: 'Please wait while we create your account',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
+    const registerUserDto = {
+      user: {
+        ...form.values,
+      },
+    };
+
+    registerUser(registerUserDto, {
+      onSuccess: () => {
+        notifications.update({
+          id: registerUserNotificationId,
+          color: 'teal',
+          title: 'Account created',
+          message: 'Welcome to Sophon, please login to continue',
+          loading: false,
+          autoClose: 5000,
+        });
+
+        navigate({ to: '/login' });
+      },
+      onError: (error) => {
+        notifications.update({
+          id: registerUserNotificationId,
+          color: 'red',
+          title: 'Registration error',
+          message: error.message,
+          loading: false,
+          autoClose: 5000,
+        });
+      },
+    });
+  };
+
   return (
     <div className={classes.container}>
       <Paper radius="md" p="xl" withBorder>
@@ -43,20 +79,20 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
           Welcome to Sophon, register with
         </Text>
 
-        <Group grow mb="md" mt="md">
+        {/* TODO: Add Google login */}
+        {/* <Group grow mb="md" mt="md">
           <GoogleButton radius="xl">Google</GoogleButton>
-          <TwitterButton radius="xl">Twitter</TwitterButton>
         </Group>
 
-        <Divider label="Or continue with email" labelPosition="center" my="lg" />
+        <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
 
-        <form onSubmit={form.onSubmit(() => {})}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             <TextInput
-              label="Name"
-              placeholder="Your name"
-              value={form.values.name}
-              onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+              label="Username"
+              placeholder="Your username"
+              value={form.values.username}
+              onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}
               radius="md"
             />
 
@@ -70,20 +106,10 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
               radius="md"
             />
 
-            <PasswordInput
-              required
-              label="Password"
-              placeholder="Your password"
+            <PasswordStrength
               value={form.values.password}
-              onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-              error={form.errors.password && 'Password should include at least 6 characters'}
-              radius="md"
-            />
-
-            <Checkbox
-              label="I accept terms and conditions"
-              checked={form.values.terms}
-              onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+              setValue={(value) => form.setFieldValue('password', value)}
+              error={form.errors.password}
             />
           </Stack>
 
