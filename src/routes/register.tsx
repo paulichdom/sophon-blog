@@ -15,6 +15,7 @@ function RegisterPage() {
       password: '',
     },
     validate: {
+      username: (val) => (val.length <= 3 ? 'Username should include at least 3 characters' : null),
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
       password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
     },

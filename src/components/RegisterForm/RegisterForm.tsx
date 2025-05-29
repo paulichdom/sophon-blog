@@ -29,9 +29,18 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
     useMutation(registerMutationOptions());
   const navigate = useNavigate();
 
-  console.log(form)
+  console.log({ errors: form.errors, values: form.values });
+  const hasAllValues = Object.values(form.values).every((value) => value !== '');
+  const hasSomeErrors = Object.values(form.errors).some((error) => error !== null);
 
   const handleSubmit = () => {
+    form.setFieldValue('username', form.values.username.trim());
+    
+    if (form.values.username.length < 3) {
+      form.setFieldError('username', 'Username should include at least 3 characters');
+      return;
+    }
+
     const registerUserNotificationId = notifications.show({
       loading: true,
       title: 'Registering your account',
@@ -93,6 +102,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
               placeholder="Your username"
               value={form.values.username}
               onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}
+              error={form.errors.username}
               radius="md"
             />
 
@@ -117,7 +127,11 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
             <MantineLink to="/login" c="dimmed" size="xs">
               Already have an account? Login
             </MantineLink>
-            <Button type="submit" radius="xl">
+            <Button
+              type="submit"
+              radius="xl"
+              disabled={registerUserPending || !hasAllValues || hasSomeErrors}
+            >
               Register
             </Button>
           </Group>
