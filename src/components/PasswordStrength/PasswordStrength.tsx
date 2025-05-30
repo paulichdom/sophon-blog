@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Group, PasswordInput, Progress } from '@mantine/core';
 import { PasswordRequirement } from '../PasswordRequirement/PasswordRequirement';
-import { getStrength, requirements } from './PasswordStrength.helpers';
+import { getStrength, passwordRequirements } from './PasswordStrength.helpers';
 
 type PasswordStrengthProps = {
   value: string;
@@ -11,9 +11,11 @@ type PasswordStrengthProps = {
 
 export const PasswordStrength: FC<PasswordStrengthProps> = ({ value, setValue, error }) => {
   const strength = getStrength(value);
-  const checks = requirements.map((requirement, index) => (
+
+  const checks = passwordRequirements.map((requirement, index) => (
     <PasswordRequirement key={index} label={requirement.label} meets={requirement.re.test(value)} />
   ));
+
   const bars = Array(4)
     .fill(0)
     .map((_, index) => (

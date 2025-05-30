@@ -29,18 +29,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
     useMutation(registerMutationOptions());
   const navigate = useNavigate();
 
-  console.log({ errors: form.errors, values: form.values });
-  const hasAllValues = Object.values(form.values).every((value) => value !== '');
-  const hasSomeErrors = Object.values(form.errors).some((error) => error !== null);
-
   const handleSubmit = () => {
-    form.setFieldValue('username', form.values.username.trim());
-    
-    if (form.values.username.length < 3) {
-      form.setFieldError('username', 'Username should include at least 3 characters');
-      return;
-    }
-
     const registerUserNotificationId = notifications.show({
       loading: true,
       title: 'Registering your account',
@@ -81,21 +70,18 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
     });
   };
 
+  const handleErrors = (errors: typeof form.errors) => {
+    const firstErrorPath = Object.keys(errors)[0];
+    form.getInputNode(firstErrorPath)?.focus();
+  };
+
   return (
     <div className={classes.container}>
       <Paper radius="md" p="xl" withBorder>
         <Text size="lg" fw={500}>
           Welcome to Sophon, register with
         </Text>
-
-        {/* TODO: Add Google login */}
-        {/* <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl">Google</GoogleButton>
-        </Group>
-
-        <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
-
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit(handleSubmit, handleErrors)}>
           <Stack>
             <TextInput
               label="Username"
@@ -105,33 +91,26 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
               error={form.errors.username}
               radius="md"
             />
-
             <TextInput
               required
               label="Email"
-              placeholder="hello@mantine.dev"
+              placeholder="hello@sophon.dev"
               value={form.values.email}
               onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
               error={form.errors.email && 'Invalid email'}
               radius="md"
             />
-
             <PasswordStrength
               value={form.values.password}
               setValue={(value) => form.setFieldValue('password', value)}
               error={form.errors.password}
             />
           </Stack>
-
           <Group justify="space-between" mt="xl">
             <MantineLink to="/login" c="dimmed" size="xs">
               Already have an account? Login
             </MantineLink>
-            <Button
-              type="submit"
-              radius="xl"
-              disabled={registerUserPending || !hasAllValues || hasSomeErrors}
-            >
+            <Button type="submit" radius="xl" disabled={registerUserPending}>
               Register
             </Button>
           </Group>
