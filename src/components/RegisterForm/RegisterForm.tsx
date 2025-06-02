@@ -84,6 +84,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
         <form onSubmit={form.onSubmit(handleSubmit, handleErrors)}>
           <Stack>
             <TextInput
+              required
               label="Username"
               placeholder="Your username"
               value={form.values.username}
