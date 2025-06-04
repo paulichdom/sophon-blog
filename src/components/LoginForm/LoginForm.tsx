@@ -16,6 +16,7 @@ import {
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { loginMutationOptions } from '@/auth/auth.mutations';
+import { useAuthStore } from '@/auth/auth.store';
 import { MantineLink } from '../MantineLink/MantineLink';
 import classes from './LoginForm.module.css';
 
@@ -37,6 +38,7 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const { mutate: loginUser, isPending: loginUserPending } = useMutation(loginMutationOptions());
+  const { setAuth } = useAuthStore();
 
   const handleSubmit = () => {
     const loginUserNotificationId = notifications.show({
@@ -54,8 +56,8 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
     };
 
     loginUser(loginUserDto, {
-      onSuccess: () => {
-        //queryClient.invalidateQueries({ queryKey: ['me'] });
+      onSuccess: (user) => {
+        setAuth(user);
 
         notifications.update({
           id: loginUserNotificationId,
@@ -91,14 +93,6 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
         <Text size="lg" fw={500}>
           Welcome to Sophon, login with
         </Text>
-
-        {/* TODO: Add Google login */}
-        {/* <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl">Google</GoogleButton>
-        </Group>
-
-        <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
-
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             <TextInput
@@ -135,7 +129,6 @@ export const LoginForm: FC<LoginFormProps> = ({ form }) => {
               </Flex>
             )}
           </Stack>
-
           <Group justify="space-between" mt="xl">
             <MantineLink to="/register" c="dimmed" size="xs">
               Don't have an account? Register
