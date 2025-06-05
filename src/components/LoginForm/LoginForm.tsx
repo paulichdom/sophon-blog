@@ -1,7 +1,5 @@
-import { FC, useState } from 'react';
-import { IconExclamationCircleFilled, IconXboxX } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { FC } from 'react';
+import { IconExclamationCircleFilled } from '@tabler/icons-react';
 import {
   Button,
   Flex,
@@ -14,78 +12,22 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
-import { loginMutationOptions } from '@/auth/auth.mutations';
-import { useAuthStore } from '@/auth/auth.store';
 import { MantineLink } from '../MantineLink/MantineLink';
+import { useLoginForm } from './use-login-form';
 import classes from './LoginForm.module.css';
 
-type LoginFormProps = {
-  form: UseFormReturnType<
-    {
-      email: string;
-      password: string;
-    },
-    (values: { email: string; password: string }) => {
-      email: string;
-      password: string;
-    }
-  >;
+export type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+export type LoginFormProps = {
+  form: UseFormReturnType<LoginFormValues>;
 };
 
 export const LoginForm: FC<LoginFormProps> = ({ form }) => {
   const theme = useMantineTheme();
-  const navigate = useNavigate();
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const { mutate: loginUser, isPending: loginUserPending } = useMutation(loginMutationOptions());
-  const { setAuth } = useAuthStore();
-
-  const handleSubmit = () => {
-    const loginUserNotificationId = notifications.show({
-      loading: true,
-      title: 'Login',
-      message: 'Logging you in',
-      autoClose: false,
-      withCloseButton: false,
-    });
-
-    const loginUserDto = {
-      user: {
-        ...form.values,
-      },
-    };
-
-    loginUser(loginUserDto, {
-      onSuccess: (user) => {
-        setAuth(user);
-
-        notifications.update({
-          id: loginUserNotificationId,
-          color: 'teal',
-          title: 'Login successful',
-          message: 'Welcome back to Sophon',
-          loading: false,
-          autoClose: 2000,
-        });
-
-        navigate({ to: '/' });
-      },
-      onError: (error) => {
-        setLoginError(error.message);
-        form.setErrors({ email: '', password: '' });
-
-        notifications.update({
-          id: loginUserNotificationId,
-          color: 'red',
-          title: 'Login error',
-          message: error.message,
-          icon: <IconXboxX size={18} />,
-          loading: false,
-          autoClose: 2000,
-        });
-      },
-    });
-  };
+  const { loginError, setLoginError, handleSubmit } = useLoginForm(form);
 
   return (
     <div className={classes.container}>
