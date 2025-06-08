@@ -4,7 +4,6 @@ import { useNavigate } from '@tanstack/react-router';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { loginMutationOptions } from '@/auth/auth.mutations';
-import { useAuthStore } from '@/auth/auth.store';
 import { LoginFormValues } from './LoginForm';
 
 type UseLoginFormValues = {
@@ -17,7 +16,6 @@ export const useLoginForm = (form: UseFormReturnType<LoginFormValues>): UseLogin
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const { mutate: loginUser, isPending: loginUserPending } = useMutation(loginMutationOptions());
-  const { setAuth } = useAuthStore();
 
   const handleSubmit = () => {
     const loginUserNotificationId = notifications.show({
@@ -35,9 +33,7 @@ export const useLoginForm = (form: UseFormReturnType<LoginFormValues>): UseLogin
     };
 
     loginUser(loginUserDto, {
-      onSuccess: (user) => {
-        setAuth(user);
-
+      onSuccess: () => {
         notifications.update({
           id: loginUserNotificationId,
           color: 'teal',

@@ -11,9 +11,9 @@ type AuthState = {
 };
 
 type AuthActions = {
-  setAuth: (user: UserData) => void;
+  handleAuthSuccess: (user: UserData) => void;
   validateToken: () => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 type AuthStore = AuthState & AuthActions;
@@ -25,7 +25,13 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       isAuthenticated: false,
       isLoading: false,
-      setAuth: (user) => set({ user, accessToken: user.token, isAuthenticated: true }),
+      handleAuthSuccess(user: UserData) {
+        set({
+          user,
+          accessToken: user.token,
+          isAuthenticated: true,
+        });
+      },
       validateToken: async () => {
         const accessToken = get().accessToken;
 

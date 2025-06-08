@@ -1,6 +1,6 @@
 import { API_URL } from '@/shared/api.config';
 import fetch from '@/shared/client';
-import { LoginUserDto, RegisterUserDto } from './auth.types';
+import { LoginUserDto, RegisterUserDto, UserData, UserDto } from './auth.types';
 
 export const registerUser = async (input: RegisterUserDto) => {
   const response = await fetch(`${API_URL}/users/register`, {
@@ -22,7 +22,7 @@ export const registerUser = async (input: RegisterUserDto) => {
   return data.user;
 };
 
-export const loginUser = async (input: LoginUserDto) => {
+export const loginUser = async (input: LoginUserDto): Promise<UserData> => {
   const response = await fetch(`${API_URL}/users/login`, {
     method: 'POST',
     credentials: 'include',

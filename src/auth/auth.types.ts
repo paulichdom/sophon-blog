@@ -24,7 +24,7 @@ export type UserDto = {
 export type UserData = {
   username: string;
   email: string;
-  token: string;
+  token?: string;
   bio?: null;
   image?: null;
 };
