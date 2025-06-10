@@ -1,65 +1,30 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { currentUser, logoutUser } from './auth.api';
 import { UserData } from './auth.types';
 
-type AuthState = {
-  user: UserData | null;
+export type AuthState = {
   accessToken: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
+  user: UserData | null;
 };
 
-type AuthActions = {
-  handleAuthSuccess: (user: UserData) => void;
-  validateToken: () => Promise<void>;
-  logout: () => Promise<void>;
+export type AuthActions = {
+  setToken: (token: string | null) => void;
+  setUser: (user: AuthState['user']) => void;
+  logout: () => void;
 };
 
-type AuthStore = AuthState & AuthActions;
+export type AuthStore = AuthState & AuthActions;
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
-      user: null,
+    (set) => ({
       accessToken: null,
-      isAuthenticated: false,
-      isLoading: false,
-      handleAuthSuccess(user: UserData) {
-        set({
-          user,
-          accessToken: user.token,
-          isAuthenticated: true,
-        });
-      },
-      validateToken: async () => {
-        const accessToken = get().accessToken;
+      user: null,
 
-        if (!accessToken) {
-          set({ isAuthenticated: false, user: null, isLoading: false });
-          return;
-        }
-
-        set({ isLoading: true });
-
-        try {
-          const user = await currentUser();
-          set({ user, accessToken: user.token, isAuthenticated: true });
-        } catch (error) {
-          set({ user: null, accessToken: null, isAuthenticated: false });
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-      logout: async () => {
-        await logoutUser();
-        set({ user: null, accessToken: null });
-        localStorage.removeItem('access-token');
-      },
+      setToken: (token) => set({ accessToken: token }),
+      setUser: (user) => set({ user }),
+      logout: () => set({ accessToken: null, user: null }),
     }),
-    {
-      name: 'access-token',
-      partialize: (state) => ({ accessToken: state.accessToken }),
-    }
+    { name: 'access-token' } // ← only token survives refresh
   )
 );

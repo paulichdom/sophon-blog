@@ -4,7 +4,6 @@ import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress } from '@mantine/nprogress';
-import { AuthProvider } from './auth/auth.provider';
 import { queryClient } from './queryClient';
 import { router } from './router';
 import { theme } from './theme';
@@ -17,7 +16,6 @@ import '@mantine/notifications/styles.css';
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
         <MantineProvider theme={theme}>
           <NavigationProgress />
           <Notifications />
@@ -25,7 +23,6 @@ export const App = () => {
             <RouterProvider router={router} />
           </ModalsProvider>
         </MantineProvider>
-      </AuthProvider>
     </QueryClientProvider>
   );
 };
