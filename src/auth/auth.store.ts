@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { UserData } from './auth.types';
 
+/**
+ * Token already comes with user data
+ */
 export type AuthState = {
   accessToken: string | null;
   user: UserData | null;
@@ -25,6 +28,9 @@ export const useAuthStore = create<AuthStore>()(
       setUser: (user) => set({ user }),
       logout: () => set({ accessToken: null, user: null }),
     }),
-    { name: 'access-token' } // ← only token survives refresh
+    { 
+      name: 'access-token',
+      partialize: (state) => ({ accessToken: state.accessToken }),
+    }
   )
 );

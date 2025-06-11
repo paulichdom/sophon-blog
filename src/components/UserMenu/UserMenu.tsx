@@ -1,27 +1,14 @@
 import { FC, ReactNode } from 'react';
 import {
-  IconChevronDown,
-  IconHeart,
   IconLogout,
-  IconMessage,
-  IconPlayerPause,
   IconSettings,
-  IconStar,
-  IconSwitchHorizontal,
-  IconTrash,
   IconUser,
 } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
-import { Avatar, Group, Menu, Text, useMantineTheme } from '@mantine/core';
-import { Route as ProfileRoute } from '../../routes/profile/$username';
+import { Avatar, Container, Group, Menu } from '@mantine/core';
 import classes from './UserMenu.module.css';
 
-type UserMenuProps = {
-  target?: ReactNode;
-};
-
-export const UserMenu: FC<UserMenuProps> = ({ target }) => {
-  const theme = useMantineTheme();
+export const UserMenu = () => {
   const username = 'Jane Fingerlicker';
   return (
     <Group justify="center" className={classes.group}>
@@ -34,20 +21,13 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
         withinPortal
       >
         <Menu.Target>
-          <Group gap="sm" className={classes.link}>
+          <Container className={classes.link}>
             <Avatar
               size={30}
               src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png"
               radius={30}
             />
-            <Text>Nancy Eggshacker</Text>
-            <IconChevronDown
-              size={16}
-              stroke={3}
-              className="mantine-rotate-rtl"
-              color={theme.colors.blue[6]}
-            />
-          </Group>
+          </Container>
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Item
@@ -59,33 +39,6 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
           >
             Profile
           </Menu.Item>
-          <Menu.Divider />
-
-          <Menu.Item
-            component={Link}
-            to="/profile/$username/favorites"
-            /* TODO: handle this type */
-            params={{ username } as any}
-            leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
-          >
-            Liked posts
-          </Menu.Item>
-          <Menu.Item
-            component={Link}
-            to="/profile/$username/saved"
-            /* TODO: handle this type */
-            params={{ username } as any}
-            leftSection={<IconStar size={16} stroke={1.5} color={theme.colors.yellow[6]} />}
-          >
-            Saved posts
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<IconMessage size={16} stroke={1.5} color={theme.colors.blue[6]} />}
-          >
-            Your comments
-          </Menu.Item>
-
-          <Menu.Label>Settings</Menu.Label>
           <Menu.Item
             component={Link}
             to="/settings"
@@ -93,20 +46,7 @@ export const UserMenu: FC<UserMenuProps> = ({ target }) => {
           >
             Account settings
           </Menu.Item>
-          <Menu.Item leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}>
-            Change account
-          </Menu.Item>
           <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
-
-          <Menu.Divider />
-
-          <Menu.Label>Danger zone</Menu.Label>
-          <Menu.Item leftSection={<IconPlayerPause size={16} stroke={1.5} />}>
-            Pause subscription
-          </Menu.Item>
-          <Menu.Item color="red" leftSection={<IconTrash size={16} stroke={1.5} />}>
-            Delete account
-          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </Group>
