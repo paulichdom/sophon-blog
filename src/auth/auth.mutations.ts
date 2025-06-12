@@ -12,12 +12,8 @@ export const loginMutationOptions = () => ({
 
 export const logoutMutationOptions = () => ({
   mutationFn: logoutUser,
-  onSuccess: () => {
-    useAuthStore.getState().logout();
-  },
 });
 
 export const registerMutationOptions = () => ({
   mutationFn: registerUser,
 });
-

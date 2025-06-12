@@ -45,14 +45,10 @@ export const currentUser = async () => {
   return response.user;
 };
 
-export const logoutUser = async () => {
-  const response = await fetch(`${API_URL}/users/logout`, {
+export const logoutUser = async (): Promise<void> => {
+  await fetch(`${API_URL}/users/logout`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
   });
-
-  const data = await response.json();
-
-  return data.user;
 };

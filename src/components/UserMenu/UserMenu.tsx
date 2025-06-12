@@ -1,15 +1,54 @@
-import { FC, ReactNode } from 'react';
-import {
-  IconLogout,
-  IconSettings,
-  IconUser,
-} from '@tabler/icons-react';
-import { Link } from '@tanstack/react-router';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { Avatar, Container, Group, Menu } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { logoutMutationOptions } from '@/auth/auth.mutations';
+import { useAuthStore } from '@/auth/auth.store';
 import classes from './UserMenu.module.css';
 
 export const UserMenu = () => {
   const username = 'Jane Fingerlicker';
+  const navigate = useNavigate();
+  const logoutMutation = useMutation(logoutMutationOptions());
+
+  const handleLogout = () => {
+    const logoutNotificationId = notifications.show({
+      loading: true,
+      title: 'Logout',
+      message: 'Logging you out',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        useAuthStore.getState().logout();
+
+        notifications.update({
+          id: logoutNotificationId,
+          color: 'teal',
+          title: 'Logout successful',
+          message: 'You have been logged out',
+          loading: false,
+          autoClose: 2000,
+        });
+
+        navigate({ to: '/' });
+      },
+      onError: () => {
+        notifications.update({
+          id: logoutNotificationId,
+          color: 'red',
+          title: 'Logout failed',
+          message: 'There was an error logging you out',
+          loading: false,
+          autoClose: 2000,
+        });
+      },
+    });
+  };
+
   return (
     <Group justify="center" className={classes.group}>
       <Menu
@@ -46,7 +85,9 @@ export const UserMenu = () => {
           >
             Account settings
           </Menu.Item>
-          <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
+          <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />} onClick={handleLogout}>
+            Logout
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     </Group>
