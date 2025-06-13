@@ -53,9 +53,8 @@ export const UserMenu = () => {
     <Group justify="center" className={classes.group}>
       <Menu
         trigger="click-hover"
-        withArrow
-        width={300}
-        position="bottom"
+        width={200}
+        position="bottom-end"
         transitionProps={{ transition: 'pop' }}
         withinPortal
       >

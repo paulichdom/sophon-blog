@@ -24,6 +24,7 @@ export function Header() {
                 Sophon
               </Text>
             </Link>
+            <Group  h="100%">
             <AuthShow when="loggedIn">
               <Group h="100%" gap={0} visibleFrom="sm">
                 <Link to="/" className={classes.link}>
@@ -50,7 +51,8 @@ export function Header() {
               </Group>
             </AuthShow>
             <ColorSchemeToggle />
-            <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+              <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+            </Group>
           </Group>
         </header>
         <HeaderDrawer opened={drawerOpened} onClose={closeDrawer} />
