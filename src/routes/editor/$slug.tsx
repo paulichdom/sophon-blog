@@ -1,16 +1,26 @@
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { Container } from '@mantine/core';
+import { fetchArticle } from '@/api/article/article.api';
+import { currentUserQueryOptions } from '@/auth/auth.queries';
 import { ArticleEditor } from '@/components/ArticleEditor/ArticleEditor';
 import { useArticleEditor } from '@/components/ArticleEditor/use-article-editor';
-import { fetchArticle } from '@/api/article/article.api';
-import { Container } from '@mantine/core';
-import { createFileRoute } from '@tanstack/react-router'
+import { queryClient } from '@/queryClient';
 
 export const Route = createFileRoute('/editor/$slug')({
-  loader: async ({params}) => fetchArticle(params.slug),
+  beforeLoad: async () => {
+    try {
+      const currentUser = await queryClient.ensureQueryData(currentUserQueryOptions);
+      if (!currentUser) throw redirect({ to: '/login' });
+    } catch (error) {
+      throw redirect({ to: '/login' });
+    }
+  },
+  loader: async ({ params }) => fetchArticle(params.slug),
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const article = Route.useLoaderData()
+  const article = Route.useLoaderData();
 
   const {
     articleTitle,
@@ -28,7 +38,7 @@ function RouteComponent() {
     handleGenerateArticle,
     generateArticlePending,
     handleUpdateArticle,
-    updateArticlePending
+    updateArticlePending,
   } = useArticleEditor(article);
 
   return (

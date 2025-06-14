@@ -1,5 +1,6 @@
 import { FC, Fragment } from 'react';
 import { IconBookmark, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
+import { Link } from '@tanstack/react-router';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import {
@@ -14,9 +15,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
+import { useAuthStore } from '@/auth/auth.store';
 import { useFavoriteArticle } from '@/hooks/use-favorite-article';
 import { ArticleData, Comments } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
+import { AuthShow } from '../AuthShow/AuthShow';
 import { Comment } from '../Comment/Comment';
 import { CommentEditor } from '../CommentEditor/CommentEditor';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
@@ -31,6 +35,9 @@ export type ArticleProps = {
 export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const { accessToken } = useAuthStore();
+
+  const isAuthenticated = !!accessToken;
 
   const editor = useEditor({
     content: article.body,
@@ -52,6 +59,22 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
   const { comments } = commentsData;
   const hasComments = comments.length > 0;
+
+  const handleOpenCommentsDrawer = () => {
+    if (isAuthenticated) {
+      open();
+    } else {
+      modals.openConfirmModal({
+        title: 'You have to register first',
+        size: 'md',
+        centered: true,
+        children: <Text size="md">Sign in or Create an account</Text>,
+        labels: { confirm: 'Delete', cancel: 'Cancel' },
+        confirmProps: { color: 'red' },
+        onConfirm: () => console.log('Confirmed'),
+      });
+    }
+  };
 
   return (
     <Container size="sm">
@@ -78,12 +101,14 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             )}
           </Flex>
           <Flex gap={4} align="center" justify="center">
-            <ActionIcon variant="subtle" color="gray" onClick={open}>
+            <ActionIcon variant="subtle" color="gray" onClick={handleOpenCommentsDrawer}>
               <IconMessageCircle size={20} color={theme.colors.gray[6]} stroke={1.5} />
             </ActionIcon>
-            <Text size="sm" c="dimmed">
-              1
-            </Text>
+            {hasComments && (
+              <Text size="sm" c="dimmed">
+                {comments.length}
+              </Text>
+            )}
           </Flex>
         </Group>
         <Group gap={12}>
@@ -91,7 +116,9 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
           </ActionIcon>
           <ArticleCopyButton articleSlug={article.slug} />
-          <ArticleMenuButton slug={article.slug} />
+          <AuthShow when="loggedIn">
+            <ArticleMenuButton slug={article.slug} />
+          </AuthShow>
         </Group>
       </Group>
       <Divider my="md" />
@@ -113,11 +140,25 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
           ))}
       </Flex>
       <Divider my="xl" />
-      <Text size="xl" fw={700} mb="xl">
+      <Text size="xl" fw={700} mb="xs">
         {hasComments ? `Responses (${comments.length})` : ' No responses yet'}
       </Text>
-      <CommentEditor articleSlug={article.slug} />
-      {hasComments && <Divider mt="xl" mb="xl" />}
+      <AuthShow when="loggedOut">
+        <Text size="xs" mb="xl">
+          <Link to="/login" style={{ marginRight: 4 }}>
+            Sign in
+          </Link>
+          or
+          <Link to="/register" style={{ margin: '0 4px' }}>
+            Register
+          </Link>
+          to add conments on this article
+        </Text>
+      </AuthShow>
+      <AuthShow when="loggedIn">
+        <CommentEditor articleSlug={article.slug} />
+        {hasComments && <Divider mt="xl" mb="xl" />}
+      </AuthShow>
       {hasComments &&
         comments.map((comment, index, commentsList) => (
           <Fragment>
