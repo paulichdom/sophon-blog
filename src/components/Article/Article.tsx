@@ -15,11 +15,11 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
 import { useAuthStore } from '@/auth/auth.store';
 import { useFavoriteArticle } from '@/hooks/use-favorite-article';
 import { ArticleData, Comments } from '@/types/types';
 import { ArticleUserInfo } from '../ArticleCard/ArticleUserInfo';
+import { AuthModalGuard } from '../AuthModalGuard/AuthModalGuard';
 import { AuthShow } from '../AuthShow/AuthShow';
 import { Comment } from '../Comment/Comment';
 import { CommentEditor } from '../CommentEditor/CommentEditor';
@@ -33,7 +33,8 @@ export type ArticleProps = {
 };
 
 export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
   const { accessToken } = useAuthStore();
 
@@ -62,17 +63,9 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
 
   const handleOpenCommentsDrawer = () => {
     if (isAuthenticated) {
-      open();
+      openDrawer();
     } else {
-      modals.openConfirmModal({
-        title: 'You have to register first',
-        size: 'md',
-        centered: true,
-        children: <Text size="md">Sign in or Create an account</Text>,
-        labels: { confirm: 'Delete', cancel: 'Cancel' },
-        confirmProps: { color: 'red' },
-        onConfirm: () => console.log('Confirmed'),
-      });
+      openModal();
     }
   };
 
@@ -166,9 +159,10 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
           </Fragment>
         ))}
+      <AuthModalGuard opened={modalOpened} onClose={closeModal} />
       <ResponsesDrawer
-        opened={opened}
-        close={close}
+        opened={drawerOpened}
+        close={closeDrawer}
         articleSlug={article.slug}
         comments={comments}
       />

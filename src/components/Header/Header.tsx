@@ -19,7 +19,7 @@ export function Header() {
                 size="xl"
                 fw={900}
                 variant="gradient"
-                gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+                gradient={{ from: '#FFEB8C', to: '#F4A300', deg: 90 }}
               >
                 Sophon
               </Text>
