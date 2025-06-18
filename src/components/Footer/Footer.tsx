@@ -12,7 +12,7 @@ export function Footer() {
           size="xl"
           fw={900}
           variant="gradient"
-          gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+          gradient={{ from: '#F5EEC1', to: '#F9D87E', deg: 145 }}
         >
           Sophon
         </Text>

@@ -19,7 +19,7 @@ export function Header() {
                 size="xl"
                 fw={900}
                 variant="gradient"
-                gradient={{ from: '#FFEB8C', to: '#F4A300', deg: 90 }}
+                gradient={{ from: '#F5EEC1', to: '#F9D87E', deg: 145 }}
               >
                 Sophon
               </Text>
@@ -45,7 +45,15 @@ export function Header() {
                   <Button component={Link} to="/login" variant="default" radius="xl">
                     Sign in
                   </Button>
-                  <Button component={Link} to="/register" radius="xl">
+                  <Button
+                    component={Link}
+                    to="/register"
+                    radius="xl"
+                    variant="filled"
+                    color="#F9D87E"
+                    gradient={{ from: '#F5EEC1', to: '#F9D87E', deg: 145 }}
+                    autoContrast
+                  >
                     Create account
                   </Button>
                 </Group>

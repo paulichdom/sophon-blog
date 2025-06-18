@@ -1,9 +1,12 @@
 import { FC } from 'react';
-import { IconBookmark, IconHeart, IconHeartFilled, IconLink } from '@tabler/icons-react';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { ActionIcon, Card, Group, Text, useMantineTheme } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useAuthStore } from '@/auth/auth.store';
 import { useFavoriteArticle } from '@/hooks/use-favorite-article';
 import { ArticleFavoritedState } from '@/types/types';
 import { ArticleCopyButton } from '../Article/ArticleCopyButton';
+import { AuthModalGuard } from '../AuthModalGuard/AuthModalGuard';
 import classes from './ArticleCard.module.css';
 
 export type ArticleCardFooterProps = {
@@ -16,6 +19,10 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
   articleFavoritedState,
 }) => {
   const theme = useMantineTheme();
+  const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
+  const { accessToken } = useAuthStore();
+
+  const isAuthenticated = !!accessToken;
 
   const {
     favoritedState,
@@ -23,6 +30,14 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
     favoriteArticleIsPending,
     unfavoriteArticleIsPending,
   } = useFavoriteArticle(articleSlug, articleFavoritedState);
+
+  const handleFavoriteArticleAction = () => {
+    if (isAuthenticated) {
+      handleFavoriteArticle();
+    } else {
+      openAuthModal();
+    }
+  };
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
@@ -38,18 +53,16 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
           <ActionIcon
             variant="subtle"
             color="gray"
-            onClick={handleFavoriteArticle}
+            onClick={handleFavoriteArticleAction}
             loading={favoriteActionIsPending}
             disabled={favoriteActionIsPending}
           >
             <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon variant="subtle" color="gray">
-            <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
-          </ActionIcon>
-          <ArticleCopyButton articleSlug={articleSlug} />
+          <ArticleCopyButton articleSlug={articleSlug} timeout={4000} />
         </Group>
       </Group>
+      <AuthModalGuard opened={authModalOpened} onClose={closeAuthModal} />
     </Card.Section>
   );
 };

@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react';
-import { IconBookmark, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
+import { IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -33,7 +33,7 @@ export type ArticleProps = {
 };
 
 export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
-  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
   const { accessToken } = useAuthStore();
@@ -65,7 +65,15 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
     if (isAuthenticated) {
       openDrawer();
     } else {
-      openModal();
+      openAuthModal();
+    }
+  };
+
+  const handleFavoriteArticleAction = () => {
+    if (isAuthenticated) {
+      handleFavoriteArticle();
+    } else {
+      openAuthModal();
     }
   };
 
@@ -81,7 +89,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             <ActionIcon
               variant="subtle"
               color="gray"
-              onClick={handleFavoriteArticle}
+              onClick={handleFavoriteArticleAction}
               loading={favoriteActionIsPending}
               disabled={favoriteActionIsPending}
             >
@@ -105,10 +113,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
           </Flex>
         </Group>
         <Group gap={12}>
-          <ActionIcon variant="subtle" color="gray">
-            <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
-          </ActionIcon>
-          <ArticleCopyButton articleSlug={article.slug} />
+          <ArticleCopyButton articleSlug={article.slug} timeout={4000} />
           <AuthShow when="loggedIn">
             <ArticleMenuButton slug={article.slug} />
           </AuthShow>
@@ -159,13 +164,13 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
           </Fragment>
         ))}
-      <AuthModalGuard opened={modalOpened} onClose={closeModal} />
       <ResponsesDrawer
         opened={drawerOpened}
         close={closeDrawer}
         articleSlug={article.slug}
         comments={comments}
       />
+      <AuthModalGuard opened={authModalOpened} onClose={closeAuthModal} />
     </Container>
   );
 };
