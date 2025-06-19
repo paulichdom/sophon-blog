@@ -19,7 +19,11 @@ export const ArticleCard: FC<ArticleCardProps> = ({ article }) => {
       <ArticleCardHeader slug={slug} title={title} description={description} />
       <ArticleCardTagList tags={tagList} />
       <ArticleUserInfo author={author} createdAt={createdAt} />
-      <ArticleCardFooter articleSlug={slug} articleFavoritedState={{favoritesCount, favorited}} />
+      <ArticleCardFooter
+        author={author}
+        articleSlug={slug}
+        articleFavoritedState={{ favoritesCount, favorited }}
+      />
     </Card>
   );
 };

@@ -113,8 +113,8 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
           </Flex>
         </Group>
         <Group gap={12}>
-          <ArticleCopyButton articleSlug={article.slug} timeout={4000} />
-          <AuthShow when="loggedIn">
+          <ArticleCopyButton articleSlug={article.slug} timeout={4000} iconSize={20} />
+          <AuthShow when="isOwner" ownerUsername={article.author.username}>
             <ArticleMenuButton slug={article.slug} />
           </AuthShow>
         </Group>

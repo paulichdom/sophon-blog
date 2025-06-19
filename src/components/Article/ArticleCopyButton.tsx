@@ -7,9 +7,10 @@ import { ArticleCopyButtonMessage } from './ArticleCopyButtonMessage';
 type ArticleCopyButtonProps = {
   articleSlug: string;
   timeout: number;
+  iconSize: number;
 };
 
-export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({ articleSlug, timeout }) => {
+export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({ articleSlug, timeout, iconSize }) => {
   const theme = useMantineTheme();
 
   // TODO: update this with actual url when app is deployed
@@ -37,7 +38,7 @@ export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({ articleSlug, tim
             variant="subtle"
             onClick={() => handleCopy(copy)}
           >
-            {copied ? <IconCheck size={16} /> : <IconLink size={16} />}
+            {copied ? <IconCheck size={iconSize} /> : <IconLink size={iconSize} />}
           </ActionIcon>
         </Tooltip>
       )}
