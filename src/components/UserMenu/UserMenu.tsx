@@ -1,5 +1,5 @@
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Avatar, Container, Group, Menu } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -10,6 +10,7 @@ import classes from './UserMenu.module.css';
 export const UserMenu = () => {
   const username = 'Jane Fingerlicker';
   const navigate = useNavigate();
+  const queryClient = useQueryClient()
   const logoutMutation = useMutation(logoutMutationOptions());
 
   const handleLogout = () => {
@@ -35,6 +36,7 @@ export const UserMenu = () => {
         });
 
         navigate({ to: '/' });
+        queryClient.invalidateQueries({queryKey: ['articles']})
       },
       onError: () => {
         notifications.update({

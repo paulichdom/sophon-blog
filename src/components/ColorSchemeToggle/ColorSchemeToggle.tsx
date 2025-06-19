@@ -5,12 +5,14 @@ import classes from './ColorSchemeToggle.module.css';
 export function ColorSchemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+  const iconColor = computedColorScheme === 'dark' ? '#F9D87E' : 'blue'
 
   return (
     <Group justify="center">
       <ActionIcon
         onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
         variant="subtle"
+        color={iconColor}
         size="lg"
         radius="sm"
         aria-label="Toggle color scheme"

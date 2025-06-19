@@ -49,15 +49,16 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
           {favoritedState.favoritesCount}{' '}
           {favoritedState.favoritesCount === 1 ? 'person' : 'people'} liked this
         </Text>
-        <Group gap={0}>
+        <Group gap={4}>
           <ActionIcon
+            size="sm"
             variant="subtle"
             color="gray"
             onClick={handleFavoriteArticleAction}
             loading={favoriteActionIsPending}
             disabled={favoriteActionIsPending}
           >
-            <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
+            <IconFavorited size={16} color={theme.colors.red[4]} stroke={1.5} />
           </ActionIcon>
           <ArticleCopyButton articleSlug={articleSlug} timeout={4000} />
         </Group>

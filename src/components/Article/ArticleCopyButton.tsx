@@ -32,11 +32,12 @@ export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({ articleSlug, tim
       {({ copied, copy }) => (
         <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="top">
           <ActionIcon
-            color={copied ? 'teal' : theme.colors.blue[6]}
+            size="sm"
+            color={copied ? 'teal' : '#D3D3D3'}
             variant="subtle"
             onClick={() => handleCopy(copy)}
           >
-            {copied ? <IconCheck size={20} /> : <IconLink size={20} />}
+            {copied ? <IconCheck size={16} /> : <IconLink size={16} />}
           </ActionIcon>
         </Tooltip>
       )}
