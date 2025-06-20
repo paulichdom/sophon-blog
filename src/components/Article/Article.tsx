@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 import { IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -159,10 +159,10 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
       </AuthShow>
       {hasComments &&
         comments.map((comment, index, commentsList) => (
-          <Fragment>
+          <>
             <Comment key={comment.id} comment={comment} />
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
-          </Fragment>
+          </>
         ))}
       <ResponsesDrawer
         opened={drawerOpened}
