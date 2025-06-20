@@ -93,7 +93,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
               loading={favoriteActionIsPending}
               disabled={favoriteActionIsPending}
             >
-              <IconFavorited size={20} color={theme.colors.red[6]} stroke={1.5} />
+              <IconFavorited size={20} color={theme.colors.red[4]} stroke={1.5} />
             </ActionIcon>
             {favoritedState.favoritesCount > 0 && (
               <Text size="sm" c="dimmed">

@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { Box, Burger, Button, Container, Flex, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useAuthStore } from '@/auth/auth.store';
 import { AuthShow } from '../AuthShow/AuthShow';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { UserMenu } from '../UserMenu/UserMenu';
@@ -8,7 +9,9 @@ import { HeaderDrawer } from './HeaderDrawer';
 import classes from './Header.module.css';
 
 export function Header() {
+  const { user } = useAuthStore();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  console.log({user})
   return (
     <Box>
       <Container size="md">
@@ -37,7 +40,7 @@ export function Header() {
                       <Text>Write</Text>
                     </Flex>
                   </Link>
-                  <UserMenu />
+                  {user && <UserMenu user={user} />}
                 </Group>
               </AuthShow>
               <AuthShow when="loggedOut">

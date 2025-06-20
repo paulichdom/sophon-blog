@@ -6,9 +6,14 @@ import { notifications } from '@mantine/notifications';
 import { logoutMutationOptions } from '@/auth/auth.mutations';
 import { useAuthStore } from '@/auth/auth.store';
 import classes from './UserMenu.module.css';
+import { UserData } from '@/auth/auth.types';
+import { FC } from 'react';
 
-export const UserMenu = () => {
-  const username = 'Jane Fingerlicker';
+type UserMenuProps = {
+  user: UserData
+}
+
+export const UserMenu: FC<UserMenuProps> = ({user}) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient()
   const logoutMutation = useMutation(logoutMutationOptions());
@@ -74,7 +79,7 @@ export const UserMenu = () => {
             component={Link}
             to="/profile/$username"
             /* TODO: handle this type */
-            params={{ username } as any}
+            params={{ username: user.username } as any}
             leftSection={<IconUser size={16} stroke={1.5} />}
           >
             Profile

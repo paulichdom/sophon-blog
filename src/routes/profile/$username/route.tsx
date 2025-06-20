@@ -2,6 +2,7 @@ import { IconHeart, IconStar } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
 import { Avatar, Button, Grid, Group, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { useAuthStore } from '@/auth/auth.store';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
@@ -70,8 +71,12 @@ function RouteComponent() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const router = useRouter();
+  const { user } = useAuthStore();
 
-  const username = 'JakeMiller';
+  // TODO: navigate to login
+  if (!user) {
+    return <h1>No User</h1>;
+  }
 
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
@@ -84,16 +89,16 @@ function RouteComponent() {
 
     const path = pathMap[value as TabValue];
     if (path === '') {
-      navigate({ to: '/profile/$username', params: { username } });
+      navigate({ to: '/profile/$username', params: { username: user?.username } });
     } else {
-      navigate({ to: `/profile/$username/${path}`, params: { username } });
+      navigate({ to: `/profile/$username/${path}`, params: { username: user.username } });
     }
   };
 
   return (
     <Grid gutter={32}>
       <Grid.Col span={8}>
-        <h1>Nancy Surname</h1>
+        <h1>{user?.username}</h1>
         <Tabs
           defaultValue={currentTab}
           onChange={handleTabChange}
@@ -135,7 +140,7 @@ function RouteComponent() {
           radius={120}
         />
         <Text fz="lg" fw={500} mt="md">
-          Jane Fingerlicker
+          {user.username}
         </Text>
         <Text c="dimmed" fz="sm">
           2 followers
