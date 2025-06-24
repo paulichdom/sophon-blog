@@ -2,9 +2,10 @@ import { FC } from 'react';
 import { IconBookmark, IconHeartFilled } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
 import { ActionIcon, Avatar, Center, Divider, Group, Text, useMantineTheme } from '@mantine/core';
+import { useAuthStore } from '@/auth/auth.store';
 import { ArticleData } from '@/types/types';
 import { formatDateShort } from '@/utils';
-import { ArticleItemMenu } from './ArticleItemMenu';
+import { ArticleMenuButton } from '../Article/ArticleMenuButton';
 import classes from './ArticleItem.module.css';
 
 type ArticleItemProps = {
@@ -19,6 +20,11 @@ export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
 
   // Placeholder
   const isCurrentUser = true;
+
+  const { accessToken, user } = useAuthStore();
+
+  const isAuthenticated = !!accessToken;
+  const isOwner = user?.username === author.username;
 
   return (
     <div className={classes.body}>
@@ -60,12 +66,7 @@ export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
             </Center>
           )}
         </Group>
-        <Group gap={12}>
-          <ActionIcon variant="subtle" color="gray">
-            <IconBookmark size={20} color={theme.colors.yellow[6]} stroke={1.5} />
-          </ActionIcon>
-          <ArticleItemMenu />
-        </Group>
+        <ArticleMenuButton slug={article.slug} />
       </Group>
       <Divider mt="md" mb="md" />
     </div>

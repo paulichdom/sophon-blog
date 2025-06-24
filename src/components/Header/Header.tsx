@@ -11,7 +11,6 @@ import classes from './Header.module.css';
 export function Header() {
   const { user } = useAuthStore();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  console.log({user})
   return (
     <Box>
       <Container size="md">

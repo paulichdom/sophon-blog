@@ -73,16 +73,16 @@ function RouteComponent() {
   const router = useRouter();
   const { user } = useAuthStore();
 
-  // TODO: navigate to login
-  if (!user) {
-    return <h1>No User</h1>;
-  }
-
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
   const currentPath = pathSegments.length > 3 ? pathSegments[3] : '';
 
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
+
+  if (!user) {
+    navigate({ to: '/login' });
+    return;
+  }
 
   const handleTabChange = (value: string | null) => {
     if (!value) return;
@@ -112,12 +112,6 @@ function RouteComponent() {
               leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
             >
               Liked Posts
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="saved"
-              leftSection={<IconStar size={16} stroke={1.5} color={theme.colors.yellow[6]} />}
-            >
-              Saved Articles
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="articles">
