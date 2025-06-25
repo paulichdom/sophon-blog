@@ -1,21 +1,22 @@
+import { FC } from 'react';
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Avatar, Container, Group, Menu } from '@mantine/core';
+import { Container, Group, Menu } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { logoutMutationOptions } from '@/auth/auth.mutations';
 import { useAuthStore } from '@/auth/auth.store';
-import classes from './UserMenu.module.css';
 import { UserData } from '@/auth/auth.types';
-import { FC } from 'react';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
+import classes from './UserMenu.module.css';
 
 type UserMenuProps = {
-  user: UserData
-}
+  user: UserData;
+};
 
-export const UserMenu: FC<UserMenuProps> = ({user}) => {
+export const UserMenu: FC<UserMenuProps> = ({ user }) => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const logoutMutation = useMutation(logoutMutationOptions());
 
   const handleLogout = () => {
@@ -41,7 +42,7 @@ export const UserMenu: FC<UserMenuProps> = ({user}) => {
         });
 
         navigate({ to: '/' });
-        queryClient.invalidateQueries({queryKey: ['articles']})
+        queryClient.invalidateQueries({ queryKey: ['articles'] });
       },
       onError: () => {
         notifications.update({
@@ -67,10 +68,13 @@ export const UserMenu: FC<UserMenuProps> = ({user}) => {
       >
         <Menu.Target>
           <Container className={classes.link}>
-            <Avatar
+            <UserAvatar
+              username={user.username}
+              sourceImage={user.image}
+              altText={user.username}
               size={30}
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png"
               radius={30}
+              color="initials"
             />
           </Container>
         </Menu.Target>

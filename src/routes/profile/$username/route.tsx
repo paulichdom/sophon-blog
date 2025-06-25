@@ -1,8 +1,9 @@
-import { IconHeart, IconStar } from '@tabler/icons-react';
+import { IconHeart } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
 import { Avatar, Button, Grid, Group, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useAuthStore } from '@/auth/auth.store';
+import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
@@ -117,21 +118,19 @@ function RouteComponent() {
           <Tabs.Panel value="articles">
             <Outlet />
           </Tabs.Panel>
-
           <Tabs.Panel value="favorites">
-            <Outlet />
-          </Tabs.Panel>
-
-          <Tabs.Panel value="saved">
             <Outlet />
           </Tabs.Panel>
         </Tabs>
       </Grid.Col>
       <Grid.Col span={4} pl="xl">
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
+        <UserAvatar
+          username={user.username}
+          sourceImage={user.image}
+          altText={user.username}
           size={100}
           radius={120}
+          color='initials'
         />
         <Text fz="lg" fw={500} mt="md">
           {user.username}

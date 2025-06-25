@@ -1,22 +1,19 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Stack } from '@mantine/core';
+import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
 import { ArticleItem } from '@/components/ArticleItem/ArticleItem';
 import { ArticleItemPendingComponent } from '@/components/ArticleItem/ArticleItemPendingComponent';
-import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
 
 export const Route = createFileRoute('/profile/$username/favorites')({
-  loader: ({ context: { queryClient } }) => {
-    return queryClient.ensureQueryData(articlesFavoritedByUserQueryOptions('JakeMiller'));
+  loader: ({ context: { queryClient }, params: { username } }) => {
+    return queryClient.ensureQueryData(articlesFavoritedByUserQueryOptions(username));
   },
   component: RouteComponent,
   pendingComponent: ArticleItemPendingComponent,
 });
 
 function RouteComponent() {
-  const { data: articlesFavoritedByUser } = useSuspenseQuery(
-    articlesFavoritedByUserQueryOptions('JakeMiller')
-  );
+  const articlesFavoritedByUser = Route.useLoaderData();
 
   return (
     <Stack>

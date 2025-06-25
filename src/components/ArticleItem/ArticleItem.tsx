@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { IconBookmark, IconHeartFilled } from '@tabler/icons-react';
+import { IconHeartFilled } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
-import { ActionIcon, Avatar, Center, Divider, Group, Text, useMantineTheme } from '@mantine/core';
+import { Center, Divider, Group, Text, useMantineTheme } from '@mantine/core';
 import { useAuthStore } from '@/auth/auth.store';
 import { ArticleData } from '@/types/types';
 import { formatDateShort } from '@/utils';
 import { ArticleMenuButton } from '../Article/ArticleMenuButton';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 import classes from './ArticleItem.module.css';
 
 type ArticleItemProps = {
@@ -14,26 +15,24 @@ type ArticleItemProps = {
 
 export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
   const theme = useMantineTheme();
+  const { accessToken, user } = useAuthStore();
 
   const { author } = article;
   const hasFavorites = article.favoritesCount > 0;
-
-  // Placeholder
-  const isCurrentUser = true;
-
-  const { accessToken, user } = useAuthStore();
-
-  const isAuthenticated = !!accessToken;
   const isOwner = user?.username === author.username;
 
   return (
     <div className={classes.body}>
-      {!isCurrentUser && (
-        <Group wrap="nowrap" gap="xs">
+      {!isOwner && (
+        <Group wrap="nowrap" gap="xs" mb="lg">
           <Group gap="xs" wrap="nowrap">
-            <Avatar
-              size={20}
-              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
+            <UserAvatar
+              username={author.username}
+              sourceImage={author.image}
+              altText={author.username}
+              size={30}
+              radius={30}
+              color="initials"
             />
             <Text size="xs">{author.username}</Text>
           </Group>
@@ -66,7 +65,7 @@ export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
             </Center>
           )}
         </Group>
-        <ArticleMenuButton slug={article.slug} />
+        {isOwner && <ArticleMenuButton slug={article.slug} />}
       </Group>
       <Divider mt="md" mb="md" />
     </div>

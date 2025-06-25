@@ -1,4 +1,3 @@
-//import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Stack } from '@mantine/core';
 import { articlesByAuthorQueryOptions } from '@/api/article/article.queries';

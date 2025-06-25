@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import moment from 'moment';
-import { Avatar, Group, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { AuthorData } from '@/types/types';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 import classes from './ArticleCard.module.css';
-import { ROBOHASH_URL } from '@/shared/constants';
 
 export type ArticleCardAvatarProps = {
   author: AuthorData;
@@ -11,12 +11,18 @@ export type ArticleCardAvatarProps = {
 };
 
 export const ArticleUserInfo: FC<ArticleCardAvatarProps> = ({ author, createdAt }) => {
-  const avatar = author.image || `${ROBOHASH_URL}/${author.username}`;
   return (
     <div className={classes.userInfoContainer}>
-      <Group mt="xs">
+      <Group mt="xs" align="center" justify="center">
         <div>
-          <Avatar src={avatar} radius="sm" />
+          <UserAvatar
+            username={author.username}
+            sourceImage={author.image}
+            altText={author.username}
+            size={42}
+            radius={42}
+            color="initials"
+          />
         </div>
         <div>
           <Text fw={500}>{author.username}</Text>
