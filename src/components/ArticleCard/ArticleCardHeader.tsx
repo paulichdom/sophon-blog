@@ -17,6 +17,7 @@ export const ArticleCardHeader: FC<ArticleCardHeaderProps> = ({ slug, title, des
         params={{
           slug,
         }}
+        className={classes.titleLink}
       >
         <Text fw={700} className={classes.title}>
           {title}

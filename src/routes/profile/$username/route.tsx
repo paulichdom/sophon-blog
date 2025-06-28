@@ -2,11 +2,15 @@ import { IconHeart } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
 import { Avatar, Button, Grid, Group, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { useAuthStore } from '@/auth/auth.store';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
+  loader: async ({ context: { queryClient }, params: { username } }) => {
+    return await queryClient.ensureQueryData(userProfileQueryOptions(username));
+  },
   component: RouteComponent,
 });
 
@@ -72,7 +76,9 @@ function RouteComponent() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const router = useRouter();
-  const { user } = useAuthStore();
+  //const { user } = useAuthStore();
+
+  const { profile } = Route.useLoaderData();
 
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
@@ -80,26 +86,21 @@ function RouteComponent() {
 
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
 
-  if (!user) {
-    navigate({ to: '/login' });
-    return;
-  }
-
   const handleTabChange = (value: string | null) => {
     if (!value) return;
 
     const path = pathMap[value as TabValue];
     if (path === '') {
-      navigate({ to: '/profile/$username', params: { username: user?.username } });
+      navigate({ to: '/profile/$username', params: { username: profile.username } });
     } else {
-      navigate({ to: `/profile/$username/${path}`, params: { username: user.username } });
+      navigate({ to: `/profile/$username/${path}`, params: { username: profile.username } });
     }
   };
 
   return (
     <Grid gutter={32}>
       <Grid.Col span={8}>
-        <h1>{user?.username}</h1>
+        <h1>{profile.username}</h1>
         <Tabs
           defaultValue={currentTab}
           onChange={handleTabChange}
@@ -125,15 +126,15 @@ function RouteComponent() {
       </Grid.Col>
       <Grid.Col span={4} pl="xl">
         <UserAvatar
-          username={user.username}
-          sourceImage={user.image}
-          altText={user.username}
+          username={profile.username}
+          sourceImage={profile.image}
+          altText={profile.username}
           size={100}
           radius={120}
-          color='initials'
+          color="initials"
         />
         <Text fz="lg" fw={500} mt="md">
-          {user.username}
+          {profile.username}
         </Text>
         <Text c="dimmed" fz="sm">
           2 followers

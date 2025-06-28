@@ -15,7 +15,7 @@ type ArticleItemProps = {
 
 export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
   const theme = useMantineTheme();
-  const { accessToken, user } = useAuthStore();
+  const { user } = useAuthStore();
 
   const { author } = article;
   const hasFavorites = article.favoritesCount > 0;

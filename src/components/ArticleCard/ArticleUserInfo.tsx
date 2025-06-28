@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from '@tanstack/react-router';
 import moment from 'moment';
 import { Group, Text } from '@mantine/core';
 import { AuthorData } from '@/types/types';
@@ -12,7 +13,11 @@ export type ArticleCardAvatarProps = {
 
 export const ArticleUserInfo: FC<ArticleCardAvatarProps> = ({ author, createdAt }) => {
   return (
-    <div className={classes.userInfoContainer}>
+    <Link
+      to="/profile/$username"
+      params={{ username: author.username }}
+      className={classes.userInfoContainer}
+    >
       <Group mt="xs" align="center" justify="center">
         <div>
           <UserAvatar
@@ -31,6 +36,6 @@ export const ArticleUserInfo: FC<ArticleCardAvatarProps> = ({ author, createdAt 
           </Text>
         </div>
       </Group>
-    </div>
+    </Link>
   );
 };

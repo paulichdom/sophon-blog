@@ -88,3 +88,14 @@ export type CreateCommentMutationFnArgs = {
 export type Comments = {
   comments: CommentData[];
 };
+
+export type ProfileData = {
+  username: string;
+  bio: string;
+  image: string;
+  following: boolean;
+};
+
+export type ProfileDto = {
+  profile: ProfileData;
+};

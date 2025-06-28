@@ -2,6 +2,11 @@
   background-color: var(--mantine-color-body);
 }
 
+.titleLink {
+  text-decoration: none;
+  color: unset;
+}
+
 .title {
   height: 100%;
   font-family:
@@ -14,6 +19,8 @@
   display: flex;
   align-items: flex-end;
 
+  text-decoration: none;
+  color: unset;
 }
 
 .footer {
