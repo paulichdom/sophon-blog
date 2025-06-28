@@ -36,9 +36,9 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const { accessToken } = useAuthStore();
+  const { accessToken, user } = useAuthStore();
 
-  const isAuthenticated = !!accessToken;
+  const isAuthenticated = !!accessToken && !!user;
 
   const editor = useEditor({
     content: article.body,
@@ -154,7 +154,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
         </Text>
       </AuthShow>
       <AuthShow when="loggedIn">
-        <CommentEditor articleSlug={article.slug} />
+        {user && <CommentEditor articleSlug={article.slug} user={user} />}
         {hasComments && <Divider mt="xl" mb="xl" />}
       </AuthShow>
       {hasComments &&

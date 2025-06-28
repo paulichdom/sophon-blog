@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Stack } from '@mantine/core';
 import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
+import { useAuthStore } from '@/auth/auth.store';
 import { ArticleItem } from '@/components/ArticleItem/ArticleItem';
 import { ArticleItemPendingComponent } from '@/components/ArticleItem/ArticleItemPendingComponent';
 
@@ -13,13 +14,24 @@ export const Route = createFileRoute('/profile/$username/favorites')({
 });
 
 function RouteComponent() {
+  const { user } = useAuthStore();
+  const { username } = Route.useParams();
   const articlesFavoritedByUser = Route.useLoaderData();
+
+  const hasFavoritedArticles = articlesFavoritedByUser.articlesCount > 0;
+  const isCurrentUser = user?.username === username;
+  const displayNameOrPronoun = isCurrentUser ? 'You' : username;
+  const noArticlesMessage = isCurrentUser
+    ? "don't have any favorites."
+    : 'has no favorited articles.';
 
   return (
     <Stack>
-      {articlesFavoritedByUser.articles.map((article) => (
-        <ArticleItem key={article.id} article={article} />
-      ))}
+      {!hasFavoritedArticles && <p>{`${displayNameOrPronoun} ${noArticlesMessage}`} </p>}
+      {hasFavoritedArticles &&
+        articlesFavoritedByUser.articles.map((article) => (
+          <ArticleItem key={article.id} article={article} />
+        ))}
     </Stack>
   );
 }

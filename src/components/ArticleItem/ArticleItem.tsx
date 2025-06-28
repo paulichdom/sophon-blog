@@ -43,6 +43,7 @@ export const ArticleItem: FC<ArticleItemProps> = ({ article }) => {
         params={{
           slug: article.slug,
         }}
+        className={classes.link}
       >
         <Text lineClamp={2} className={classes.title} mb="md">
           {article.title}

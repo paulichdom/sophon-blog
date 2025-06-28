@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import moment from 'moment';
-import { Avatar, Group, Text } from '@mantine/core';
-import { ROBOHASH_URL } from '@/shared/constants';
+import { Group, Text } from '@mantine/core';
 import { CommentData } from '@/types/types';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 
 type CommentProps = {
   comment: CommentData;
@@ -10,11 +10,17 @@ type CommentProps = {
 
 export const Comment: FC<CommentProps> = ({ comment }) => {
   const { createdAt, author, body } = comment;
-  const avatar = author.image || `${ROBOHASH_URL}/${author.username}`;
   return (
     <div>
       <Group>
-        <Avatar src={avatar} alt={author.username} radius="xl" />
+        <UserAvatar
+          username={author.username}
+          sourceImage={author.image}
+          altText={author.username}
+          size={42}
+          radius={42}
+          color="initials"
+        />
         <div>
           <Text size="sm">{author.username}</Text>
           <Text size="xs" c="dimmed">

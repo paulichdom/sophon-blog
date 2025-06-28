@@ -1,18 +1,21 @@
 import { FC, useState } from 'react';
 import { IconCheck, IconXboxX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
-import { Avatar, Button, Flex, Group, Text, Textarea } from '@mantine/core';
+import { Button, Flex, Group, Text, Textarea } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { createCommentMutationOptions } from '@/api/comment/comment.mutations';
+import { UserData } from '@/auth/auth.types';
 import { queryClient } from '@/queryClient';
 import { CommentDto } from '@/types/types';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 import classes from './CommentEditor.module.css';
 
 type CommentEditorProps = {
   articleSlug: string;
+  user: UserData;
 };
 
-export const CommentEditor: FC<CommentEditorProps> = ({ articleSlug }) => {
+export const CommentEditor: FC<CommentEditorProps> = ({ articleSlug, user }) => {
   const [commentBody, setCommentBody] = useState<string>('');
 
   const { mutate: createComment, isPending: isCreateCommentPending } = useMutation(
@@ -39,7 +42,7 @@ export const CommentEditor: FC<CommentEditorProps> = ({ articleSlug }) => {
       {
         onSuccess: (commentDto: CommentDto) => {
           queryClient.invalidateQueries({ queryKey: ['comments'] });
-          setCommentBody('')
+          setCommentBody('');
 
           notifications.update({
             id: createCommentNotificationId,
@@ -71,13 +74,16 @@ export const CommentEditor: FC<CommentEditorProps> = ({ articleSlug }) => {
   return (
     <Flex direction="column" gap="md">
       <Group>
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-          alt="Jacob Warnhalter"
-          radius="xl"
+        <UserAvatar
+          username={user.username}
+          sourceImage={user.image}
+          altText={user.username}
+          size={42}
+          radius={42}
+          color="initials"
         />
         <div>
-          <Text size="sm">Jacob Warnhalter</Text>
+          <Text size="sm">{user.username}</Text>
         </div>
       </Group>
       <Textarea

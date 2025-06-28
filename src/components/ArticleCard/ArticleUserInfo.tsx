@@ -30,7 +30,9 @@ export const ArticleUserInfo: FC<ArticleCardAvatarProps> = ({ author, createdAt 
           />
         </div>
         <div>
-          <Text fw={500}>{author.username}</Text>
+          <Text fw={500} className={classes.userName}>
+            {author.username}
+          </Text>
           <Text fz="xs" c="dimmed">
             posted {moment(createdAt).fromNow()}
           </Text>

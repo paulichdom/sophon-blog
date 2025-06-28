@@ -25,6 +25,11 @@
   line-height: 1.2;
 }
 
+.link {
+  text-decoration: none;
+  color: unset;
+}
+
 .body {
   /* padding: var(--mantine-spacing-md); */
 }
