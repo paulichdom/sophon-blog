@@ -1,9 +1,8 @@
-import { IconHeart } from '@tabler/icons-react';
+import { IconHeart, IconUserPlus } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
-import { Fragment } from 'react/jsx-runtime';
-import { Avatar, Button, Grid, Group, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
-import { useAuthStore } from '@/auth/auth.store';
+import { AuthShow } from '@/components/AuthShow/AuthShow';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
@@ -76,9 +75,9 @@ function RouteComponent() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const router = useRouter();
-  //const { user } = useAuthStore();
-
   const { profile } = Route.useLoaderData();
+
+  const hasFollowers = profile.followers && profile.followers?.length > 0;
 
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
@@ -136,13 +135,29 @@ function RouteComponent() {
         <Text fz="lg" fw={500} mt="md">
           {profile.username}
         </Text>
-        <Text c="dimmed" fz="sm">
-          2 followers
-        </Text>
-        <Button variant="transparent" pl={0} mt="md">
-          Edit profile
+        {hasFollowers && (
+          <Text c="dimmed" fz="sm">
+            {profile.followers?.length} followers
+          </Text>
+        )}
+
+        <Button
+          size="sm"
+          radius="xl"
+          mt="md"
+          variant="outline"
+          color="#F9D87E"
+          leftSection={<IconUserPlus size={20} />}
+        >
+          Follow
         </Button>
-        {data.length > 0 && (
+        <AuthShow when="isOwner">
+          <Button variant="transparent" pl={0} mt="md">
+            Edit profile
+          </Button>
+        </AuthShow>
+        {/* TODO: expose following data and display it here */}
+        {/* {data.length > 0 && (
           <Fragment>
             <Text fz="md" fw={500} mt="xl">
               Following
@@ -165,7 +180,7 @@ function RouteComponent() {
               ))}
             </Stack>
           </Fragment>
-        )}
+        )} */}
       </Grid.Col>
     </Grid>
   );

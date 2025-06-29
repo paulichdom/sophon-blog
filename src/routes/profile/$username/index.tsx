@@ -13,6 +13,8 @@ export const Route = createFileRoute('/profile/$username/')({
   pendingComponent: ArticleItemPendingComponent,
 });
 
+// TODO: Refresh this query (user articles) after creating a new
+// article to avioid having stale data
 function RouteComponent() {
   const { user } = useAuthStore();
   const { username } = Route.useParams();

@@ -94,6 +94,7 @@ export type ProfileData = {
   bio: string;
   image: string;
   following: boolean;
+  followers?: Partial<ProfileData>[];
 };
 
 export type ProfileDto = {
