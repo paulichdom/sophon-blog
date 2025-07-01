@@ -1,5 +1,6 @@
+import { IconHeartSearch } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { Stack } from '@mantine/core';
+import { Blockquote, Stack } from '@mantine/core';
 import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
 import { useAuthStore } from '@/auth/auth.store';
 import { ArticleItem } from '@/components/ArticleItem/ArticleItem';
@@ -27,7 +28,11 @@ function RouteComponent() {
 
   return (
     <Stack>
-      {!hasFavoritedArticles && <p>{`${displayNameOrPronoun} ${noArticlesMessage}`} </p>}
+      {!hasFavoritedArticles && (
+        <Blockquote color="rgba(143, 141, 141, 1)" icon={<IconHeartSearch />} mt="sm" radius="lg">
+          {`${displayNameOrPronoun} ${noArticlesMessage}`}
+        </Blockquote>
+      )}
       {hasFavoritedArticles &&
         articlesFavoritedByUser.articles.map((article) => (
           <ArticleItem key={article.id} article={article} />

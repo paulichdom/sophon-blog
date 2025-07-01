@@ -1,7 +1,10 @@
 import { IconHeart, IconUserPlus } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
 import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
+import { useAuthStore } from '@/auth/auth.store';
+import { AuthModalGuard } from '@/components/AuthModalGuard/AuthModalGuard';
 import { AuthShow } from '@/components/AuthShow/AuthShow';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
@@ -12,49 +15,6 @@ export const Route = createFileRoute('/profile/$username')({
   },
   component: RouteComponent,
 });
-
-const data = [
-  {
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
-    name: 'Robert Wolfkisser',
-    job: 'Engineer',
-    email: 'rob_wolf@gmail.com',
-    phone: '+44 (452) 886 09 12',
-  },
-  {
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
-    name: 'Jill Jailbreaker',
-    job: 'Engineer',
-    email: 'jj@breaker.com',
-    phone: '+44 (934) 777 12 76',
-  },
-  {
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
-    name: 'Henry Silkeater',
-    job: 'Designer',
-    email: 'henry@silkeater.io',
-    phone: '+44 (901) 384 88 34',
-  },
-  {
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png',
-    name: 'Bill Horsefighter',
-    job: 'Designer',
-    email: 'bhorsefighter@gmail.com',
-    phone: '+44 (667) 341 45 22',
-  },
-  {
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
-    name: 'Jeremy Footviewer',
-    job: 'Manager',
-    email: 'jeremy@foot.dev',
-    phone: '+44 (881) 245 65 65',
-  },
-];
 
 type TabKey = '' | 'favorites' | 'saved';
 type TabValue = 'articles' | 'favorites' | 'saved';
@@ -76,8 +36,9 @@ function RouteComponent() {
   const navigate = useNavigate();
   const router = useRouter();
   const { profile } = Route.useLoaderData();
+  const { accessToken, user } = useAuthStore();
 
-  const hasFollowers = profile.followers && profile.followers?.length > 0;
+  const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
 
   // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
@@ -95,6 +56,23 @@ function RouteComponent() {
       navigate({ to: `/profile/$username/${path}`, params: { username: profile.username } });
     }
   };
+
+  const handleFollowUser = () => {
+    if (isAuthenticated) {
+      alert(`You are now following ${profile.username}`);
+    } else {
+      openAuthModal();
+    }
+  };
+
+  const isAuthenticated = !!accessToken && !!user;
+  const isCurrentUser = user?.username === profile?.username;
+  const shouldShowFollowButton = !isAuthenticated || (isAuthenticated && !isCurrentUser);
+
+  console.log({ isAuthenticated, isCurrentUser, shouldShowFollowButton });
+
+  const hasFollowers = profile.followers && profile.followers?.length > 0;
+  const desc = profile.bio;
 
   return (
     <Grid gutter={32}>
@@ -140,48 +118,35 @@ function RouteComponent() {
             {profile.followers?.length} followers
           </Text>
         )}
-
-        <Button
-          size="sm"
-          radius="xl"
-          mt="md"
-          variant="outline"
-          color="#F9D87E"
-          leftSection={<IconUserPlus size={20} />}
-        >
-          Follow
-        </Button>
-        <AuthShow when="isOwner">
-          <Button variant="transparent" pl={0} mt="md">
-            Edit profile
+        {profile.bio && <p>{profile.bio}</p>}
+        <p>
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+          unknown printer took a galley of type and scrambled it to make a type specimen book. It
+          has survived not only five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged.
+        </p>
+        {shouldShowFollowButton && (
+          <Button
+            size="sm"
+            radius="xl"
+            mt="md"
+            variant="filled"
+            color={theme.colors.dark[4]}
+            leftSection={<IconUserPlus size={20} />}
+            onClick={handleFollowUser}
+          >
+            Follow
           </Button>
-        </AuthShow>
-        {/* TODO: expose following data and display it here */}
-        {/* {data.length > 0 && (
-          <Fragment>
-            <Text fz="md" fw={500} mt="xl">
-              Following
-            </Text>
-            <Stack
-              h={300}
-              bg="var(--mantine-color-body)"
-              align="flex-start"
-              justify="flex-start"
-              gap="md"
-              mt="md"
-            >
-              {data.map((person) => (
-                <Group gap="sm">
-                  <Avatar size={30} src={person.avatar} radius={30} />
-                  <Text fz="sm" fw={500}>
-                    {person.name}
-                  </Text>
-                </Group>
-              ))}
-            </Stack>
-          </Fragment>
-        )} */}
+        )}
+        {isCurrentUser && (
+          <AuthShow when="isOwner" ownerUsername={user?.username}>
+            <Button variant="transparent" pl={0} mt="md">
+              Edit profile
+            </Button>
+          </AuthShow>
+        )}
       </Grid.Col>
+      <AuthModalGuard opened={authModalOpened} onClose={closeAuthModal} />
     </Grid>
   );
 }

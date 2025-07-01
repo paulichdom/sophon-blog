@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import { IconCheck, IconDots, IconEdit, IconTrash, IconXboxX } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate, useRouter } from '@tanstack/react-router';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { deleteArticleMutationOptions } from '@/api/article/article.mutations';
+import { useAuthStore } from '@/auth/auth.store';
 import { ArticleDto } from '@/types/types';
 import classes from './MenuButton.module.css';
 
@@ -16,8 +17,13 @@ type MenuButtonProps = {
 export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const router = useRouter();
+  const { user } = useAuthStore();
 
   const { mutate: deleteArticle } = useMutation(deleteArticleMutationOptions());
+
+  const pathSegments = router.state.location.pathname.split('/');
+  const isProfilePage = pathSegments.includes('profile');
 
   const handleConfirmDeleteArticle = () => {
     const deleteArticleNotificationId = notifications.show({
@@ -32,6 +38,14 @@ export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
       onSuccess: (articleDto: ArticleDto) => {
         queryClient.invalidateQueries({ queryKey: ['articles'] });
 
+        if (user?.username) {
+          queryClient.invalidateQueries({
+            queryKey: ['articles', 'by-author', { username: user.username }],
+          });
+        } else {
+          queryClient.invalidateQueries({ queryKey: ['articles', 'by-author'] });
+        }
+
         notifications.update({
           id: deleteArticleNotificationId,
           color: 'teal',
@@ -42,7 +56,7 @@ export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
           autoClose: 2000,
         });
 
-        navigate({ to: '/' });
+        if (!isProfilePage) navigate({ to: '/' });
       },
       onError: () => {
         notifications.update({

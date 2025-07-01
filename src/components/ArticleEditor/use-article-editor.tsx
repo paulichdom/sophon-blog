@@ -8,6 +8,7 @@ import {
   generateArticleMutationOptions,
   updateArticleMutationOptions,
 } from '@/api/article/article.mutations';
+import { useAuthStore } from '@/auth/auth.store';
 import { ArticleData, ArticleDto } from '@/types/types';
 import { INITIAL_EDITOR_CONTENT } from './ArticleEditor.constants';
 
@@ -43,6 +44,7 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const { mutate: publishArticle, isPending: publishArticlePending } = useMutation(
     createArticleMutationOptions()
@@ -69,6 +71,14 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
       {
         onSuccess: (articleDto: ArticleDto) => {
           queryClient.invalidateQueries({ queryKey: ['articles'] });
+
+          if (user?.username) {
+            queryClient.invalidateQueries({
+              queryKey: ['articles', 'by-author', { username: user.username }],
+            });
+          } else {
+            queryClient.invalidateQueries({ queryKey: ['articles', 'by-author'] });
+          }
 
           notifications.update({
             id: publishArticleNotificationId,
