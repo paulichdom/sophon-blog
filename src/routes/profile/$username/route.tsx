@@ -1,12 +1,13 @@
-import { IconHeart, IconUserPlus } from '@tabler/icons-react';
+import { IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
-import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Button, Divider, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { useAuthStore } from '@/auth/auth.store';
 import { AuthModalGuard } from '@/components/AuthModalGuard/AuthModalGuard';
 import { AuthShow } from '@/components/AuthShow/AuthShow';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
+import { useFollowUserProfile } from '@/hooks/use-follow-user-profile';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
@@ -57,9 +58,16 @@ function RouteComponent() {
     }
   };
 
-  const handleFollowUser = () => {
+  const {
+    followingState,
+    handleFollowUserProfile,
+    followUserProfileIsPending,
+    unfollowUserProfileIsPending,
+  } = useFollowUserProfile(profile.username, profile.following);
+
+  const onFollowUserProfile = () => {
     if (isAuthenticated) {
-      alert(`You are now following ${profile.username}`);
+      handleFollowUserProfile();
     } else {
       openAuthModal();
     }
@@ -72,7 +80,7 @@ function RouteComponent() {
   console.log({ isAuthenticated, isCurrentUser, shouldShowFollowButton });
 
   const hasFollowers = profile.followers && profile.followers?.length > 0;
-  const desc = profile.bio;
+  const followersCountLabel = profile.followers?.length === 1 ? 'follower' : 'followers';
 
   return (
     <Grid gutter={32}>
@@ -90,7 +98,7 @@ function RouteComponent() {
               value="favorites"
               leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
             >
-              Liked Posts
+              Liked Articles
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="articles">
@@ -113,18 +121,29 @@ function RouteComponent() {
         <Text fz="lg" fw={500} mt="md">
           {profile.username}
         </Text>
-        {hasFollowers && (
+        {!hasFollowers && (
           <Text c="dimmed" fz="sm">
-            {profile.followers?.length} followers
+            No followers yet
           </Text>
         )}
-        {profile.bio && <p>{profile.bio}</p>}
-        <p>
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-          unknown printer took a galley of type and scrambled it to make a type specimen book. It
-          has survived not only five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged.
-        </p>
+        {hasFollowers && (
+          <Text c="dimmed" fz="sm">
+            {profile.followers?.length} {followersCountLabel}
+          </Text>
+        )}
+        <Text fz="md" mt="md">
+          Bio:
+        </Text>
+        {!profile.bio && (
+          <Text c="dimmed" fz="sm">
+            No bio yet
+          </Text>
+        )}
+        {profile.bio && (
+          <Text c="dimmed" fz="sm" mt="md" mb="sm">
+            {profile.bio}
+          </Text>
+        )}
         {shouldShowFollowButton && (
           <Button
             size="sm"
@@ -132,10 +151,11 @@ function RouteComponent() {
             mt="md"
             variant="filled"
             color={theme.colors.dark[4]}
-            leftSection={<IconUserPlus size={20} />}
-            onClick={handleFollowUser}
+            leftSection={followingState ? <IconUserMinus size={20} /> : <IconUserPlus size={20} />}
+            onClick={onFollowUserProfile}
+            loading={followUserProfileIsPending || unfollowUserProfileIsPending}
           >
-            Follow
+            {followingState ? 'Unfollow' : 'Follow'}
           </Button>
         )}
         {isCurrentUser && (

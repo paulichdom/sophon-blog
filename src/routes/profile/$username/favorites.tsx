@@ -1,4 +1,3 @@
-import { IconHeartSearch } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { Blockquote, Stack } from '@mantine/core';
 import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
@@ -29,7 +28,7 @@ function RouteComponent() {
   return (
     <Stack>
       {!hasFavoritedArticles && (
-        <Blockquote color="rgba(143, 141, 141, 1)" icon={<IconHeartSearch />} mt="sm" radius="lg">
+        <Blockquote color="rgba(143, 141, 141, 1)" mt="sm" radius="lg">
           {`${displayNameOrPronoun} ${noArticlesMessage}`}
         </Blockquote>
       )}

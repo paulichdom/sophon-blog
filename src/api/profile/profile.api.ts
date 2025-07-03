@@ -8,3 +8,23 @@ export const fetchUserProfile = async (username: string) => {
 
   return profile;
 };
+
+export const followUserProfile = async (username: string) => {
+  const url = new URL(`${API_URL}/profiles/${username}/follow`);
+  const profile: ProfileDto = await fetch(url.toString(), {
+    method: 'POST',
+    credentials: 'include',
+  });
+
+  return profile;
+};
+
+export const unfollowUserProfile = async (username: string) => {
+  const url = new URL(`${API_URL}/profiles/${username}/follow`);
+  const profile: ProfileDto = await fetch(url.toString(), {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  return profile;
+};
