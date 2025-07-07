@@ -15,9 +15,9 @@ type UseFollowUserProfileValue = {
 
 export const useFollowUserProfile = (
   username: string,
-  isFollowing: boolean
+  isFollowing: boolean | undefined
 ): UseFollowUserProfileValue => {
-  const [followingState, setFollowingState] = useState<boolean>(isFollowing);
+  const [followingState, setFollowingState] = useState<boolean>(isFollowing || false);
   const queryClient = useQueryClient();
 
   const { mutate: followUserProfile, isPending: followUserProfileIsPending } = useMutation(
@@ -33,14 +33,20 @@ export const useFollowUserProfile = (
       unfollowUserProfile(username, {
         onSuccess: () => {
           setFollowingState(false);
-          queryClient.invalidateQueries({ queryKey: ['profile', username] });
+          queryClient.invalidateQueries({ queryKey: ['profile', { username }] });
+        },
+        onError: (error) => {
+          console.error('Error unfollowing user:', error);
         },
       });
     } else {
       followUserProfile(username, {
         onSuccess: () => {
           setFollowingState(true);
-          queryClient.invalidateQueries({ queryKey: ['profile', username] });
+          queryClient.invalidateQueries({ queryKey: ['profile', { username }] });
+        },
+        onError: (error) => {
+          console.error('Error following user:', error);
         },
       });
     }

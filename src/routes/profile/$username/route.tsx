@@ -1,19 +1,19 @@
 import { IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
-import { Button, Divider, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Button, Center, Grid, Loader, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { useAuthStore } from '@/auth/auth.store';
 import { AuthModalGuard } from '@/components/AuthModalGuard/AuthModalGuard';
 import { AuthShow } from '@/components/AuthShow/AuthShow';
+import { NotFound } from '@/components/NotFound/NotFound';
+import { ServerError } from '@/components/ServerError/ServerError';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useFollowUserProfile } from '@/hooks/use-follow-user-profile';
 import classes from '../../../components/UserInfo/UserInfo.module.css';
 
 export const Route = createFileRoute('/profile/$username')({
-  loader: async ({ context: { queryClient }, params: { username } }) => {
-    return await queryClient.ensureQueryData(userProfileQueryOptions(username));
-  },
   component: RouteComponent,
 });
 
@@ -36,14 +36,15 @@ function RouteComponent() {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const router = useRouter();
-  const { profile } = Route.useLoaderData();
+  const { username } = Route.useParams();
+  const { data, isLoading, isError, error } = useQuery(userProfileQueryOptions(username));
+
   const { accessToken, user } = useAuthStore();
 
   const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
 
-  // Extract the path segment after the username
   const pathSegments = router.state.location.pathname.split('/');
-  const currentPath = pathSegments.length > 3 ? pathSegments[3] : '';
+  const currentPath = pathSegments.length > 2 ? pathSegments[2] : '';
 
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
 
@@ -52,9 +53,9 @@ function RouteComponent() {
 
     const path = pathMap[value as TabValue];
     if (path === '') {
-      navigate({ to: '/profile/$username', params: { username: profile.username } });
+      navigate({ to: '/profile/$username', params: { username } });
     } else {
-      navigate({ to: `/profile/$username/${path}`, params: { username: profile.username } });
+      navigate({ to: `/profile/$username/${path}`, params: { username } });
     }
   };
 
@@ -63,7 +64,7 @@ function RouteComponent() {
     handleFollowUserProfile,
     followUserProfileIsPending,
     unfollowUserProfileIsPending,
-  } = useFollowUserProfile(profile.username, profile.following);
+  } = useFollowUserProfile(username, data?.profile?.following);
 
   const onFollowUserProfile = () => {
     if (isAuthenticated) {
@@ -74,13 +75,28 @@ function RouteComponent() {
   };
 
   const isAuthenticated = !!accessToken && !!user;
-  const isCurrentUser = user?.username === profile?.username;
+  const isCurrentUser = user?.username === data?.profile?.username;
   const shouldShowFollowButton = !isAuthenticated || (isAuthenticated && !isCurrentUser);
 
-  console.log({ isAuthenticated, isCurrentUser, shouldShowFollowButton });
+  const hasFollowers = data?.profile?.followers && data?.profile?.followers?.length > 0;
+  const followersCountLabel = data?.profile?.followers?.length === 1 ? 'follower' : 'followers';
+  if (isLoading) {
+    return (
+      <Center>
+        <Loader color="yellow" size="xl" type="dots" />
+      </Center>
+    );
+  }
 
-  const hasFollowers = profile.followers && profile.followers?.length > 0;
-  const followersCountLabel = profile.followers?.length === 1 ? 'follower' : 'followers';
+  if (isError) {
+    return <ServerError />;
+  }
+
+  if (!data?.profile) {
+    return <NotFound />;
+  }
+
+  const profile = data.profile;
 
   return (
     <Grid gutter={32}>

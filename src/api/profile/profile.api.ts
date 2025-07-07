@@ -4,7 +4,9 @@ import { ProfileDto } from '@/types/types';
 
 export const fetchUserProfile = async (username: string) => {
   const url = new URL(`${API_URL}/profiles/${username}`);
-  const profile: ProfileDto = await fetch(url.toString());
+  const profile: ProfileDto = await fetch(url.toString(), {
+    credentials: 'include',
+  });
 
   return profile;
 };
