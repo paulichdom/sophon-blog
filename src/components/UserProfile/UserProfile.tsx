@@ -1,5 +1,5 @@
-import { IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
-import { Outlet, useNavigate, useRouter } from '@tanstack/react-router';
+import { IconArticle, IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
+import { Link, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
 import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/auth/auth.store';
@@ -89,10 +89,15 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
           mt="md"
         >
           <Tabs.List mb="xl">
-            <Tabs.Tab value="articles">My Articles</Tabs.Tab>
+            <Tabs.Tab
+              value="articles"
+              leftSection={<IconArticle size={16} stroke={1.5} color={theme.colors.dark[1]} />}
+            >
+              My Articles
+            </Tabs.Tab>
             <Tabs.Tab
               value="favorites"
-              leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.red[6]} />}
+              leftSection={<IconHeart size={16} stroke={1.5} color={theme.colors.dark[1]} />}
             >
               Liked Articles
             </Tabs.Tab>
@@ -130,7 +135,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
         <Text fz="md" mt="md">
           Bio:
         </Text>
-        {bio && (
+        {!bio && (
           <Text c="dimmed" fz="sm">
             No bio yet
           </Text>
@@ -156,7 +161,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
         )}
         {isCurrentUser && (
           <AuthShow when="isOwner" ownerUsername={user?.username}>
-            <Button variant="transparent" pl={0} mt="md">
+            <Button component={Link} to="/settings" variant="transparent" pl={0} mt="md">
               Edit profile
             </Button>
           </AuthShow>

@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Container, Group, Text, Title } from '@mantine/core';
-import { Route as rootRoute } from '../../routes/__root';
+import { Button, Container, Group, Text, Title } from '@mantine/core';
 import classes from './NotFound.module.css';
 
 export function NotFound() {
@@ -21,7 +20,9 @@ export function NotFound() {
         been moved to another URL.
       </Text>
       <Group justify="center">
-        <Link to={rootRoute.to}>Take me back to home page</Link>
+        <Button variant="subtle" component={Link} to="/">
+          Take me back to home page
+        </Button>
       </Group>
     </Container>
   );

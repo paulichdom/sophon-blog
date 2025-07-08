@@ -12,12 +12,12 @@ export const Route = createFileRoute('/profile/$username')({
 
 function RouteComponent() {
   const { username } = Route.useParams();
-  const { data, isLoading, isError, error } = useQuery(userProfileQueryOptions(username));
+  const { data, isLoading, isError } = useQuery(userProfileQueryOptions(username));
 
   if (isLoading) {
     return (
-      <Center>
-        <Loader color="yellow" size="xl" type="dots" />
+      <Center style={{ height: '70vh' }}>
+        <Loader color="#F9D87E" />
       </Center>
     );
   }
