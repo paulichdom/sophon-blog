@@ -1,5 +1,5 @@
 import { IconArticle, IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
-import { Link, Outlet, useNavigate, useRouter } from '@tanstack/react-router';
+import { Link, Outlet, useNavigate, useRouter, useRouterState } from '@tanstack/react-router';
 import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/auth/auth.store';
@@ -10,19 +10,17 @@ import { useFollowUserProfile } from '@/hooks/use-follow-user-profile';
 import { ProfileData } from '@/types/types';
 import classes from './UserProfile.module.css';
 
-type TabKey = '' | 'favorites' | 'saved';
-type TabValue = 'articles' | 'favorites' | 'saved';
+type TabKey = '' | 'favorites';
+type TabValue = 'articles' | 'favorites';
 
 const tabMap: Record<TabKey, TabValue> = {
   '': 'articles',
   favorites: 'favorites',
-  saved: 'saved',
 };
 
 const pathMap: Record<TabValue, TabKey> = {
   articles: '',
   favorites: 'favorites',
-  saved: 'saved',
 };
 
 type UserProfileProps = {
@@ -30,19 +28,18 @@ type UserProfileProps = {
 };
 
 export const UserProfile = ({ profile }: UserProfileProps) => {
+  useRouterState({ select: (state) => state.location.pathname });
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const router = useRouter();
 
-  const { username, image, bio, following, followers } = profile;
-
-  const { accessToken, user } = useAuthStore();
-
   const [authModalOpened, { open: openAuthModal, close: closeAuthModal }] = useDisclosure(false);
 
-  const pathSegments = router.state.location.pathname.split('/');
-  const currentPath = pathSegments.length > 2 ? pathSegments[2] : '';
+  const { username, image, bio, following, followers } = profile;
+  const { accessToken, user } = useAuthStore();
 
+  const pathSegments = router.latestLocation.pathname.split('/');
+  const currentPath = pathSegments.length > 3 ? pathSegments[3] : '';
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
 
   const handleTabChange = (value: string | null) => {
@@ -83,7 +80,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
       <Grid.Col span={8}>
         <h1>{profile.username}</h1>
         <Tabs
-          defaultValue={currentTab}
+          value={currentTab}
           onChange={handleTabChange}
           classNames={{ tab: classes.tab }}
           mt="md"

@@ -164,12 +164,15 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
           </>
         ))}
-      <ResponsesDrawer
-        opened={drawerOpened}
-        close={closeDrawer}
-        articleSlug={article.slug}
-        comments={comments}
-      />
+      {user && (
+        <ResponsesDrawer
+          opened={drawerOpened}
+          close={closeDrawer}
+          user={user}
+          articleSlug={article.slug}
+          comments={comments}
+        />
+      )}
       <AuthModalGuard opened={authModalOpened} onClose={closeAuthModal} />
     </Container>
   );
