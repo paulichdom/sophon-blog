@@ -26,9 +26,8 @@ function RouteComponent() {
 
   return (
     <Stack>
-      {!hasArticles && <p>{`${displayNameOrPronoun} ${noArticlesMessage}`} </p>}
       {!hasArticles && (
-        <Blockquote color="rgba(143, 141, 141, 1)" icon={<IconHeartSearch />} mt="sm" radius="lg">
+        <Blockquote color="rgba(143, 141, 141, 1)" mt="sm" radius="lg">
           {`${displayNameOrPronoun} ${noArticlesMessage}`}
         </Blockquote>
       )}
