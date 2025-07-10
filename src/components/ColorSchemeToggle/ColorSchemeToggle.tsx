@@ -4,7 +4,7 @@ import cx from 'clsx';
 import classes from './ColorSchemeToggle.module.css';
 export function ColorSchemeToggle() {
   const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+  const computedColorScheme = useComputedColorScheme('dark', { getInitialValueInEffect: true });
   const iconColor = computedColorScheme === 'dark' ? '#F9D87E' : 'blue'
 
   return (
