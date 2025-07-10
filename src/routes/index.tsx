@@ -6,6 +6,7 @@ import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleton';
 import { ConstructionBanner } from '@/components/ConstructionBanner/ConstructionBanner';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
+import { ServerError } from '@/components/ServerError/ServerError';
 import { range } from '@/utils';
 
 export const Route = createFileRoute('/')({
@@ -14,10 +15,15 @@ export const Route = createFileRoute('/')({
   },
   component: HomePage,
   pendingComponent: ArticleCardSkeleton,
+  errorComponent: ServerError,
 });
 
 function HomePage() {
-  const { data, isFetching } = useSuspenseQuery(allArticlesQueryOptions);
+  const { data, isFetching, isError } = useSuspenseQuery(allArticlesQueryOptions);
+
+  if (isError) {
+    return <ServerError />;
+  }
 
   return (
     <Container>

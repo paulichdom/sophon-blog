@@ -6,7 +6,7 @@
 .label {
   text-align: center;
   font-weight: 500;
-  font-size: 220px;
+  font-size: 120px;
   line-height: 1;
   margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
 
