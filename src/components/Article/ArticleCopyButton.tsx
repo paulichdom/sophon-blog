@@ -18,7 +18,7 @@ export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({
   const theme = useMantineTheme();
 
   const APP_DOMAIN = 'https://sophon.up.railway.app';
-  const shareArticleUrl = `${APP_DOMAIN}/articles/${articleSlug}`;
+  const shareArticleUrl = `${APP_DOMAIN}/article/${articleSlug}`;
 
   const handleCopy = (copy: () => void) => {
     copy();

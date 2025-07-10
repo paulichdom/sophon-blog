@@ -92,7 +92,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
               value="articles"
               leftSection={<IconArticle size={16} stroke={1.5} color={theme.colors.dark[1]} />}
             >
-              My Articles
+              Articles
             </Tabs.Tab>
             <Tabs.Tab
               value="favorites"
