@@ -24,3 +24,11 @@
 .logo {
   text-decoration: none;
 }
+
+.button {
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: underline;
+}

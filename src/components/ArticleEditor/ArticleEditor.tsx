@@ -1,5 +1,5 @@
-import { FC, Fragment, useEffect } from 'react';
-import { IconClock, IconTag } from '@tabler/icons-react';
+import { FC, useEffect } from 'react';
+import { IconTag } from '@tabler/icons-react';
 import Highlight from '@tiptap/extension-highlight';
 import SubScript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -9,9 +9,7 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Button, Container, Flex, TagsInput, Textarea, TextInput } from '@mantine/core';
 import { Link } from '@mantine/tiptap';
-import { InfoAlert } from '../InfoAlert/InfoAlert';
 import { TextEditor } from '../TextEditor/TextEditor';
-import { INFO_ALERT_TEXT } from './ArticleEditor.constants';
 import { ArticleGenerator } from './components/ArticleGenerator';
 
 type ArticleEditorProps = {
@@ -134,24 +132,7 @@ export const ArticleEditor: FC<ArticleEditorProps> = ({
         />
       )}
       <Flex direction="column" mt="lg" align="flex-end">
-        <InfoAlert title="Content Moderation Notice">{INFO_ALERT_TEXT}</InfoAlert>
         <Flex gap={12}>
-          {!isEdit && (
-            <Fragment>
-              <Button
-                variant="subtle"
-                color="cyan"
-                radius="xl"
-                leftSection={<IconClock size={16} />}
-                disabled={isPublishDisabled}
-              >
-                Schedule for later
-              </Button>
-              <Button variant="light" color="cyan" radius="xl" disabled={isPublishDisabled}>
-                Save Draft
-              </Button>
-            </Fragment>
-          )}
           <Button
             fullWidth={false}
             loading={isPublishLoading}

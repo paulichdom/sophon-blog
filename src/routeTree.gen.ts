@@ -16,6 +16,7 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as EditorIndexImport } from './routes/editor/index'
+import { Route as ProfileEditImport } from './routes/profile/edit'
 import { Route as EditorSlugImport } from './routes/editor/$slug'
 import { Route as ArticleSlugImport } from './routes/article.$slug'
 import { Route as ProfileUsernameRouteImport } from './routes/profile/$username/route'
@@ -51,6 +52,12 @@ const IndexRoute = IndexImport.update({
 const EditorIndexRoute = EditorIndexImport.update({
   id: '/editor/',
   path: '/editor/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileEditRoute = ProfileEditImport.update({
+  id: '/profile/edit',
+  path: '/profile/edit',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -137,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorSlugImport
       parentRoute: typeof rootRoute
     }
+    '/profile/edit': {
+      id: '/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof ProfileEditImport
+      parentRoute: typeof rootRoute
+    }
     '/editor/': {
       id: '/editor/'
       path: '/editor'
@@ -184,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/profile/$username': typeof ProfileUsernameRouteRouteWithChildren
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
+  '/profile/edit': typeof ProfileEditRoute
   '/editor': typeof EditorIndexRoute
   '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
   '/profile/$username/': typeof ProfileUsernameIndexRoute
@@ -196,6 +211,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
+  '/profile/edit': typeof ProfileEditRoute
   '/editor': typeof EditorIndexRoute
   '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
   '/profile/$username': typeof ProfileUsernameIndexRoute
@@ -210,6 +226,7 @@ export interface FileRoutesById {
   '/profile/$username': typeof ProfileUsernameRouteRouteWithChildren
   '/article/$slug': typeof ArticleSlugRoute
   '/editor/$slug': typeof EditorSlugRoute
+  '/profile/edit': typeof ProfileEditRoute
   '/editor/': typeof EditorIndexRoute
   '/profile/$username/favorites': typeof ProfileUsernameFavoritesRoute
   '/profile/$username/': typeof ProfileUsernameIndexRoute
@@ -225,6 +242,7 @@ export interface FileRouteTypes {
     | '/profile/$username'
     | '/article/$slug'
     | '/editor/$slug'
+    | '/profile/edit'
     | '/editor'
     | '/profile/$username/favorites'
     | '/profile/$username/'
@@ -236,6 +254,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/article/$slug'
     | '/editor/$slug'
+    | '/profile/edit'
     | '/editor'
     | '/profile/$username/favorites'
     | '/profile/$username'
@@ -248,6 +267,7 @@ export interface FileRouteTypes {
     | '/profile/$username'
     | '/article/$slug'
     | '/editor/$slug'
+    | '/profile/edit'
     | '/editor/'
     | '/profile/$username/favorites'
     | '/profile/$username/'
@@ -262,6 +282,7 @@ export interface RootRouteChildren {
   ProfileUsernameRouteRoute: typeof ProfileUsernameRouteRouteWithChildren
   ArticleSlugRoute: typeof ArticleSlugRoute
   EditorSlugRoute: typeof EditorSlugRoute
+  ProfileEditRoute: typeof ProfileEditRoute
   EditorIndexRoute: typeof EditorIndexRoute
 }
 
@@ -273,6 +294,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileUsernameRouteRoute: ProfileUsernameRouteRouteWithChildren,
   ArticleSlugRoute: ArticleSlugRoute,
   EditorSlugRoute: EditorSlugRoute,
+  ProfileEditRoute: ProfileEditRoute,
   EditorIndexRoute: EditorIndexRoute,
 }
 
@@ -293,6 +315,7 @@ export const routeTree = rootRoute
         "/profile/$username",
         "/article/$slug",
         "/editor/$slug",
+        "/profile/edit",
         "/editor/"
       ]
     },
@@ -320,6 +343,9 @@ export const routeTree = rootRoute
     },
     "/editor/$slug": {
       "filePath": "editor/$slug.tsx"
+    },
+    "/profile/edit": {
+      "filePath": "profile/edit.tsx"
     },
     "/editor/": {
       "filePath": "editor/index.tsx"

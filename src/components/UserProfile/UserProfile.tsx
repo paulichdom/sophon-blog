@@ -1,6 +1,6 @@
 import { IconArticle, IconHeart, IconUserMinus, IconUserPlus } from '@tabler/icons-react';
 import { Link, Outlet, useNavigate, useRouter, useRouterState } from '@tanstack/react-router';
-import { Button, Grid, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Button, Grid, Tabs, Text, Title, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/auth/auth.store';
 import { AuthModalGuard } from '@/components/AuthModalGuard/AuthModalGuard';
@@ -78,7 +78,9 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
   return (
     <Grid gutter={32}>
       <Grid.Col span={8}>
-        <h1>{profile.username}</h1>
+        <Title mt={22} mb={22} size="h1">
+          {profile.username}
+        </Title>
         <Tabs
           value={currentTab}
           onChange={handleTabChange}
@@ -158,7 +160,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
         )}
         {isCurrentUser && (
           <AuthShow when="isOwner" ownerUsername={user?.username}>
-            <Button component={Link} to="/settings" variant="transparent" pl={0} mt="md">
+            <Button component={Link} to="/profile/edit" variant="transparent" pl={0} mt="md">
               Edit profile
             </Button>
           </AuthShow>

@@ -1,11 +1,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { SimpleGrid, Skeleton } from '@mantine/core';
-import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
-import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
+import { Container, SimpleGrid, Skeleton } from '@mantine/core';
 import { allArticlesQueryOptions } from '@/api/article/article.queries';
-import { range } from '@/utils';
+import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
 import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleton';
+import { ConstructionBanner } from '@/components/ConstructionBanner/ConstructionBanner';
+import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
+import { range } from '@/utils';
 
 export const Route = createFileRoute('/')({
   loader: ({ context: { queryClient } }) => {
@@ -16,16 +17,21 @@ export const Route = createFileRoute('/')({
 });
 
 function HomePage() {
-  const {data, isFetching} = useSuspenseQuery(allArticlesQueryOptions)
+  const { data, isFetching } = useSuspenseQuery(allArticlesQueryOptions);
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2 }}>
-      {isFetching &&
-        range(8).map((_, index) => <Skeleton key={index} width="100%" height={224} radius="md" />)}
-      {!isFetching &&
-        data &&
-        data.articles.map((article) => <ArticleCard key={article.id} article={article} />)}
-      <ScrollToTopButton />
-    </SimpleGrid>
+    <Container>
+      <ConstructionBanner />
+      <SimpleGrid cols={{ base: 1, sm: 2 }}>
+        {isFetching &&
+          range(8).map((_, index) => (
+            <Skeleton key={index} width="100%" height={224} radius="md" />
+          ))}
+        {!isFetching &&
+          data &&
+          data.articles.map((article) => <ArticleCard key={article.id} article={article} />)}
+        <ScrollToTopButton />
+      </SimpleGrid>
+    </Container>
   );
 }
