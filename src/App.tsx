@@ -16,13 +16,13 @@ import '@mantine/notifications/styles.css';
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-        <MantineProvider theme={theme}>
-          <NavigationProgress />
-          <Notifications />
-          <ModalsProvider>
-            <RouterProvider router={router} />
-          </ModalsProvider>
-        </MantineProvider>
+      <MantineProvider theme={theme} defaultColorScheme="dark">
+        <NavigationProgress />
+        <Notifications />
+        <ModalsProvider>
+          <RouterProvider router={router} />
+        </ModalsProvider>
+      </MantineProvider>
     </QueryClientProvider>
   );
 };
