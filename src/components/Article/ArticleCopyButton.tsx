@@ -10,12 +10,15 @@ type ArticleCopyButtonProps = {
   iconSize: number;
 };
 
-export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({ articleSlug, timeout, iconSize }) => {
+export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({
+  articleSlug,
+  timeout,
+  iconSize,
+}) => {
   const theme = useMantineTheme();
 
-  // TODO: update this with actual url when app is deployed
-  const DUMMY_APP_DOMAIN = 'https://sophon-blog.com';
-  const shareArticleUrl = `${DUMMY_APP_DOMAIN}/articles/${articleSlug}`;
+  const APP_DOMAIN = 'https://sophon.up.railway.app';
+  const shareArticleUrl = `${APP_DOMAIN}/articles/${articleSlug}`;
 
   const handleCopy = (copy: () => void) => {
     copy();
