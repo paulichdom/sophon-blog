@@ -4,7 +4,7 @@ import classes from './ServerError.module.css';
 
 export function ServerError() {
   const handleRefreshPage = () => {
-    queryClient.invalidateQueries();
+    window.location.reload();
   };
 
   return (
