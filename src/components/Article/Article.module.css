@@ -8,3 +8,9 @@
   transform-origin: 0%;
   z-index: 1000;
 }
+
+.copyButtonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

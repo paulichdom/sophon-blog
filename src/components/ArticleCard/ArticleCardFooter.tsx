@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
+import { motion } from 'motion/react';
 import { ActionIcon, Card, Group, Text, Tooltip, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useAuthStore } from '@/auth/auth.store';
@@ -62,17 +63,20 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
             position="top"
             disabled={!isOwner}
           >
-            <ActionIcon
-              size="sm"
-              variant={'subtle'}
-              color="gray"
-              onClick={handleFavoriteArticleAction}
-              loading={favoriteActionIsPending}
-              disabled={isDisabled}
-            >
-              <IconFavorited size={16} color={theme.colors.red[4]} stroke={1.5} />
-            </ActionIcon>
+            <motion.div whileHover={{ scale: 1.4 }} className={classes.footerAction}>
+              <ActionIcon
+                size="sm"
+                variant="transparent"
+                color="gray"
+                onClick={handleFavoriteArticleAction}
+                loading={favoriteActionIsPending}
+                disabled={isDisabled}
+              >
+                <IconFavorited size={16} color={theme.colors.red[4]} stroke={1.5} />
+              </ActionIcon>
+            </motion.div>
           </Tooltip>
+
           <ArticleCopyButton articleSlug={articleSlug} timeout={4000} iconSize={16} />
         </Group>
       </Group>
