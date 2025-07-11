@@ -20,7 +20,7 @@ export const HeaderDrawer = ({ opened, onClose }: HeaderDrawerProps) => {
             size="xl"
             fw={900}
             variant="gradient"
-            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            gradient={{ from: '#F5EEC1', to: '#F9D87E', deg: 145 }}
           >
             Sophon
           </Text>
@@ -43,11 +43,20 @@ export const HeaderDrawer = ({ opened, onClose }: HeaderDrawerProps) => {
         </Link>
         <Divider my="sm" />
         <Group justify="center" grow pb="xl" px="md">
-          <Button onClick={onClose} component={Link} to="/login" variant="default">
-            Log in
+          <Button onClick={onClose} component={Link} to="/login" variant="default" radius="xl">
+            Sign in
           </Button>
-          <Button onClick={onClose} component={Link} to="/register">
-            Sign up
+          <Button
+            onClick={onClose}
+            component={Link}
+            to="/register"
+            radius="xl"
+            variant="filled"
+            color="#F9D87E"
+            gradient={{ from: '#F5EEC1', to: '#F9D87E', deg: 145 }}
+            autoContrast
+          >
+            Create account
           </Button>
         </Group>
       </ScrollArea>
