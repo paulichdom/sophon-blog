@@ -3,6 +3,7 @@ import { IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-rea
 import { Link } from '@tanstack/react-router';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { motion, useScroll, useSpring } from 'motion/react';
 import {
   ActionIcon,
   Badge,
@@ -12,6 +13,7 @@ import {
   Group,
   Text,
   Title,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -26,6 +28,7 @@ import { CommentEditor } from '../CommentEditor/CommentEditor';
 import { ResponsesDrawer } from '../ResponsesDrawer/ResponsesDrawer';
 import { ArticleCopyButton } from './ArticleCopyButton';
 import { ArticleMenuButton } from './ArticleMenuButton';
+import classes from './Article.module.css';
 
 export type ArticleProps = {
   article: ArticleData;
@@ -39,6 +42,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   const { accessToken, user } = useAuthStore();
 
   const isAuthenticated = !!accessToken && !!user;
+  const isOwner = user?.username === article.author.username;
 
   const editor = useEditor({
     content: article.body,
@@ -58,6 +62,8 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;
+  const isDisabled = isOwner || favoriteActionIsPending;
+
   const { comments } = commentsData;
   const hasComments = comments.length > 0;
 
@@ -69,16 +75,31 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
     }
   };
 
-  const handleFavoriteArticleAction = () => {
-    if (isAuthenticated) {
+  const handleFavoriteArticleAction = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (isDisabled) {
+      event.preventDefault();
+    } else if (isAuthenticated) {
       handleFavoriteArticle();
     } else {
       openAuthModal();
     }
   };
 
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
     <Container size="sm">
+      <motion.div
+        className={classes.scrollYProgress}
+        style={{
+          scaleX,
+        }}
+      />
       <Title order={1}>{article.title}</Title>
       <Text c="dimmed">{article.description}</Text>
       <ArticleUserInfo author={article.author} createdAt={article.createdAt} />
@@ -86,15 +107,22 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
       <Group justify="space-between" ml={12} mr={12}>
         <Group gap={20}>
           <Flex gap={4} align="center" justify="center">
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              onClick={handleFavoriteArticleAction}
-              loading={favoriteActionIsPending}
-              disabled={favoriteActionIsPending}
+            <Tooltip
+              label={'You cannot favorite your own article'}
+              withArrow
+              position="top"
+              disabled={!isOwner}
             >
-              <IconFavorited size={20} color={theme.colors.red[4]} stroke={1.5} />
-            </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                onClick={handleFavoriteArticleAction}
+                loading={favoriteActionIsPending}
+                disabled={isDisabled}
+              >
+                <IconFavorited size={20} color={theme.colors.red[4]} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
             {favoritedState.favoritesCount > 0 && (
               <Text size="sm" c="dimmed">
                 {favoritedState.favoritesCount}

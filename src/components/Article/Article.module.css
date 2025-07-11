@@ -1,0 +1,10 @@
+.scrollYProgress {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #F9D87E;
+  transform-origin: 0%;
+  z-index: 1000;
+}
