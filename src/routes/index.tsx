@@ -9,6 +9,7 @@ import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleto
 import { ConstructionBanner } from '@/components/ConstructionBanner/ConstructionBanner';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { ServerError } from '@/components/ServerError/ServerError';
+import { SpiralLoader } from '@/components/SpiralLoader/SpiralLoader';
 import { range } from '@/utils';
 
 export const Route = createFileRoute('/')({
@@ -36,7 +37,7 @@ function HomePage() {
   }
 
   return (
-    <Container>
+    <Container style={{ padding: 0 }}>
       <AnimatePresence>
         {!shouldHideBanner && <ConstructionBanner key="banner" onClose={hideBanner} />}
       </AnimatePresence>

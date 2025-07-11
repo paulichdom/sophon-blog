@@ -5,6 +5,7 @@ import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { NotFound } from '@/components/NotFound/NotFound';
 import { ServerError } from '@/components/ServerError/ServerError';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
+import { SpiralLoader } from '@/components/SpiralLoader/SpiralLoader';
 
 export const Route = createFileRoute('/profile/$username')({
   component: RouteComponent,
@@ -17,7 +18,7 @@ function RouteComponent() {
   if (isLoading) {
     return (
       <Center style={{ height: '70vh' }}>
-        <Loader color="#F9D87E" />
+        <SpiralLoader />
       </Center>
     );
   }
