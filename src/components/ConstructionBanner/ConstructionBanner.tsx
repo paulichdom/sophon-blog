@@ -1,31 +1,29 @@
-import { Button, CloseButton, Group, Paper, Text } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { CloseButton, Group, Paper, Text } from '@mantine/core';
+import { motion } from 'motion/react';
 
-export const ConstructionBanner = () => {
-  const [shouldHideBanner, setHideBanner] = useLocalStorage({
-    key: 'construction-banner-hidden',
-    defaultValue: false,
-  });
+interface ConstructionBannerProps {
+  onClose: () => void;
+}
 
-  const hideBanner = () => {
-    setHideBanner(true);
-  };
-
-  if (shouldHideBanner) {
-    return null;
-  }
-
+export const ConstructionBanner = ({ onClose }: ConstructionBannerProps) => {
   return (
-    <Paper withBorder p="lg" radius="md" shadow="md" mb="md">
-      <Group justify="space-between" mb="xs">
-        <Text fz="md" fw={500}>
-          🚧 Under construction
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -50 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Paper withBorder p="lg" radius="md" shadow="md" mb="md">
+        <Group justify="space-between" mb="xs">
+          <Text fz="md" fw={500}>
+            🚧 Under construction
+          </Text>
+          <CloseButton mr={-9} mt={-9} onClick={onClose} />
+        </Group>
+        <Text c="dimmed" fz="xs">
+          This app is a work in progress (beta release). We appreciate your patience and any feedback!
         </Text>
-        <CloseButton mr={-9} mt={-9} onClick={hideBanner} />
-      </Group>
-      <Text c="dimmed" fz="xs">
-        This app is a work in progress (beta release). We appreciate your patience and any feedback!
-      </Text>
-    </Paper>
+      </Paper>
+    </motion.div>
   );
 };
