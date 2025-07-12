@@ -16,7 +16,7 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <AppShell header={{ height: 60, offset: false }} padding="md">
+    <AppShell header={{ height: 60, offset: false }}>
       <AppShell.Header>
         <Header />
       </AppShell.Header>

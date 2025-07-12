@@ -18,7 +18,7 @@ export function Settings() {
   const [emailPasswordOpened, { open: openPasswordModal, close: closePasswordModal }] =
     useDisclosure(false);
   return (
-    <Container size="sm">
+    <Container size="sm" px={0}>
       <Title size="h1" mb={32}>
         Account Settings
       </Title>

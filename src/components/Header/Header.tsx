@@ -65,7 +65,7 @@ export function Header() {
             </Group>
           </Group>
         </header>
-        <HeaderDrawer opened={drawerOpened} onClose={closeDrawer} />
+        <HeaderDrawer opened={drawerOpened} onClose={closeDrawer} user={user} />
       </Container>
     </Box>
   );

@@ -22,6 +22,7 @@ export function Footer() {
           classNames={{ root: classes.button }}
           component="a"
           target="_blank"
+          color='#5A8DEE'
           href={SOURCE_CODE_URL}
           leftSection={<IconBrandGithub size={18} stroke={1.5} />}
           variant="transparent"

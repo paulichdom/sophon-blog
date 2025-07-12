@@ -8,7 +8,7 @@ export const Route = createFileRoute('/profile/edit')({
 
 function RouteComponent() {
   return (
-    <Container size="sm">
+    <Container size="sm" px={0}>
       <Title mb={32}>Edit Profile</Title>
       <Stack gap="lg">
         <UserAvatar

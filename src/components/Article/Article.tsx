@@ -93,7 +93,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
   });
 
   return (
-    <Container size="sm">
+    <Container size="sm" px={0}>
       <motion.div
         className={classes.scrollYProgress}
         style={{
