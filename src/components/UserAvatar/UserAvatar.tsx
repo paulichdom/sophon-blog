@@ -15,7 +15,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({
   sourceImage = null,
   altText,
   radius = 'md',
-  color = 'gray',
+  color = 'initials',
   size = 'md',
 }) => {
   return (

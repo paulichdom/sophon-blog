@@ -3,15 +3,12 @@ import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 import {
-  Box,
   Button,
   Collapse,
   Container,
   Divider,
   Drawer,
   Flex,
-  Group,
-  ScrollArea,
   Stack,
   Text,
   UnstyledButton,
@@ -22,6 +19,7 @@ import { logoutMutationOptions } from '@/auth/auth.mutations';
 import { useAuthStore } from '@/auth/auth.store';
 import { UserData } from '@/auth/auth.types';
 import { AuthShow } from '../AuthShow/AuthShow';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 import classes from './Header.module.css';
 
 type HeaderDrawerProps = {
@@ -118,7 +116,13 @@ export const HeaderDrawer = ({ opened, onClose, user }: HeaderDrawerProps) => {
           {user && (
             <>
               <UnstyledButton className={classes.link} px={16} onClick={toggleCollapse}>
-                Toggle content
+                <UserAvatar
+                  username={user.username}
+                  altText={user.username}
+                  size={32}
+                  radius={32}
+                />
+                <Text pl={8}>{user.username}</Text>
               </UnstyledButton>
               <Collapse in={colapseOpened}>
                 <Link
