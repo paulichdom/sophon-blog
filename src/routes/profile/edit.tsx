@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Container, Stack, Textarea, TextInput, Title } from '@mantine/core';
+import { Button, Container, Flex, Stack, Textarea, TextInput, Title } from '@mantine/core';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 
 export const Route = createFileRoute('/profile/edit')({
@@ -29,6 +29,11 @@ function RouteComponent() {
           placeholder="Name"
         />
         <Textarea size="md" variant="filled" label="Bio" autosize maxRows={12} minRows={6} />
+        <Flex justify="flex-end">
+          <Button variant="outline" radius="xl" color='#5A8DEE'>
+            Save
+          </Button>
+        </Flex>
       </Stack>
     </Container>
   );
