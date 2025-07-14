@@ -100,3 +100,12 @@ export type ProfileData = {
 export type ProfileDto = {
   profile: ProfileData;
 };
+
+export type UpdateUserData = {
+  email: string;
+  password: string;
+};
+
+export type UpdateUserDto = {
+  user: Partial<UpdateUserData>;
+};
