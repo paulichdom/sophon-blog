@@ -5,11 +5,17 @@ import { getStrength, passwordRequirements } from './PasswordStrength.helpers';
 
 type PasswordStrengthProps = {
   value: string;
+  placeholder?: string;
   setValue: (value: string) => void;
   error: React.ReactNode | null | undefined;
 };
 
-export const PasswordStrength: FC<PasswordStrengthProps> = ({ value, setValue, error }) => {
+export const PasswordStrength: FC<PasswordStrengthProps> = ({
+  value,
+  setValue,
+  error,
+  placeholder = 'Your password',
+}) => {
   const strength = getStrength(value);
 
   const checks = passwordRequirements.map((requirement, index) => (
@@ -35,7 +41,7 @@ export const PasswordStrength: FC<PasswordStrengthProps> = ({ value, setValue, e
       <PasswordInput
         required
         label="Password"
-        placeholder="Your password"
+        placeholder={placeholder}
         value={value}
         onChange={(event) => setValue(event.target.value)}
         error={error}

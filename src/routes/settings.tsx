@@ -16,5 +16,6 @@ export const Route = createFileRoute('/settings')({
 });
 
 function RouteComponent() {
+  // TODO: Get uer here
   return <Settings />;
 }
