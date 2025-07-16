@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Center, Loader } from '@mantine/core';
+import { Center } from '@mantine/core';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { NotFound } from '@/components/NotFound/NotFound';
 import { ServerError } from '@/components/ServerError/ServerError';
-import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { SpiralLoader } from '@/components/SpiralLoader/SpiralLoader';
+import { UserProfile } from '@/components/UserProfile/UserProfile';
 
 export const Route = createFileRoute('/profile/$username')({
   component: RouteComponent,

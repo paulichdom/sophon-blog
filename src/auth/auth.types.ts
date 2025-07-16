@@ -22,6 +22,7 @@ export type UserDto = {
 };
 
 export type UserData = {
+  id: number;
   username: string;
   email: string;
   token?: string;

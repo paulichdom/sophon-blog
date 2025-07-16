@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import {
@@ -15,16 +16,21 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { updateUserMutationOptions } from '@/api/user/user.mutations';
-import { useAuthStore } from '@/auth/auth.store';
+import { AuthState } from '@/auth/auth.store';
+import { UserData } from '@/auth/auth.types';
 import { PasswordStrength } from '../PasswordStrength/PasswordStrength';
 import { validatePassword } from '../PasswordStrength/PasswordStrength.helpers';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
 
-export function Settings() {
+type SettingsProps = {
+  user: UserData;
+  setUser: (user: AuthState['user']) => void;
+};
+
+export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
   const [emailModalOpened, { open: openEmailModal, close: closeEmailModal }] = useDisclosure(false);
   const [emailPasswordOpened, { open: openPasswordModal, close: closePasswordModal }] =
     useDisclosure(false);
-  const { user } = useAuthStore();
 
   // Email form
   const emailForm = useForm({
@@ -54,9 +60,11 @@ export function Settings() {
       withCloseButton: false,
     });
     updateUser(
-      { input: { user: { email: values.email } }, userId: user.username },
+      { input: { user: { email: values.email } }, userId: user.id },
       {
-        onSuccess: () => {
+        onSuccess: (user) => {
+          setUser(user);
+
           notifications.update({
             id: notificationId,
             color: 'teal',
@@ -65,6 +73,7 @@ export function Settings() {
             loading: false,
             autoClose: 2000,
           });
+
           closeEmailModal();
         },
         onError: (error: any) => {
@@ -91,9 +100,10 @@ export function Settings() {
       withCloseButton: false,
     });
     updateUser(
-      { input: { user: { password: values.password } }, userId: user.username },
+      { input: { user: { password: values.password } }, userId: user.id },
       {
-        onSuccess: () => {
+        onSuccess: ({ res }) => {
+          setUser(res.user); // Update the user state with the new user data
           notifications.update({
             id: notificationId,
             color: 'teal',
@@ -117,6 +127,7 @@ export function Settings() {
       }
     );
   };
+
   return (
     <Container size="sm" px={0}>
       <Title size="h1" mb={32}>
@@ -127,9 +138,9 @@ export function Settings() {
           <Group justify="space-between">
             <Group gap="sm">
               <UserAvatar
-                username={'DomDom'}
+                username={user.username}
                 sourceImage={null}
-                altText={'DomDom'}
+                altText={user.username}
                 size={80}
                 radius={80}
                 color="initials"
@@ -139,11 +150,17 @@ export function Settings() {
                   {'Profile'}
                 </Text>
                 <Text fz="md" c="dimmed">
-                  {'DomDom'}
+                  {user.username}
                 </Text>
               </div>
             </Group>
-            <Button component={Link} to="/profile/edit" variant="light" radius="xl">
+            <Button
+              component={Link}
+              to="/profile/edit"
+              variant="outline"
+              color="#5A8DEE"
+              radius="xl"
+            >
               Edit
             </Button>
           </Group>
@@ -153,10 +170,10 @@ export function Settings() {
                 {'Email'}
               </Text>
               <Text fz="md" c="dimmed">
-                {'dom.dom@dom.dom'}
+                {user.email}
               </Text>
             </div>
-            <Button variant="light" radius="xl" onClick={openEmailModal}>
+            <Button variant="outline" color="#5A8DEE" radius="xl" onClick={openEmailModal}>
               Edit
             </Button>
           </Group>
@@ -169,7 +186,7 @@ export function Settings() {
                 {'********'}
               </Text>
             </div>
-            <Button variant="light" radius="xl" onClick={openPasswordModal}>
+            <Button variant="outline" color="#5A8DEE" radius="xl" onClick={openPasswordModal}>
               Edit
             </Button>
           </Group>
@@ -220,4 +237,4 @@ export function Settings() {
       </Modal>
     </Container>
   );
-}
+};

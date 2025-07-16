@@ -1,21 +1,17 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { currentUserQueryOptions } from '@/auth/auth.queries';
+import { useAuthStore } from '@/auth/auth.store';
 import { Settings } from '@/components/Settings/Settings';
-import { queryClient } from '@/queryClient';
 
 export const Route = createFileRoute('/settings')({
-  beforeLoad: async () => {
-    try {
-      const currentUser = await queryClient.ensureQueryData(currentUserQueryOptions);
-      if (!currentUser) throw redirect({ to: '/login' });
-    } catch (error) {
-      throw redirect({ to: '/login' });
-    }
-  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  // TODO: Get uer here
-  return <Settings />;
+  const { user, setUser } = useAuthStore();
+
+  if (!user) {
+    return redirect({ to: '/login' });
+  }
+
+  return <Settings user={user} setUser={setUser} />;
 }
