@@ -32,7 +32,6 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
   const [emailPasswordOpened, { open: openPasswordModal, close: closePasswordModal }] =
     useDisclosure(false);
 
-  // Email form
   const emailForm = useForm({
     initialValues: { email: user?.email || '' },
     validate: {
@@ -40,7 +39,6 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
     },
   });
 
-  // Password form
   const passwordForm = useForm({
     initialValues: { password: '' },
     validate: {
@@ -62,9 +60,8 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
     updateUser(
       { input: { user: { email: values.email } }, userId: user.id },
       {
-        onSuccess: (user) => {
-          setUser(user);
-
+        onSuccess: () => {
+          setUser({...user, email: values.email });
           notifications.update({
             id: notificationId,
             color: 'teal',
@@ -102,8 +99,7 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
     updateUser(
       { input: { user: { password: values.password } }, userId: user.id },
       {
-        onSuccess: ({ res }) => {
-          setUser(res.user); // Update the user state with the new user data
+        onSuccess: () => {
           notifications.update({
             id: notificationId,
             color: 'teal',
