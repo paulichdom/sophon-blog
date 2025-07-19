@@ -1,40 +1,52 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { Button, Container, Flex, Stack, Textarea, TextInput, Title } from '@mantine/core';
-import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
+import { useQuery } from '@tanstack/react-query';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { Center } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { userProfileQueryOptions } from '@/api/profile/profile.queries';
+import { useAuthStore } from '@/auth/auth.store';
+import { NotFound } from '@/components/NotFound/NotFound';
+import { ServerError } from '@/components/ServerError/ServerError';
+import { SpiralLoader } from '@/components/SpiralLoader/SpiralLoader';
+import { UserProfileEdit } from '@/components/UserProfileEdit/UserProfileEdit';
 
 export const Route = createFileRoute('/profile/edit')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return (
-    <Container size="sm" px={0}>
-      <Title mb={32}>Edit Profile</Title>
-      <Stack gap="lg">
-        <UserAvatar
-          username={'DomDom'}
-          sourceImage={null}
-          altText={'DomDom'}
-          size={80}
-          radius={80}
-          color="initials"
-        />
-        <TextInput
-          size="md"
-          label="Name"
-          required
-          name="name"
-          variant="filled"
-          radius="md"
-          placeholder="Name"
-        />
-        <Textarea size="md" variant="filled" label="Bio" autosize maxRows={12} minRows={6} />
-        <Flex justify="flex-end">
-          <Button variant="outline" radius="xl" color='#5A8DEE'>
-            Save
-          </Button>
-        </Flex>
-      </Stack>
-    </Container>
-  );
+  const { user } = useAuthStore();
+
+  if (!user) {
+    return redirect({ to: '/login' });
+  }
+
+  const { data, isLoading, isError } = useQuery(userProfileQueryOptions(user.username));
+
+  if (isLoading) {
+    return (
+      <Center style={{ height: '70vh' }}>
+        <SpiralLoader />
+      </Center>
+    );
+  }
+
+  if (isError) {
+    return <ServerError />;
+  }
+
+  if (!data?.profile) {
+    return <NotFound />;
+  }
+
+  const { profile } = data;
+
+  const form = useForm({
+    initialValues: {
+      username: profile.username || '',
+      bio: profile.bio || '',
+      image: profile.image || '',
+    },
+  });
+
+  return <UserProfileEdit form={form} />;
 }
