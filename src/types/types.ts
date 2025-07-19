@@ -101,6 +101,16 @@ export type ProfileDto = {
   profile: ProfileData;
 };
 
+export type UpdateProfileData = {
+  username: string;
+  bio: string;
+  image: string;
+};
+
+export type UpdateProfileDto = {
+  profile: UpdateProfileData;
+};
+
 export type UpdateUserData = {
   email: string;
   password: string;
