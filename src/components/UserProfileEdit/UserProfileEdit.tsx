@@ -1,13 +1,14 @@
 import { FC } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Container, Flex, Stack, Textarea, TextInput, Title } from '@mantine/core';
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { updateUserProfileMutationOptions } from '@/api/profile/profile.mutations';
 import { AuthState } from '@/auth/auth.store';
 import { UserData } from '@/auth/auth.types';
-import { UserAvatar } from '../UserAvatar/UserAvatar';
+import { validateUsername } from '@/routes/register';
 import { ProfileData } from '@/types/types';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 
 type EditProfileValues = {
   username: string;
@@ -28,6 +29,9 @@ export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile }) => {
       bio: profile.bio || '',
       image: profile.image || '',
     },
+    validate: {
+      username: validateUsername,
+    },
   });
 
   const { mutate: updateProfile, isPending: isUpdating } = useMutation(
@@ -42,6 +46,7 @@ export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile }) => {
       autoClose: false,
       withCloseButton: false,
     });
+
     updateProfile(
       { profile: values },
       {
@@ -108,6 +113,7 @@ export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile }) => {
               color="#5A8DEE"
               type="submit"
               loading={isUpdating}
+              disabled={!(form.isDirty() && form.isTouched()) || !form.isValid()}
             >
               Save
             </Button>

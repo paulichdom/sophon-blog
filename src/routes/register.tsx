@@ -8,7 +8,7 @@ export const Route = createFileRoute('/register')({
   component: RegisterPage,
 });
 
-const validateUsername = (val: string) => {
+export const validateUsername = (val: string) => {
   if (!val || val.trim().length === 0) {
     return 'Username is required';
   }

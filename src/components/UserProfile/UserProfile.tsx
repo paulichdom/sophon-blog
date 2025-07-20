@@ -140,7 +140,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
           </Text>
         )}
         {bio && (
-          <Text c="dimmed" fz="sm" mt="md" mb="sm">
+          <Text c="dimmed" fz="sm">
             {bio}
           </Text>
         )}
