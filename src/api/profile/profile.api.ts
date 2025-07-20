@@ -36,6 +36,7 @@ export const updateUserProfile = async (updateProfileDto: UpdateProfileDto) => {
   const profile: Partial<ProfileData> = await fetch(url.toString(), {
     method: 'PATCH',
     credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updateProfileDto),
   });
 

@@ -14,7 +14,7 @@ export const Route = createFileRoute('/profile/edit')({
 });
 
 function RouteComponent() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
 
   if (!user) {
     return redirect({ to: '/login' });
@@ -38,15 +38,5 @@ function RouteComponent() {
     return <NotFound />;
   }
 
-  const { profile } = data;
-
-  const form = useForm({
-    initialValues: {
-      username: profile.username || '',
-      bio: profile.bio || '',
-      image: profile.image || '',
-    },
-  });
-
-  return <UserProfileEdit form={form} />;
+  return <UserProfileEdit profile={data.profile} user={user} setUser={setUser} />;
 }
