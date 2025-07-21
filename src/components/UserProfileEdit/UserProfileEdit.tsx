@@ -22,7 +22,7 @@ type UserProfileEditProps = {
   setUser: (user: AuthState['user']) => void;
 };
 
-export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile }) => {
+export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile, user, setUser }) => {
   const form = useForm({
     initialValues: {
       username: profile.username || '',
@@ -51,6 +51,19 @@ export const UserProfileEdit: FC<UserProfileEditProps> = ({ profile }) => {
       { profile: values },
       {
         onSuccess: () => {
+          const updatedUser = { ...user };
+
+          if (typeof values.username !== 'undefined') {
+            updatedUser.username = values.username;
+          }
+          if (typeof values.bio !== 'undefined' && values.bio === '') {
+            updatedUser.bio = null;
+          }
+          if (typeof values.image !== 'undefined' && values.image === '') {
+            updatedUser.image = null;
+          }
+          setUser(updatedUser);
+
           notifications.update({
             id: notificationId,
             color: 'teal',

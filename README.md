@@ -13,6 +13,9 @@ Sophon is a modern, feature-rich blogging platform that empowers users to create
 - **Responsive UI:** Built with [Mantine](https://mantine.dev/) for a beautiful, accessible experience on any device.
 - **Modern Tooling:** Includes TypeScript, ESLint, Storybook, and Vitest for robust development and testing.
 
+## Backend
+The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can find the backend source code here: [paulichdom/sophon-api](https://github.com/paulichdom/sophon-api)
+
 ## Getting Started
 
 ### Prerequisites
@@ -57,9 +60,6 @@ yarn preview
 
 ## Generative AI
 Sophon integrates generative AI to help users quickly draft articles. Simply enter a topic or prompt in the editor, and the AI assistant will generate a complete article draft for you to review and edit. This feature lowers the barrier to content creation and boosts productivity for writers of all levels.
-
-## Backend
-The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can find the backend source code here: [paulichdom/sophon-api](https://github.com/paulichdom/sophon-api)
 
 ## npm Scripts
 
