@@ -55,7 +55,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({ form }) => {
           autoClose: 5000,
         });
 
-        navigate({ to: '/login' });
+        void navigate({ to: '/login' });
       },
       onError: (error) => {
         notifications.update({

@@ -13,6 +13,6 @@ export default tseslint.config(...mantine, {
       },
     ],
     // Warn about unused imports specifically
-    'no-unused-vars': 'off', // Turn off base rule as it conflicts with TypeScript rule
+    'no-unused-vars': 'off', // Turn off the base rule as it conflicts with the TypeScript rule
   },
 });

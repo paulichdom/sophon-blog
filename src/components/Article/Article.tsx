@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
 import { Link } from '@tanstack/react-router';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -108,7 +108,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
         <Group gap={20}>
           <Flex gap={4} align="center" justify="center">
             <Tooltip
-              label={'You cannot favorite your own article'}
+              label='You cannot favorite your own article'
               withArrow
               position="top"
               disabled={!isOwner}
@@ -178,7 +178,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
           <Link to="/register" style={{ margin: '0 4px' }}>
             Register
           </Link>
-          to add conments on this article
+          to add comments on this article
         </Text>
       </AuthShow>
       <AuthShow when="loggedIn">
