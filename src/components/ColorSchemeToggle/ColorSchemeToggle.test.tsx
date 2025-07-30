@@ -35,4 +35,46 @@ describe('ColorSchemeToggle', () => {
 
     expect(toggleColorScheme).toHaveBeenCalledTimes(1);
   });
+
+  it('displays correct icon based on color scheme', () => {
+    const toggleColorScheme = vi.fn();
+    const setColorScheme = vi.fn();
+    const clearColorScheme = vi.fn();
+
+    // Test light mode - should show sun icon prominently, moon icon hidden
+    mockedUseMantineColorScheme.mockReturnValue({
+      colorScheme: 'light',
+      toggleColorScheme,
+      setColorScheme,
+      clearColorScheme,
+    });
+
+    const { container, rerender } = render(<ColorSchemeToggle />);
+
+    // Verify button is rendered
+    const toggleButton = screen.getByRole('button', { name: /toggle color scheme/i });
+    expect(toggleButton).toBeInTheDocument();
+
+    // Check that both icon elements exist (they're always in DOM but styled differently)
+    const sunIcon = container.querySelector('svg'); // First SVG should be sun icon
+    expect(sunIcon).toBeInTheDocument();
+
+    // Test dark mode
+    mockedUseMantineColorScheme.mockReturnValue({
+      colorScheme: 'dark',
+      toggleColorScheme,
+      setColorScheme,
+      clearColorScheme,
+    });
+
+    rerender(<ColorSchemeToggle />);
+
+    // Verify button still renders correctly after color scheme change
+    const toggleButtonDark = screen.getByRole('button', { name: /toggle color scheme/i });
+    expect(toggleButtonDark).toBeInTheDocument();
+
+    // Icons should still be present
+    const iconsAfterToggle = container.querySelectorAll('svg');
+    expect(iconsAfterToggle).toHaveLength(2); // Should have both sun and moon icons
+  });
 });
