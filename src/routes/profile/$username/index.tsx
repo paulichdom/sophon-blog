@@ -1,4 +1,3 @@
-import { IconHeartSearch } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Blockquote, Stack } from '@mantine/core';
@@ -17,7 +16,9 @@ function RouteComponent() {
   const { username } = Route.useParams();
   const { data: articlesByAuthor, isLoading } = useQuery(articlesByAuthorQueryOptions(username));
 
-  if (isLoading || !articlesByAuthor) return <ArticleItemPendingComponent />;
+  if (isLoading || !articlesByAuthor) {
+    return <ArticleItemPendingComponent />;
+  }
 
   const hasArticles = articlesByAuthor.articlesCount > 0;
   const isCurrentUser = user?.username === username;
