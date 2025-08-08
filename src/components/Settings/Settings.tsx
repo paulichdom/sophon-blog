@@ -61,7 +61,7 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
       { input: { user: { email: values.email } }, userId: user.id },
       {
         onSuccess: () => {
-          setUser({...user, email: values.email });
+          setUser({ ...user, email: values.email });
           notifications.update({
             id: notificationId,
             color: 'teal',

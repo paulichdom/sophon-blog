@@ -23,4 +23,3 @@ export const ArticleCardTagList: FC<ArticleCardTagListProps> = ({ tags }) => {
     </Flex>
   );
 };
-

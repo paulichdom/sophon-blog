@@ -7,7 +7,7 @@ export const api = axios.create({
 });
 
 // attach token
-api.interceptors.request.use(cfg => {
+api.interceptors.request.use((cfg) => {
   const token = useAuthStore.getState().accessToken;
   if (token) cfg.headers.Authorization = `Bearer ${token}`;
   return cfg;
@@ -20,9 +20,14 @@ api.interceptors.response.use(undefined, async (err: AxiosError) => {
   if (err.response?.status !== 401) throw err;
 
   /* debounce concurrent 401s */
-  refreshing ??= api.post('/auth/refresh').then(res => {
-    useAuthStore.getState().setToken(res.data.accessToken);
-  }).finally(() => { refreshing = null; });
+  refreshing ??= api
+    .post('/auth/refresh')
+    .then((res) => {
+      useAuthStore.getState().setToken(res.data.accessToken);
+    })
+    .finally(() => {
+      refreshing = null;
+    });
 
   await refreshing;
 

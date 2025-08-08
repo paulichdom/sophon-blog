@@ -1,23 +1,20 @@
-import * as React from 'react'
-import { createLink, LinkComponent } from '@tanstack/react-router'
-import { Anchor, AnchorProps } from '@mantine/core'
+import * as React from 'react';
+import { createLink, LinkComponent } from '@tanstack/react-router';
+import { Anchor, AnchorProps } from '@mantine/core';
 
 interface MantineAnchorProps extends Omit<AnchorProps, 'href'> {
   // Add any additional props you want to pass to the anchor
-  username?: string
+  username?: string;
 }
 
-const MantineLinkComponent = React.forwardRef<
-  HTMLAnchorElement,
-  MantineAnchorProps
->((props, ref) => {
-  return <Anchor ref={ref} {...props} />
-})
+const MantineLinkComponent = React.forwardRef<HTMLAnchorElement, MantineAnchorProps>(
+  (props, ref) => {
+    return <Anchor ref={ref} {...props} />;
+  }
+);
 
-const CreatedLinkComponent = createLink(MantineLinkComponent)
+const CreatedLinkComponent = createLink(MantineLinkComponent);
 
-export const MantineLink: LinkComponent<typeof MantineLinkComponent> = (
-  props,
-) => {
-  return <CreatedLinkComponent preload="intent" {...props} />
-}
+export const MantineLink: LinkComponent<typeof MantineLinkComponent> = (props) => {
+  return <CreatedLinkComponent preload="intent" {...props} />;
+};

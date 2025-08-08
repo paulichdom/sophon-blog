@@ -1,5 +1,5 @@
-import { CloseButton, Group, Paper, Text } from '@mantine/core';
 import { motion } from 'motion/react';
+import { CloseButton, Group, Paper, Text } from '@mantine/core';
 
 interface ConstructionBannerProps {
   onClose: () => void;
@@ -21,7 +21,8 @@ export const ConstructionBanner = ({ onClose }: ConstructionBannerProps) => {
           <CloseButton mr={-9} mt={-9} onClick={onClose} />
         </Group>
         <Text c="dimmed" fz="xs">
-          This app is a work in progress (beta release). We appreciate your patience and any feedback!
+          This app is a work in progress (beta release). We appreciate your patience and any
+          feedback!
         </Text>
       </Paper>
     </motion.div>

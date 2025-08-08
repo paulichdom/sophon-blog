@@ -14,7 +14,14 @@ export const AuthModalGuard: FC<AuthModalGuard> = ({ opened, onClose }) => {
       <Flex direction="column" gap="md" align="center">
         <Avatar size={60} src={sophonLogo} />
         <Title order={3}>Sign in to Sophon</Title>
-        <Button fullWidth color='#F9D87E' component={Link} to="/login" variant="outline" radius="xl">
+        <Button
+          fullWidth
+          color="#F9D87E"
+          component={Link}
+          to="/login"
+          variant="outline"
+          radius="xl"
+        >
           Sign in
         </Button>
         <Flex gap={4}>
