@@ -14,11 +14,13 @@ Sophon is a modern, feature-rich blogging platform that empowers users to create
 - **Modern Tooling:** Includes TypeScript, ESLint, Storybook, and Vitest for robust development and testing.
 
 ## Backend
+
 The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can find the backend source code here: [paulichdom/sophon-api](https://github.com/paulichdom/sophon-api)
 
 ## Getting Started
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (v16 or higher recommended)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 
@@ -45,6 +47,7 @@ The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can 
    Visit [http://localhost:5173](http://localhost:5173) to view the app.
 
 ### Build for Production
+
 ```bash
 npm run build
 # or
@@ -52,6 +55,7 @@ yarn build
 ```
 
 ### Preview Production Build
+
 ```bash
 npm run preview
 # or
@@ -59,16 +63,19 @@ yarn preview
 ```
 
 ## Generative AI
+
 Sophon integrates generative AI to help users quickly draft articles. Simply enter a topic or prompt in the editor, and the AI assistant will generate a complete article draft for you to review and edit. This feature lowers the barrier to content creation and boosts productivity for writers of all levels.
 
 ## npm Scripts
 
 ### Build and Dev Scripts
+
 - `dev` – start development server
 - `build` – build production version of the app
 - `preview` – locally preview production build
 
 ### Testing Scripts
+
 - `typecheck` – checks TypeScript types
 - `lint` – runs ESLint
 - `prettier:check` – checks files with Prettier
@@ -77,8 +84,7 @@ Sophon integrates generative AI to help users quickly draft articles. Simply ent
 - `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
 
 ### Other Scripts
+
 - `storybook` – starts storybook dev server
 - `storybook:build` – build production storybook bundle to `storybook-static`
 - `prettier:write` – formats all files with Prettier
-
-

@@ -170,7 +170,9 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
   );
 
   const handleUpdateArticle = () => {
-    if (!article) return;
+    if (!article) {
+      return;
+    }
 
     const updateArticleNotificationId = notifications.show({
       loading: true,

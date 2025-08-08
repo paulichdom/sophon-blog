@@ -2,11 +2,14 @@ import moment from 'moment';
 
 export const range = (start: number, end?: number, step = 1) => {
   const output: number[] = [];
-  if (typeof end === 'undefined') {
-    end = start;
-    start = 0;
+  let localStart = start;
+  let localEnd = end;
+
+  if (typeof localEnd === 'undefined') {
+    localEnd = localStart;
+    localStart = 0;
   }
-  for (let i = start; i < end; i += step) {
+  for (let i = localStart; i < localEnd; i += step) {
     output.push(i);
   }
   return output;
@@ -18,7 +21,6 @@ export function formatDateShort(timestamp: string | number | Date): string {
 
   if (date.isSame(now, 'year')) {
     return date.format('MMM Do');
-  } else {
-    return date.format('MMM Do, YYYY');
   }
+  return date.format('MMM Do, YYYY');
 }
