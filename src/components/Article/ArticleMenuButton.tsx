@@ -56,7 +56,9 @@ export const ArticleMenuButton: FC<MenuButtonProps> = ({ slug }) => {
           autoClose: 2000,
         });
 
-        if (!isProfilePage) navigate({ to: '/' });
+        if (!isProfilePage) {
+          navigate({ to: '/' });
+        }
       },
       onError: () => {
         notifications.update({

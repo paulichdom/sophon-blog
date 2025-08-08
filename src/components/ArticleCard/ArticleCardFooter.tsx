@@ -58,7 +58,7 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
         </Text>
         <Group gap={4}>
           <Tooltip
-            label={'You cannot favorite your own article'}
+            label="You cannot favorite your own article"
             withArrow
             position="top"
             disabled={!isOwner}

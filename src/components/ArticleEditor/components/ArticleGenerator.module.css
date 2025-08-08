@@ -12,8 +12,6 @@
   transition: transform 150ms ease;
   border-radius: var(--mantine-radius-md);
 
-
-
   &[data-active] {
     /* transform: scale(1.03); */
     z-index: 1;
@@ -29,13 +27,17 @@
 }
 
 .label {
-  background-image: linear-gradient(90deg, var(--mantine-color-blue-4) 0%, var(--mantine-color-cyan-4) 100%);
+  background-image: linear-gradient(
+    90deg,
+    var(--mantine-color-blue-4) 0%,
+    var(--mantine-color-cyan-4) 100%
+  );
   background-clip: text;
   color: transparent;
 }
 
 .icon {
-  color: var(--mantine-color-blue-4)
+  color: var(--mantine-color-blue-4);
 }
 
 .chevron {

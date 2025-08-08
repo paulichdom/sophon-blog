@@ -66,7 +66,7 @@
 .title {
   margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
   font-family:
-    Greycliff CF,
+    "Greycliff CF",
     var(--mantine-font-family);
 
   @media (max-width: $mantine-breakpoint-sm) {

@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Box, Text } from '@mantine/core';
 import classes from './ArticleCard.module.css';
@@ -11,7 +11,7 @@ export type ArticleCardHeaderProps = {
 
 export const ArticleCardHeader: FC<ArticleCardHeaderProps> = ({ slug, title, description }) => {
   return (
-    <Fragment>
+    <>
       <Link
         to="/article/$slug"
         params={{
@@ -26,6 +26,6 @@ export const ArticleCardHeader: FC<ArticleCardHeaderProps> = ({ slug, title, des
       <Box>
         <Text truncate="end">{description}</Text>
       </Box>
-    </Fragment>
+    </>
   );
 };

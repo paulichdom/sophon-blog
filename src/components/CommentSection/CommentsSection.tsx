@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC } from 'react';
 import { Divider } from '@mantine/core';
 import { UserData } from '@/auth/auth.types';
 import { CommentData } from '@/types/types';
@@ -15,16 +15,16 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ articleSlug, comment
   const hasComments = comments.length > 0;
 
   return (
-    <Fragment>
+    <>
       <CommentEditor articleSlug={articleSlug} user={user} />
       {hasComments && <Divider mt="xl" mb="xl" />}
       {hasComments &&
         comments.map((comment, index, commentsList) => (
-          <Fragment>
+          <>
             <Comment key={comment.id} comment={comment} />
             {commentsList.length !== index + 1 && <Divider mt="lg" mb="lg" />}
-          </Fragment>
+          </>
         ))}
-    </Fragment>
+    </>
   );
 };

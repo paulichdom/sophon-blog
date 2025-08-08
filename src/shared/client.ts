@@ -4,7 +4,9 @@ export default async function (...args: Parameters<typeof fetch>) {
 
   const text = await res.text();
 
-  if (!text) return null;
+  if (!text) {
+    return null;
+  }
 
   try {
     return JSON.parse(text);
