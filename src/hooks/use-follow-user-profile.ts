@@ -35,8 +35,8 @@ export const useFollowUserProfile = (
           setFollowingState(false);
           queryClient.invalidateQueries({ queryKey: ['profile', { username }] });
         },
-        onError: (error) => {
-          console.error('Error unfollowing user:', error);
+        onError: (_error) => {
+          // Error is handled by the mutation's error handling
         },
       });
     } else {
@@ -45,8 +45,8 @@ export const useFollowUserProfile = (
           setFollowingState(true);
           queryClient.invalidateQueries({ queryKey: ['profile', { username }] });
         },
-        onError: (error) => {
-          console.error('Error following user:', error);
+        onError: (_error) => {
+          // Error is handled by the mutation's error handling
         },
       });
     }

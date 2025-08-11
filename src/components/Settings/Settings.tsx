@@ -49,7 +49,9 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
   const { mutate: updateUser, isPending: isUpdating } = useMutation(updateUserMutationOptions());
 
   const handleEmailSubmit = (values: { email: string }) => {
-    if (!user?.username) return;
+    if (!user?.username) {
+      return;
+    }
     const notificationId = notifications.show({
       loading: true,
       title: 'Updating email',
@@ -88,7 +90,9 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
   };
 
   const handlePasswordSubmit = (values: { password: string }) => {
-    if (!user?.username) return;
+    if (!user?.username) {
+      return;
+    }
     const notificationId = notifications.show({
       loading: true,
       title: 'Updating password',
@@ -143,7 +147,7 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
               />
               <div>
                 <Text fz="lg" fw={600}>
-                  {'Profile'}
+                  Profile
                 </Text>
                 <Text fz="md" c="dimmed">
                   {user.username}
@@ -163,7 +167,7 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
           <Group justify="space-between">
             <div>
               <Text fz="lg" fw={600}>
-                {'Email'}
+                Email
               </Text>
               <Text fz="md" c="dimmed">
                 {user.email}
@@ -176,10 +180,10 @@ export const Settings: FC<SettingsProps> = ({ user, setUser }) => {
           <Group justify="space-between">
             <div>
               <Text fz="lg" fw={600}>
-                {'Password'}
+                Password
               </Text>
               <Text fz="md" c="dimmed">
-                {'********'}
+                ********
               </Text>
             </div>
             <Button variant="outline" color="#5A8DEE" radius="xl" onClick={openPasswordModal}>
