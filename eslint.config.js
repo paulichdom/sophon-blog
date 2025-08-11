@@ -2,7 +2,14 @@ import mantine from 'eslint-config-mantine';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(...mantine, {
-  ignores: ['**/*.{mjs,cjs,js,d.ts,d.mts}', './.storybook/main.ts'],
+  ignores: [
+    '**/*.{mjs,cjs,js,d.ts,d.mts}',
+    './.storybook/main.ts',
+    'dist/**',
+    'build/**',
+    '*.config.js',
+    '*.config.mjs',
+  ],
   rules: {
     '@typescript-eslint/no-unused-vars': [
       'warn',
