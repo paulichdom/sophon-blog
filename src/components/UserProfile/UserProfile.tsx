@@ -43,7 +43,9 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
   const currentTab = tabMap[currentPath as TabKey] || 'articles';
 
   const handleTabChange = (value: string | null) => {
-    if (!value) return;
+    if (!value) {
+      return;
+    }
 
     const path = pathMap[value as TabValue];
     if (path === '') {

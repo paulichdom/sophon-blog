@@ -42,15 +42,15 @@ export const useFavoriteArticle = (
     if (!favoritedState.favorited) {
       favoriteArticle(articleSlug, {
         onSuccess: updateFavoritedState,
-        onError: (error) => {
-          console.error('Error favoriting article:', error);
+        onError: (_error) => {
+          // Error is handled by the mutation's error handling
         },
       });
     } else {
       unfavoriteArticle(articleSlug, {
         onSuccess: updateFavoritedState,
-        onError: (error) => {
-          console.error('Error unfavoriting article:', error);
+        onError: (_error) => {
+          // Error is handled by the mutation's error handling
         },
       });
     }
