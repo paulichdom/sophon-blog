@@ -24,7 +24,7 @@ const config = {
   ],
   overrides: [
     {
-      files: 'routerTree.gen.ts',
+      files: 'src/routeTree.gen.ts',
       options: {
         requirePragma: true,
       },
