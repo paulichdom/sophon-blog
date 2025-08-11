@@ -1,0 +1,6 @@
+dist/
+build/
+node_modules/
+*.config.js
+*.config.mjs
+src/routeTree.gen.ts
