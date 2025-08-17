@@ -79,7 +79,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
 
   return (
     <Grid gutter={32}>
-      <Grid.Col span={8}>
+      <Grid.Col span={{ base: 12, md: 8 }}>
         <Title mt={22} mb={22} size="h1">
           {profile.username}
         </Title>
@@ -111,7 +111,7 @@ export const UserProfile = ({ profile }: UserProfileProps) => {
           </Tabs.Panel>
         </Tabs>
       </Grid.Col>
-      <Grid.Col span={4} pl="xl">
+      <Grid.Col span={{ base: 12, md: 4 }} pl="xl">
         <UserAvatar
           username={username}
           sourceImage={image}
