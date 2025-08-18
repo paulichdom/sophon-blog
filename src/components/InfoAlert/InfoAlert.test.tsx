@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-
 import { render } from '../../../test-utils';
 import { InfoAlert } from './InfoAlert';
 
