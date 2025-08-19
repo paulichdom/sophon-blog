@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -6,7 +7,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { render } from '../../../test-utils';
 import { MantineLink } from './MantineLink';
@@ -21,7 +22,7 @@ const loginRoute = createRoute({
   component: () => <div>Login</div>,
 });
 
-const setup = (component: any) => {
+const setup = (component: () => JSX.Element) => {
   const testRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
@@ -36,26 +37,22 @@ const setup = (component: any) => {
 };
 
 describe('MantineLink', () => {
-  it('renders a link with the correct href', async () => {
+  it('renders a link with the correct href', () => {
     setup(() => <MantineLink to="/login">Click me</MantineLink>);
 
-    await waitFor(() => {
-      const linkElement = screen.getByRole('link', { name: /click me/i });
-      expect(linkElement).toBeInTheDocument();
-      expect(linkElement).toHaveAttribute('href', '/login');
-    });
+    const linkElement = screen.getByRole('link', { name: /click me/i });
+    expect(linkElement).toBeInTheDocument();
+    expect(linkElement).toHaveAttribute('href', '/login');
   });
 
-  it('passes other props to the anchor element', async () => {
+  it('passes other props to the anchor element', () => {
     setup(() => (
       <MantineLink to="/login" className="my-custom-class">
         Click me
       </MantineLink>
     ));
 
-    await waitFor(() => {
-      const linkElement = screen.getByRole('link', { name: /click me/i });
-      expect(linkElement).toHaveClass('my-custom-class');
-    });
+    const linkElement = screen.getByRole('link', { name: /click me/i });
+    expect(linkElement).toHaveClass('my-custom-class');
   });
 });
