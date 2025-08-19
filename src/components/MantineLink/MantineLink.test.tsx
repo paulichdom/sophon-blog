@@ -21,20 +21,23 @@ const loginRoute = createRoute({
   component: () => <div>Login</div>,
 });
 
+const setup = (component: any) => {
+  const testRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component,
+  });
+  const routeTree = rootRoute.addChildren([loginRoute, testRoute]);
+  const router = createRouter({
+    routeTree,
+    history: createMemoryHistory(),
+  });
+  render(<RouterProvider router={router} />);
+};
+
 describe('MantineLink', () => {
   it('renders a link with the correct href', async () => {
-    const component = () => <MantineLink to="/login">Click me</MantineLink>;
-    const testRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/',
-      component,
-    });
-    const routeTree = rootRoute.addChildren([loginRoute, testRoute]);
-    const router = createRouter({
-      routeTree,
-      history: createMemoryHistory(),
-    });
-    render(<RouterProvider router={router} />);
+    setup(() => <MantineLink to="/login">Click me</MantineLink>);
 
     await waitFor(() => {
       const linkElement = screen.getByRole('link', { name: /click me/i });
@@ -44,22 +47,11 @@ describe('MantineLink', () => {
   });
 
   it('passes other props to the anchor element', async () => {
-    const component = () => (
+    setup(() => (
       <MantineLink to="/login" className="my-custom-class">
         Click me
       </MantineLink>
-    );
-    const testRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/',
-      component,
-    });
-    const routeTree = rootRoute.addChildren([loginRoute, testRoute]);
-    const router = createRouter({
-      routeTree,
-      history: createMemoryHistory(),
-    });
-    render(<RouterProvider router={router} />);
+    ));
 
     await waitFor(() => {
       const linkElement = screen.getByRole('link', { name: /click me/i });
