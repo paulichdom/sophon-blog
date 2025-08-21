@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   favoriteArticleMutationOptions,
   unfavoriteArticleMutationOptions,
@@ -22,12 +22,14 @@ export const useFavoriteArticle = (
     () => articleFavoritedState
   );
 
+  const queryClient = useQueryClient();
+
   const { mutate: favoriteArticle, isPending: favoriteArticleIsPending } = useMutation(
-    favoriteArticleMutationOptions()
+    favoriteArticleMutationOptions(queryClient)
   );
 
   const { mutate: unfavoriteArticle, isPending: unfavoriteArticleIsPending } = useMutation(
-    unfavoriteArticleMutationOptions()
+    unfavoriteArticleMutationOptions(queryClient)
   );
 
   const updateFavoritedState = (data: ArticleDto) => {
