@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useFavoriteArticle } from './use-favorite-article';
+import { renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ArticleFavoritedState } from '@/types/types';
+import { useFavoriteArticle } from './use-favorite-article';
 
 // Mock the API functions
 vi.mock('@/api/article/article.api', () => ({
@@ -28,9 +28,7 @@ describe('useFavoriteArticle', () => {
   });
 
   const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
   it('should invalidate queries when favoriting an article', async () => {
@@ -43,10 +41,7 @@ describe('useFavoriteArticle', () => {
     // Spy on query invalidation
     const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
-    const { result } = renderHook(
-      () => useFavoriteArticle(articleSlug, initialState),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useFavoriteArticle(articleSlug, initialState), { wrapper });
 
     // Trigger favorite action
     result.current.handleFavoriteArticle();
@@ -76,10 +71,7 @@ describe('useFavoriteArticle', () => {
     // Spy on query invalidation
     const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
-    const { result } = renderHook(
-      () => useFavoriteArticle(articleSlug, initialState),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useFavoriteArticle(articleSlug, initialState), { wrapper });
 
     // Trigger unfavorite action
     result.current.handleFavoriteArticle();
