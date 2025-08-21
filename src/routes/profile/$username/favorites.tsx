@@ -17,7 +17,7 @@ function RouteComponent() {
     articlesFavoritedByUserQueryOptions(username)
   );
 
-  if (isLoading || !articlesFavoritedByUser) {
+  if (isLoading || articlesFavoritedByUser === undefined) {
     return <ArticleItemPendingComponent />;
   }
 
