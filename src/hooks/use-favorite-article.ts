@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   favoriteArticleMutationOptions,
   unfavoriteArticleMutationOptions,
 } from '@/api/article/article.mutations';
+import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
 import { ArticleDto, ArticleFavoritedState } from '@/types/types';
+
+type UseFavoriteArticleProps = {
+  articleSlug: string;
+  articleFavoritedState: ArticleFavoritedState;
+  username: string;
+};
 
 type UseFavoriteArticleValue = {
   favoritedState: ArticleFavoritedState;
@@ -14,10 +21,12 @@ type UseFavoriteArticleValue = {
   unfavoriteArticleIsPending: boolean;
 };
 
-export const useFavoriteArticle = (
-  articleSlug: string,
-  articleFavoritedState: ArticleFavoritedState
-): UseFavoriteArticleValue => {
+export const useFavoriteArticle = ({
+  articleSlug,
+  articleFavoritedState,
+  username,
+}: UseFavoriteArticleProps): UseFavoriteArticleValue => {
+  const queryClient = useQueryClient();
   const [favoritedState, setFavoritedState] = useState<ArticleFavoritedState>(
     () => articleFavoritedState
   );
@@ -39,20 +48,22 @@ export const useFavoriteArticle = (
   };
 
   const handleFavoriteArticle = () => {
+    const options = {
+      onSuccess: (data: ArticleDto) => {
+        updateFavoritedState(data);
+        queryClient.invalidateQueries({
+          queryKey: articlesFavoritedByUserQueryOptions(username).queryKey,
+        });
+      },
+      onError: (_error: unknown) => {
+        // Error is handled by the mutation's error handling
+      },
+    };
+
     if (!favoritedState.favorited) {
-      favoriteArticle(articleSlug, {
-        onSuccess: updateFavoritedState,
-        onError: (_error) => {
-          // Error is handled by the mutation's error handling
-        },
-      });
+      favoriteArticle(articleSlug, options);
     } else {
-      unfavoriteArticle(articleSlug, {
-        onSuccess: updateFavoritedState,
-        onError: (_error) => {
-          // Error is handled by the mutation's error handling
-        },
-      });
+      unfavoriteArticle(articleSlug, options);
     }
   };
 

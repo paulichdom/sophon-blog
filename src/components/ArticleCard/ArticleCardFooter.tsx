@@ -33,7 +33,11 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
     handleFavoriteArticle,
     favoriteArticleIsPending,
     unfavoriteArticleIsPending,
-  } = useFavoriteArticle(articleSlug, articleFavoritedState);
+  } = useFavoriteArticle({
+    articleSlug,
+    articleFavoritedState,
+    username: author.username,
+  });
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
   const favoriteActionIsPending = favoriteArticleIsPending || unfavoriteArticleIsPending;

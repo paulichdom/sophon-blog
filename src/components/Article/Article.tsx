@@ -55,9 +55,13 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
     handleFavoriteArticle,
     favoriteArticleIsPending,
     unfavoriteArticleIsPending,
-  } = useFavoriteArticle(article.slug, {
-    favorited: article.favorited,
-    favoritesCount: article.favoritesCount,
+  } = useFavoriteArticle({
+    articleSlug: article.slug,
+    articleFavoritedState: {
+      favorited: article.favorited,
+      favoritesCount: article.favoritesCount,
+    },
+    username: article.author.username,
   });
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
