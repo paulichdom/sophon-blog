@@ -61,7 +61,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
       favorited: article.favorited,
       favoritesCount: article.favoritesCount,
     },
-    username: article.author.username,
+    currentUserUsername: user?.username,
   });
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;

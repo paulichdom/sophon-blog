@@ -10,7 +10,7 @@ import { ArticleDto, ArticleFavoritedState } from '@/types/types';
 type UseFavoriteArticleProps = {
   articleSlug: string;
   articleFavoritedState: ArticleFavoritedState;
-  username: string;
+  currentUserUsername?: string;
 };
 
 type UseFavoriteArticleValue = {
@@ -24,7 +24,7 @@ type UseFavoriteArticleValue = {
 export const useFavoriteArticle = ({
   articleSlug,
   articleFavoritedState,
-  username,
+  currentUserUsername,
 }: UseFavoriteArticleProps): UseFavoriteArticleValue => {
   const queryClient = useQueryClient();
   const [favoritedState, setFavoritedState] = useState<ArticleFavoritedState>(
@@ -51,9 +51,11 @@ export const useFavoriteArticle = ({
     const options = {
       onSuccess: (data: ArticleDto) => {
         updateFavoritedState(data);
-        queryClient.invalidateQueries({
-          queryKey: articlesFavoritedByUserQueryOptions(username).queryKey,
-        });
+        if (currentUserUsername) {
+          queryClient.invalidateQueries({
+            queryKey: articlesFavoritedByUserQueryOptions(currentUserUsername).queryKey,
+          });
+        }
       },
       onError: (_error: unknown) => {
         // Error is handled by the mutation's error handling

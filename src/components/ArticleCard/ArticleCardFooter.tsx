@@ -36,7 +36,7 @@ export const ArticleCardFooter: FC<ArticleCardFooterProps> = ({
   } = useFavoriteArticle({
     articleSlug,
     articleFavoritedState,
-    username: author.username,
+    currentUserUsername: user?.username,
   });
 
   const IconFavorited = favoritedState.favorited ? IconHeartFilled : IconHeart;
