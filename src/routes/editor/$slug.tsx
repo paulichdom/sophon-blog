@@ -10,8 +10,10 @@ export const Route = createFileRoute('/editor/$slug')({
   beforeLoad: async () => {
     try {
       const currentUser = await queryClient.ensureQueryData(currentUserQueryOptions);
-      if (!currentUser) throw redirect({ to: '/login' });
-    } catch (error) {
+      if (!currentUser) {
+        throw redirect({ to: '/login' });
+      }
+    } catch (_error) {
       throw redirect({ to: '/login' });
     }
   },

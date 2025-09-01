@@ -15,7 +15,7 @@ export const getStrength = (password: string) => {
   });
 
   return Math.max(100 - (100 / (passwordRequirements.length + 1)) * multiplier, 0);
-}
+};
 
 export const validatePassword = (val: string): string | null => {
   if (!val || val.trim().length === 0) {
@@ -37,4 +37,4 @@ export const validatePassword = (val: string): string | null => {
     return 'Password should include at least one special character';
   }
   return null;
-}
+};

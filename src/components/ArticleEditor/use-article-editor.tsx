@@ -149,8 +149,8 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
           });
         }
       },
-      onError: (error) => {
-        console.error('Error generating article:', error);
+      onError: (_error) => {
+        // Error is handled by notification system
 
         notifications.update({
           id: generateNotificationId,
@@ -170,7 +170,9 @@ export const useArticleEditor = (article: ArticleData | null = null): UseArticle
   );
 
   const handleUpdateArticle = () => {
-    if (!article) return;
+    if (!article) {
+      return;
+    }
 
     const updateArticleNotificationId = notifications.show({
       loading: true,

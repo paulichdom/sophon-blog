@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
 import { IconExclamationCircleFilled } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
 import {
   Button,
   Flex,
@@ -12,13 +14,11 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
+import { loginMutationOptions } from '@/auth/auth.mutations';
+import { LoginUserDto } from '@/auth/auth.types';
 import { MantineLink } from '../MantineLink/MantineLink';
 import classes from './LoginForm.module.css';
-import { notifications } from '@mantine/notifications';
-import { useNavigate } from '@tanstack/react-router';
-import { LoginUserDto } from '@/auth/auth.types';
-import { useMutation } from '@tanstack/react-query';
-import { loginMutationOptions } from '@/auth/auth.mutations';
 
 export type LoginFormValues = {
   email: string;

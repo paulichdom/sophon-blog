@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Blockquote, Stack } from '@mantine/core';
 import { articlesFavoritedByUserQueryOptions } from '@/api/article/article.queries';
@@ -6,17 +7,19 @@ import { ArticleItem } from '@/components/ArticleItem/ArticleItem';
 import { ArticleItemPendingComponent } from '@/components/ArticleItem/ArticleItemPendingComponent';
 
 export const Route = createFileRoute('/profile/$username/favorites')({
-  loader: ({ context: { queryClient }, params: { username } }) => {
-    return queryClient.ensureQueryData(articlesFavoritedByUserQueryOptions(username));
-  },
   component: RouteComponent,
-  pendingComponent: ArticleItemPendingComponent,
 });
 
 function RouteComponent() {
   const { user } = useAuthStore();
   const { username } = Route.useParams();
-  const articlesFavoritedByUser = Route.useLoaderData();
+  const { data: articlesFavoritedByUser, isLoading } = useQuery(
+    articlesFavoritedByUserQueryOptions(username)
+  );
+
+  if (isLoading || articlesFavoritedByUser === undefined) {
+    return <ArticleItemPendingComponent />;
+  }
 
   const hasFavoritedArticles = articlesFavoritedByUser.articlesCount > 0;
   const isCurrentUser = user?.username === username;

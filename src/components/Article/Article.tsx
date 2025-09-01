@@ -108,7 +108,7 @@ export const Article: FC<ArticleProps> = ({ article, commentsData }) => {
         <Group gap={20}>
           <Flex gap={4} align="center" justify="center">
             <Tooltip
-              label='You cannot favorite your own article'
+              label="You cannot favorite your own article"
               withArrow
               position="top"
               disabled={!isOwner}

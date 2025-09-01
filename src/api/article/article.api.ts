@@ -12,9 +12,9 @@ export const fetchAllArticles = async () => {
   const url = new URL(`${API_URL}/articles`);
   const articles: Articles = await fetch(url, {
     method: 'GET',
-    credentials: 'include'
+    credentials: 'include',
   });
-  
+
   return articles;
 };
 

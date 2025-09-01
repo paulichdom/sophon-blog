@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Center } from '@mantine/core';
-import { useForm } from '@mantine/form';
 import { userProfileQueryOptions } from '@/api/profile/profile.queries';
 import { useAuthStore } from '@/auth/auth.store';
 import { NotFound } from '@/components/NotFound/NotFound';

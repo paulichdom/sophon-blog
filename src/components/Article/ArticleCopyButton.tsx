@@ -21,7 +21,9 @@ export const ArticleCopyButton: FC<ArticleCopyButtonProps> = ({
   const shareArticleUrl = `${APP_DOMAIN}/article/${articleSlug}`;
 
   const handleCopy = (copy: () => void, copied: boolean) => {
-    if (copied) return;
+    if (copied) {
+      return;
+    }
 
     copy();
 

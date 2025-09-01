@@ -30,8 +30,9 @@ export const loginUser = async (input: LoginUserDto): Promise<UserData> => {
     body: JSON.stringify(input),
   });
 
-  if (response.statusCode === 404 || response.statusCode === 400)
+  if (response.statusCode === 404 || response.statusCode === 400) {
     throw new Error('Invalid credentials');
+  }
 
   return response.user;
 };

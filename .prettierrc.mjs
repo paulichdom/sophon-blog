@@ -24,6 +24,12 @@ const config = {
   ],
   overrides: [
     {
+      files: 'src/routeTree.gen.ts',
+      options: {
+        requirePragma: true,
+      },
+    },
+    {
       files: '*.mdx',
       options: {
         printWidth: 70,

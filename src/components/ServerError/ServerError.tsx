@@ -1,5 +1,4 @@
 import { Button, Container, Group, Text, Title } from '@mantine/core';
-import { queryClient } from '@/queryClient';
 import classes from './ServerError.module.css';
 
 export function ServerError() {
