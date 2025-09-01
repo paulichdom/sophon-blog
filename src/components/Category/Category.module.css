@@ -1,9 +1,15 @@
+.categoryWrapper {
+  position: sticky;
+  top: calc(60px + var(--mantine-spacing-xl));
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 .categoryContainer {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
   border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: var(--mantine-spacing-xl);
 }
 
 .categoryItem {

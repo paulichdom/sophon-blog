@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.heroBanner {
+  position: relative;
+  overflow: hidden;
+  background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  margin-bottom: var(--mantine-spacing-xl);
+  min-height: 300px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+}
+
+.overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(11, 10, 10, 0.5), rgba(11, 10, 10, 0.85));
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 3rem 1.5rem;
+  height: 100%;
+  min-height: 300px;
+}
+
+.innerContent {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  max-width: 32rem;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(2.5rem, 5vw, 3.5rem) !important;
+  letter-spacing: 0.1em !important;
+  text-shadow: 0 0 8px rgba(192, 192, 192, 0.3), 0 0 12px rgba(192, 192, 192, 0.2) !important;
+  color: var(--mantine-color-gray-2) !important;
+  margin-bottom: var(--mantine-spacing-md) !important;
+  line-height: 1.2 !important;
+}
+
+.subtitle {
+  font-size: clamp(1.125rem, 3vw, 1.25rem) !important;
+  color: var(--mantine-color-gray-3) !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .content {
+    padding: 5rem 2rem;
+    min-height: 400px;
+  }
+  
+  .heroBanner {
+    min-height: 400px;
+  }
+}
+
+/* Dark theme adjustments */
+[data-mantine-color-scheme="dark"] .title {
+  color: var(--mantine-color-gray-1) !important;
+}
+
+[data-mantine-color-scheme="dark"] .subtitle {
+  color: var(--mantine-color-gray-3) !important;
+}

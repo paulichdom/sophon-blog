@@ -2,15 +2,17 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Container, SimpleGrid, Skeleton, Grid } from '@mantine/core';
+import { Container, Skeleton, Grid, Stack } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
+import { spotlight } from '@mantine/spotlight';
 import { allArticlesQueryOptions } from '@/api/article/article.queries';
-import { ArticleCard } from '@/components/ArticleCard/ArticleCard';
+import { ArticleListItem } from '@/components/ArticleListItem';
 import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleton';
 import { ConstructionBanner } from '@/components/ConstructionBanner/ConstructionBanner';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { ServerError } from '@/components/ServerError/ServerError';
 import { Category } from '@/components/Category';
+import { HeroBanner } from '@/components/HeroBanner';
 import { range } from '@/utils';
 
 export const Route = createFileRoute('/')({
@@ -42,7 +44,8 @@ function HomePage() {
 
   const handleShowAllClick = () => {
     setSelectedCategory(null);
-    console.log('Show all topics clicked');
+    spotlight.open();
+    console.log('Show all topics clicked - opening spotlight');
   };
 
   if (isError) {
@@ -55,17 +58,25 @@ function HomePage() {
         {!shouldHideBanner && <ConstructionBanner key="banner" onClose={hideBanner} />}
       </AnimatePresence>
       
+      <HeroBanner />
+      
       <Grid gutter="xl">
         <Grid.Col span={{ base: 12, md: 8 }}>
-          <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            {isFetching &&
-              range(8).map((_, index) => (
-                <Skeleton key={index} width="100%" height={224} radius="md" />
-              ))}
-            {!isFetching &&
-              data &&
-              data.articles.map((article) => <ArticleCard key={article.id} article={article} />)}
-          </SimpleGrid>
+          <div>
+            <Stack gap={0}>
+              {isFetching &&
+                range(6).map((_, index) => (
+                  <div key={index} style={{ padding: '24px', borderBottom: index < 5 ? '1px solid var(--mantine-color-dark-6)' : 'none' }}>
+                    <Skeleton width="100%" height={140} radius="md" />
+                  </div>
+                ))}
+              {!isFetching &&
+                data &&
+                data.articles.map((article) => (
+                  <ArticleListItem key={article.id} article={article} />
+                ))}
+            </Stack>
+          </div>
         </Grid.Col>
         
         <Grid.Col span={{ base: 12, md: 4 }}>

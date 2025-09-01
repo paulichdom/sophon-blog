@@ -92,7 +92,7 @@ export const Category: FC<CategoryProps> = ({
   };
 
   return (
-    <div>
+    <div className={classes.categoryWrapper}>
       <Text size="xl" fw={700} mb="xl" c="dimmed">
         Trending Topics
       </Text>
