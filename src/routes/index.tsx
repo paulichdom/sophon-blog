@@ -2,18 +2,20 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
-import { Container, Skeleton, Grid, Stack } from '@mantine/core';
+import { Container, Skeleton, Grid, Stack, Tabs } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 import { spotlight } from '@mantine/spotlight';
 import { allArticlesQueryOptions } from '@/api/article/article.queries';
 import { ArticleListItem } from '@/components/ArticleListItem';
 import { ArticleCardSkeleton } from '@/components/ArticleCard/ArticleCardSkeleton';
+import { ArticleTagFilter } from '@/components/ArticleTagFilter';
 import { ConstructionBanner } from '@/components/ConstructionBanner/ConstructionBanner';
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { ServerError } from '@/components/ServerError/ServerError';
 import { Category } from '@/components/Category';
 import { HeroBanner } from '@/components/HeroBanner';
 import { range } from '@/utils';
+import classes from './index.module.css';
 
 export const Route = createFileRoute('/')({
   loader: ({ context: { queryClient } }) => {
@@ -31,6 +33,7 @@ function HomePage() {
     defaultValue: false,
   });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('global');
 
   const hideBanner = () => {
     setHideBanner(true);
@@ -48,21 +51,34 @@ function HomePage() {
     console.log('Show all topics clicked - opening spotlight');
   };
 
+  const handleClearFilter = () => {
+    setSelectedCategory(null);
+  };
+
   if (isError) {
     return <ServerError />;
   }
 
   return (
     <Container size="xl" px="md">
+      <HeroBanner />
       <AnimatePresence>
         {!shouldHideBanner && <ConstructionBanner key="banner" onClose={hideBanner} />}
       </AnimatePresence>
-      
-      <HeroBanner />
-      
       <Grid gutter="xl">
         <Grid.Col span={{ base: 12, md: 8 }}>
           <div>
+            <Tabs value={activeTab} onChange={(value) => setActiveTab(value || 'global')} mb="lg" className={classes.feedTabs}>
+              <Tabs.List>
+                <Tabs.Tab value="global">Global Feed</Tabs.Tab>
+                <Tabs.Tab value="personal">Your Feed</Tabs.Tab>
+              </Tabs.List>
+            </Tabs>
+            
+            <ArticleTagFilter 
+              selectedTag={selectedCategory || undefined}
+              onClearFilter={handleClearFilter}
+            />
             <Stack gap={0}>
               {isFetching &&
                 range(6).map((_, index) => (
@@ -78,16 +94,14 @@ function HomePage() {
             </Stack>
           </div>
         </Grid.Col>
-        
         <Grid.Col span={{ base: 12, md: 4 }}>
-          <Category 
+          <Category
             selectedCategoryId={selectedCategory ?? undefined}
             onCategoryClick={handleCategoryClick}
             onShowAllClick={handleShowAllClick}
           />
         </Grid.Col>
       </Grid>
-      
       <ScrollToTopButton />
     </Container>
   );

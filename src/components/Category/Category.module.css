@@ -2,90 +2,46 @@
   position: sticky;
   top: calc(60px + var(--mantine-spacing-xl));
   z-index: 10;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  margin-left: 16px;
 }
 
 .categoryContainer {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
-  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* background-color: #141414;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
 .categoryItem {
-  padding: var(--mantine-spacing-md);
-  border-radius: var(--mantine-radius-lg);
+  background-color: #1f1f1f;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.3s ease, border 0.3s ease;
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
-  border: 2px solid transparent;
+  border: 1px solid #374151;
 }
 
 .categoryItem:hover {
-  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  background-color: #2a2a2a;
+  border-color: #4B5563;
 }
 
 .categoryItemSelected {
-  border: 2px solid var(--mantine-color-blue-6);
-  background-color: light-dark(
-    color-mix(in srgb, var(--mantine-color-blue-1) 20%, transparent),
-    color-mix(in srgb, var(--mantine-color-blue-9) 20%, transparent)
-  );
+  background-color: #3B82F61A;
+  border-color: #3B82F6;
 }
 
 .categoryItemSelected:hover {
-  background-color: light-dark(
-    color-mix(in srgb, var(--mantine-color-blue-1) 30%, transparent),
-    color-mix(in srgb, var(--mantine-color-blue-9) 30%, transparent)
-  );
+  background-color: #3B82F620;
 }
 
-.categoryIcon {
-  opacity: 0.8;
+/* Selected item text colors */
+.categoryItemSelected span[data-mantine-color-scheme="dark"] {
+  color: #F9FAFB !important;
 }
 
-.showAllLink {
-  color: var(--mantine-color-blue-6);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.showAllLink:hover {
-  color: var(--mantine-color-blue-7);
-  text-decoration: none;
-}
-
-/* Dark theme specific styles */
-[data-mantine-color-scheme="dark"] .categoryContainer {
-  background-color: var(--mantine-color-dark-8);
-  border-color: var(--mantine-color-dark-6);
-}
-
-[data-mantine-color-scheme="dark"] .categoryItem {
-  background-color: var(--mantine-color-dark-7);
-}
-
-[data-mantine-color-scheme="dark"] .categoryItem:hover {
-  background-color: var(--mantine-color-dark-6);
-}
-
-[data-mantine-color-scheme="dark"] .showAllLink {
-  color: var(--mantine-color-blue-4);
-}
-
-[data-mantine-color-scheme="dark"] .categoryItemSelected {
-  border-color: var(--mantine-color-blue-4);
-  background-color: color-mix(in srgb, var(--mantine-color-blue-9) 15%, transparent);
-}
-
-[data-mantine-color-scheme="dark"] .categoryItemSelected:hover {
-  background-color: color-mix(in srgb, var(--mantine-color-blue-9) 25%, transparent);
-}
-
-[data-mantine-color-scheme="dark"] .showAllLink {
-  color: var(--mantine-color-blue-4);
-}
-
-[data-mantine-color-scheme="dark"] .showAllLink:hover {
-  color: var(--mantine-color-blue-3);
+.categoryItemSelected span:last-child {
+  color: #9CA3AF !important;
 }
