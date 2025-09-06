@@ -20,14 +20,16 @@ const router = createRouter({
 });
 
 describe('Footer', () => {
-  it('renders the footer', () => {
+  beforeEach(() => {
     render(<RouterProvider router={router} />);
+  });
+
+  it('renders the footer', () => {
     const logo = screen.getByText('Sophon');
     expect(logo).toBeInTheDocument();
   });
 
   it('renders the logo link and source code button with correct hrefs', () => {
-    render(<RouterProvider router={router} />);
     const logoLink = screen.getByRole('link', { name: /sophon/i });
     const sourceCodeButton = screen.getByRole('link', { name: /source code/i });
 
