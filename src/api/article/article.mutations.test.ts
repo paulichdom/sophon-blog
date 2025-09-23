@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import * as articleApi from './article.api';
 import * as articleMutations from './article.mutations';
 

@@ -1,6 +1,5 @@
 import { QueryClient, QueryFunctionContext } from '@tanstack/react-query';
 import { describe, expect, it, vi } from 'vitest';
-
 import * as articleApi from './article.api';
 import * as articleQueries from './article.queries';
 
@@ -17,7 +16,7 @@ describe('article queries', () => {
     queryKey: [''],
     meta: undefined,
     pageParam: undefined,
-    signal: new AbortSignal(),
+    signal: new AbortController().signal,
     direction: 'forward',
     client: queryClient,
   };

@@ -1,8 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-
 import { API_URL } from '@/shared/api.config';
 import fetch from '@/shared/client';
-
 import * as articleApi from './article.api';
 
 vi.mock('@/shared/client', () => ({
@@ -121,7 +119,11 @@ describe('article API', () => {
   describe('generateArticle', () => {
     it('should generate an article from a prompt', async () => {
       const prompt = 'Test prompt';
-      const mockGeneratedArticle = { title: 'Generated Title', description: 'desc', body: 'Generated body' };
+      const mockGeneratedArticle = {
+        title: 'Generated Title',
+        description: 'desc',
+        body: 'Generated body',
+      };
       (fetch as any).mockResolvedValue(mockGeneratedArticle);
 
       const result = await articleApi.generateArticle(prompt);
