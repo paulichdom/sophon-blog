@@ -81,11 +81,13 @@ describe('article API', () => {
 
   describe('createArticle', () => {
     it('should create a new article', async () => {
-      const createArticleDto = { article: { title: 'New Article', description: 'desc', body: 'Body' } };
+      const createArticleDto = {
+        article: { title: 'New Article', description: 'desc', body: 'Body', tagList: [] },
+      };
       const mockResponse = { article: { ...createArticleDto.article, slug: 'new-article' } };
       (fetch as any).mockResolvedValue(mockResponse);
 
-      const result = await articleApi.createArticle(createArticleDto);
+      const result = await articleApi.createArticle(createArticleDto as any);
 
       expect(fetch).toHaveBeenCalledWith(`${API_URL}/articles`, {
         method: 'POST',
