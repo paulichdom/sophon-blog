@@ -1,14 +1,7 @@
 ---
 name: Sophon Blog - Check (formatting, lint), test (run vitest) and build on PR and Merge to main
 
-on:
-  workflow_call:
-    inputs:
-      app-env:
-        required: true
-        type: string
-        description: 'The application environment (e.g., development, production)'
-
+on: push
 jobs:
   check_test_build:
     runs-on: ubuntu-latest
