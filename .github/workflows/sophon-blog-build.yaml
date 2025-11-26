@@ -1,7 +1,7 @@
 ---
 name: Sophon Blog - Check (formatting, lint), test (run vitest) and build on PR and Merge to main
 
-on: push
+on: [push, workflow_dispatch]
 jobs:
   check_test_build:
     runs-on: ubuntu-latest
