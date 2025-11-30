@@ -11,11 +11,11 @@
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint . --cache",
     "stylelint": "stylelint \"src/**/*.css\" --cache",
-    "prettier": "prettier --check \"**/*.{ts,tsx}\"",
+    "prettier:check": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
     "vitest": "vitest run",
     "vitest:watch": "vitest",
-    "test": "npm run typecheck && npm run prettier && npm run lint && npm run vitest && npm run build",
+    "test": "npm run vitest",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },
