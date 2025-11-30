@@ -1,0 +1,8 @@
+name: Handle Sophon Blog Issues
+on: issues
+jobs:
+  output-info:
+    runs-on: ubuntu-lates
+    steps: 
+      - name: Ouput event details
+        run: echo "${{ toJson(github.event)  }}" 
