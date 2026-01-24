@@ -1,105 +1,78 @@
-import { FC, useState } from 'react';
-import {
-  Paper,
-  Text,
-  Stack,
-} from '@mantine/core';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { Button, Group, Paper, Title } from '@mantine/core';
 import classes from './Category.module.css';
 
-export interface CategoryItem {
-  id: string;
-  name: string;
-  articleCount: number;
-}
+export type CategoryOption = {
+  value: string;
+  label: string;
+};
 
-export interface CategoryProps {
-  categories?: CategoryItem[];
-  onCategoryClick?: (categoryId: string) => void;
-  onShowAllClick?: () => void;
-  selectedCategoryId?: string;
-}
+export const DEFAULT_CATEGORY_VALUE = 'general';
 
-const defaultCategories: CategoryItem[] = [
-  {
-    id: 'ai',
-    name: 'Artificial Intelligence',
-    articleCount: 123,
-  },
-  {
-    id: 'javascript',
-    name: 'JavaScript',
-    articleCount: 98,
-  },
-  {
-    id: 'animation',
-    name: 'Animation',
-    articleCount: 76,
-  },
-  {
-    id: 'games',
-    name: 'Game Development',
-    articleCount: 54,
-  },
-  {
-    id: 'design',
-    name: 'UI/UX Design',
-    articleCount: 42,
-  },
-  {
-    id: 'web3',
-    name: 'Web3',
-    articleCount: 35,
-  },
-  {
-    id: 'productivity',
-    name: 'Productivity',
-    articleCount: 28,
-  },
+export const CATEGORY_OPTIONS: CategoryOption[] = [
+  { value: 'css', label: 'CSS' },
+  { value: 'react', label: 'React' },
+  { value: 'animation', label: 'Animation' },
+  { value: 'career', label: 'Career' },
+  { value: 'javascript', label: 'JavaScript' },
+  { value: 'svg', label: 'SVG' },
+  { value: 'nextjs', label: 'Next.js' },
+  { value: DEFAULT_CATEGORY_VALUE, label: 'General' },
 ];
 
-export const Category: FC<CategoryProps> = ({
-  categories = defaultCategories,
-  onCategoryClick,
-  onShowAllClick,
-  selectedCategoryId,
-}) => {
-  const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
+export interface CategoryProps {
+  value?: string | null;
+  onChange?: (categoryValue: string) => void;
+  options?: CategoryOption[];
+}
 
-  // Use controlled selectedCategoryId if provided, otherwise use internal state
-  const activeId = selectedCategoryId ?? internalSelectedId;
+export const Category: FC<CategoryProps> = ({ value, onChange, options = CATEGORY_OPTIONS }) => {
+  const fallbackValue = useMemo(() => {
+    const defaultOption = options.find((option) => option.value === DEFAULT_CATEGORY_VALUE);
+    return defaultOption?.value ?? options[0]?.value ?? DEFAULT_CATEGORY_VALUE;
+  }, [options]);
 
-  const handleCategoryClick = (categoryId: string) => {
-    if (!selectedCategoryId) {
-      // Only manage internal state if not controlled
-      setInternalSelectedId(categoryId === activeId ? null : categoryId);
+  const [internalValue, setInternalValue] = useState<string>(value ?? fallbackValue);
+
+  useEffect(() => {
+    if (value && value !== internalValue) {
+      setInternalValue(value);
+      return;
     }
-    onCategoryClick?.(categoryId);
+    if ((value === null || value === undefined) && internalValue !== fallbackValue) {
+      setInternalValue(fallbackValue);
+    }
+  }, [value, internalValue, fallbackValue]);
+
+  const activeValue = value ?? internalValue;
+
+  const handleChange = (nextValue: string | null) => {
+    const resolvedValue = nextValue ?? fallbackValue;
+    setInternalValue(resolvedValue);
+    onChange?.(resolvedValue);
   };
 
   return (
     <div className={classes.categoryWrapper}>
-      <Paper p="md" radius="xl" className={classes.categoryContainer}>
-        <Text size="xl" fw={700} mb="md" c="bright">
-          Browse by Category
-        </Text>
-
-        <Stack gap="xs">
-          {categories.map((category) => {
-            const isSelected = activeId === category.id;
-            return (
-              <div
-                key={category.id}
-                className={`${classes.categoryItem} ${isSelected ? classes.categoryItemSelected : ''}`}
-                onClick={() => handleCategoryClick(category.id)}
-              >
-                <Text fw={500} size="sm" c={isSelected ? "bright" : "dimmed"}>
-                  {category.name}
-                </Text>
-              </div>
-            );
-          })}
-        </Stack>
-      </Paper>
+      <Title order={6} pt={4} mb="md" className={classes.sectionLabel}>
+        BROWSE BY CATEGORY
+      </Title>
+      <Group gap="sm" wrap="wrap">
+        {options.map((option) => {
+          const isActive = activeValue === option.value;
+          return (
+            <Button
+              key={option.value}
+              size="compact-md"
+              variant="default"
+              onClick={() => handleChange(option.value)}
+              aria-pressed={isActive}
+            >
+              {option.label}
+            </Button>
+          );
+        })}
+      </Group>
     </div>
   );
 };

@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as CategoryIdImport } from './routes/$categoryId'
 import { Route as IndexImport } from './routes/index'
 import { Route as EditorIndexImport } from './routes/editor/index'
 import { Route as ProfileEditImport } from './routes/profile/edit'
@@ -40,6 +41,12 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CategoryIdRoute = CategoryIdImport.update({
+  id: '/$categoryId',
+  path: '/$categoryId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -100,6 +107,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/$categoryId': {
+      id: '/$categoryId'
+      path: '/$categoryId'
+      fullPath: '/$categoryId'
+      preLoaderRoute: typeof CategoryIdImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -192,6 +206,7 @@ const ProfileUsernameRouteRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$categoryId': typeof CategoryIdRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/settings': typeof SettingsRoute
@@ -206,6 +221,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$categoryId': typeof CategoryIdRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/settings': typeof SettingsRoute
@@ -220,6 +236,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/$categoryId': typeof CategoryIdRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/settings': typeof SettingsRoute
@@ -236,6 +253,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$categoryId'
     | '/login'
     | '/register'
     | '/settings'
@@ -249,6 +267,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$categoryId'
     | '/login'
     | '/register'
     | '/settings'
@@ -261,6 +280,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$categoryId'
     | '/login'
     | '/register'
     | '/settings'
@@ -276,6 +296,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CategoryIdRoute: typeof CategoryIdRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SettingsRoute: typeof SettingsRoute
@@ -288,6 +309,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CategoryIdRoute: CategoryIdRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SettingsRoute: SettingsRoute,
@@ -309,6 +331,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$categoryId",
         "/login",
         "/register",
         "/settings",
@@ -321,6 +344,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/$categoryId": {
+      "filePath": "$categoryId.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
