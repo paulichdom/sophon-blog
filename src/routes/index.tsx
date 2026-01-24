@@ -13,7 +13,6 @@ import { ConstructionBanner } from '@/components/ConstructionBanner/Construction
 import { ScrollToTopButton } from '@/components/ScrollToTopButton/ScrollToTopButton';
 import { ServerError } from '@/components/ServerError/ServerError';
 import { Category } from '@/components/Category';
-import { HeroBanner } from '@/components/HeroBanner';
 import { range } from '@/utils';
 import classes from './index.module.css';
 
@@ -61,7 +60,6 @@ function HomePage() {
 
   return (
     <Container size="xl" px="md">
-      <HeroBanner />
       <AnimatePresence>
         {!shouldHideBanner && <ConstructionBanner key="banner" onClose={hideBanner} />}
       </AnimatePresence>

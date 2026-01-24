@@ -12,8 +12,7 @@ export const theme = createTheme({
       '#4d4f66',
       '#34354a',
       '#2b2c3d',
-      '#0B0A0A',
-      //'#12141C', // dark mode default background
+      '#12141C', // dark mode default background
       '#141517',
       '#101113',
     ],
