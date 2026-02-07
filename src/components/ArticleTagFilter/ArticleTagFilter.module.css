@@ -1,0 +1,22 @@
+.filterContainer {
+  margin-bottom: 1.5rem;
+  padding: 0;
+}
+
+.filterIcon {
+  color: #3B82F6;
+}
+
+.selectedTag {
+  color: #3B82F6;
+}
+
+.clearButton {
+  color: var(--mantine-color-dimmed);
+  transition: color 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.clearButton:hover {
+  color: var(--mantine-color-bright);
+}

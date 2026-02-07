@@ -34,6 +34,10 @@ export const fetchArticlesFavoritedByUser = async (username: string) => {
   return articles;
 };
 
+export const fetchAllArticlesByTag = async (tag: string) => {
+  return null;
+};
+
 export const fetchArticle = async (articleSlug: string) => {
   const resourcePath = `articles/${articleSlug}`;
   const data: ArticleDto = await fetch(`${API_URL}/${resourcePath}`, {

@@ -1,0 +1,40 @@
+/* Custom tab styling to match the HTML template */
+.feedTabs :global([data-tabs-list]) {
+  border-bottom: 1px solid var(--mantine-color-gray-7);
+  background: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.feedTabs :global([data-tabs-tab]) {
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--mantine-color-dimmed);
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.feedTabs :global([data-tabs-tab]:hover) {
+  background: transparent;
+  color: var(--mantine-color-bright);
+}
+
+.feedTabs :global([data-tabs-tab][data-active]) {
+  color: #3B82F6;
+  border-bottom-color: #3B82F6;
+  background: transparent;
+}
+
+.feedTabs :global([data-tabs-tab][data-active]:hover) {
+  color: #3B82F6;
+  background: transparent;
+}
+
+.tagsFallback {
+  position: sticky;
+  top: calc(60px + var(--mantine-spacing-xl));
+  padding-top: 20px;
+  padding-left: 32px;
+}

@@ -119,3 +119,7 @@ export type UpdateUserData = {
 export type UpdateUserDto = {
   user: Partial<UpdateUserData>;
 };
+
+export type TagsDto = {
+  tags: string[];
+};

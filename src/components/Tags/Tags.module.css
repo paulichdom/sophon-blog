@@ -1,0 +1,50 @@
+.categoryWrapper {
+  position: sticky;
+  top: calc(60px + var(--mantine-spacing-xl));
+  padding-top: 20px;
+  padding-left: 32px;
+  z-index: 10;
+}
+
+.categoryWrapperCompact {
+  position: static;
+  top: auto;
+  padding-top: 0;
+  padding-left: 0;
+  margin-top: var(--mantine-spacing-sm);
+}
+
+.tagsScroll {
+  width: 100%;
+  user-select: none;
+}
+
+.tagsRow {
+  flex-wrap: nowrap;
+  width: max-content;
+  padding-bottom: var(--mantine-spacing-xs);
+  cursor: grab;
+}
+
+.tagsRow:active {
+  cursor: grabbing;
+}
+
+.sectionLabelCompact {
+  letter-spacing: 0.2em;
+  font-size: var(--mantine-font-size-xs);
+}
+
+.tagButtonCompact {
+  white-space: nowrap;
+  font-size: var(--mantine-font-size-xs);
+  flex: 0 0 auto;
+}
+
+
+.sectionLabel {
+  letter-spacing: 0.35em;
+  color: #ffb347;
+}
+
+
