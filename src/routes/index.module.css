@@ -31,3 +31,10 @@
   color: #3B82F6;
   background: transparent;
 }
+
+.tagsFallback {
+  position: sticky;
+  top: calc(60px + var(--mantine-spacing-xl));
+  padding-top: 20px;
+  padding-left: 32px;
+}

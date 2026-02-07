@@ -7,6 +7,13 @@ import classes from './CategoryResultsLayout.module.css';
 
 const normalizeTag = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
 
+const formatTagLabel = (value: string) =>
+  value
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(' ');
+
 const mockArticles: ArticleData[] = [
   {
     id: 1,
@@ -171,18 +178,20 @@ export interface CategoryResultsLayoutProps {
 
 export const CategoryResultsLayout: FC<CategoryResultsLayoutProps> = ({ selectedCategory }) => {
   const normalizedParam = selectedCategory ? normalizeTag(selectedCategory) : null;
-  const activeValue = CATEGORY_OPTIONS.some((option) => option.value === normalizedParam)
-    ? (normalizedParam as string)
-    : DEFAULT_CATEGORY_VALUE;
+  const activeValue = normalizedParam ?? DEFAULT_CATEGORY_VALUE;
+  const activeOption = CATEGORY_OPTIONS.find((option) => option.value === activeValue) ?? null;
+
+  const headerLabel = activeOption?.label ?? formatTagLabel(selectedCategory ?? 'All Topics');
+  const subLabel = activeOption?.description ?? categoryTaglines[normalizedParam ?? ''] ?? `Stories tagged #${selectedCategory ?? 'general'}`;
 
   const filteredArticles = useMemo(() => {
-    if (activeValue === DEFAULT_CATEGORY_VALUE) {
+    if (!normalizedParam || normalizedParam === DEFAULT_CATEGORY_VALUE) {
       return mockArticles;
     }
     return mockArticles.filter((article) =>
-      article.tagList.some((tag) => normalizeTag(tag) === activeValue)
+      article.tagList.some((tag) => normalizeTag(tag) === normalizedParam)
     );
-  }, [activeValue]);
+  }, [normalizedParam]);
 
   const articleCountLabel = `${filteredArticles.length} ${
     filteredArticles.length === 1 ? 'Article' : 'Articles'
@@ -192,9 +201,10 @@ export const CategoryResultsLayout: FC<CategoryResultsLayoutProps> = ({ selected
     <Container p={0}>
       <Stack gap="xl">
         <Group className={classes.resultsHeader} align="flex-end" justify="space-between">
-          <Title>
-            {CATEGORY_OPTIONS.find((option) => option.value === activeValue)?.label || 'General'}
-          </Title>
+          <Stack gap={4}>
+            <Text className={classes.categorySubtitle}>{subLabel}</Text>
+            <Title className={classes.categoryTitle}>{headerLabel}</Title>
+          </Stack>
 
           <Text className={classes.articleCount}>{articleCountLabel}</Text>
         </Group>
@@ -206,7 +216,7 @@ export const CategoryResultsLayout: FC<CategoryResultsLayoutProps> = ({ selected
           </SimpleGrid>
         ) : (
           <Paper radius="lg" className={classes.emptyState}>
-            <Text fw={600}>No articles in this category yet.</Text>
+            <Text fw={600}>No articles match {headerLabel} yet.</Text>
             <Text size="sm" c="dimmed">
               Try a different topic while the writers assemble fresh takes.
             </Text>
