@@ -31,8 +31,9 @@ The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can 
 ## Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
+- [Node.js](https://nodejs.org/) **v22.11.0** (see `.nvmrc`; run `nvm use` if you use nvm)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- A running instance of the [Sophon API](https://github.com/paulichdom/sophon-api)
 
 ### Installation
 
@@ -47,13 +48,17 @@ The backend for Sophon is developed with [NestJS](https://nestjs.com/). You can 
    # or
    yarn install
    ```
-3. **Start the development server:**
+3. **Point the app at the backend** by creating a `.env.local` file:
+   ```bash
+   VITE_API_URL=http://localhost:3000/api/v1
+   ```
+4. **Start the development server:**
    ```bash
    npm run dev
    # or
    yarn dev
    ```
-4. **Open your browser:**
+5. **Open your browser:**
    Visit [http://localhost:5173](http://localhost:5173) to view the app.
 
 ### Build for Production
@@ -82,11 +87,11 @@ Sophon integrates generative AI to help users quickly draft articles. Simply ent
 
 ### Testing Scripts
 - `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
+- `lint` – runs ESLint and Stylelint
+- `prettier` – checks files with Prettier
 - `vitest` – runs vitest tests
 - `vitest:watch` – starts vitest watch
-- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
+- `test` – runs `typecheck`, `prettier`, `lint`, `vitest` and `build` in order (this is what CI runs)
 
 ### Other Scripts
 - `storybook` – starts storybook dev server
